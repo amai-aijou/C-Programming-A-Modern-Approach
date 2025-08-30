@@ -1,0 +1,410 @@
+# C Cheatsheet
+#
+
+C programs rely on three key features:
+
+  1. "Directives"		Editing commands that modify the program prior to compilation (#include statements)
+  2. "Functions"		Named blocks of executable code (main)
+  3. "Statements"		Commands to be performed when program is run
+
+Variable declarations can be combined:
+
+  int height, length, width, volume; //a whole-number integer up to 2.1 billion
+  float profit, loss: 				 //supports decimel point, but float may contain rounding errors!
+
+Declarations must come before Statements; however, C99 allows them to be mixed up (like modern programming)
+Append the letter f to Float numbers, i.e: profit = 2150.48f;
+
+
+Providing a value to a variable for the first time is called an "initializer"; multiple variables may be declared
+initializers only apply to one variable (int height, length = 10; does not work)
+int height = 8, length = 12, width = 10;
+
+"Wherever a value is needed, any expression of the same type will do."
+-C General Principle
+
+"printf" = print formatted (cout)
+"scanf"  = read  formatted (cin)
+  ("%d", &someVar); 
+
+"Macro Definition": used to name constants; can be an expression
+	#define INCHES_PER_POUND 166
+	#definte RECIPROCAL_OF_PI (1.0f / 3.14159f)
+
+C will truncate the result when two integers are divided. use float instead:
+5.0f / 9.0f
+
+"Identifier"	Variables, functions, macros, etc. 
+				Case Sensitive.May contain letters, digits, underscores.
+				Must begin with a letter or underscore* 
+				*C99 allows for certain universal char. names
+				best_practice, alsoBestPractice
+
+C is built on "tokens": groups of chars that can't be split up without changing their meaning
+  The following statement has seven tokens, separated by tabs: 
+    printf	(	"Height: %d\n"	,	height	)	;
+
+#####################################
+ "Chapter 3 - Formatted Input/Output"
+#####################################
+
+"conversion specification"	placeholder representing a value to be filled during print, ie %d
+	"%d"   = integer (Decimel base 10)
+	"%.1f" = float (display 1 decimel point)
+	"%e"   = scientific notation (Exponential format)
+	"%s"   = string
+
+	"%m.pX / %-m.pX" (m and p are integer constants and X is a letter)
+		"m - minimum field width" 	minimum amount to print
+				%3d: "123", " 12", "12345" | %-3d: "123", "12 ", "12345"
+		"p - precision"		minimum digits/decimel points to display
+				%d = %.1d; %.2d: 22; %.3d: 022;			
+				%g: displays a float in either %e or Fixed Decimel, depending on size
+					p indicates max number of significant digits to display
+				    doesn't show trailing zeros.  will drop decimel point if blank
+					dynamic, switches from fixed decimel to exponential when necessary
+		"X - conversion specifier"		type: %d, %e, %s, etc. (see above)
+
+"Escape Sequences"
+	\a Alert \b Backspace \n New line \t Horizontal Tab \" quotation mark
+	%%: prints percent sign
+
+"Scanf under the hood"
+	Scanf will initially ignore whitespace/linebreaks during first format string match.
+    After first match, it willl continue reading until it reads the first character inconsistent with
+    the search string. It is here that whitespace begins to matter, as it is a non-digit character.
+    Scanf then drops that from the string, and will add it to the *next* search (very important).
+    A second search could attempt to start with an incorrect character if "4abc" is entered as an "int"
+
+	"%d/%d"
+	*5/*96 input (* is space) matches 5 to the first. it then drops the slash, uses it in its next match,
+	which is a /, so it can continue, then stops at *. it starts at * again, drops the *, and matches 96
+	
+	*5*/*96 input would match 5 to the first, drop the space...then attempt to match the space to the 
+	slash. Unlike conversion specifiers, which ignore beginning whitespace, this would not match, so
+	it gets put back. then, */*96 gets run through the second %d, creating bad data. 
+
+	Note: if the second format string was not /, scanf would still start the next match with /, which 
+	would generate an error!
+ 	
+
+#####################################
+     "Chapter 4 - Expressions"
+#####################################
+
+"Expressions" Formulas that show how to compute a value
+	variables, constants. both "b" and "b*c" are expressions
+"Operators"
+	/: when both operands are integers, fractions are truncated. 2/1=0, not 1
+	%: modulo operator only works with integers
+	Don't cross the streams...or use zero as the right operator (2/0, 2%0)
+	"C89": -7/9 might be -1 or -2. -9%7 might be -2 or 5. Strange behavior
+	"C99": Always truncates and rounds down (always -1). More standardized
+
+"Implementation-Defined Behavior"
+	C deliberately leaves parts of the language unspecified and allows the implementation - the software
+		that allows it to compile and run - to specify behavior. One of C's goals is efficiency, which means
+		matching the way the hardware behaves. Make programs agnostic whenver possible to prevent issues!
+	
+	C89: If either integer is negative, the result may be rounded up OR rounded down in C89, depending on implementation.
+	C99: The integer will always be rounded down.	
+Older Compilers are sometimes limited to 32,767 for an Integer. Use Scanf("%1d%1d") to read numbers one at a time
+
+"Simple Assignment"
+	v=e, where e becomes type v. An easy example:
+
+	int i;
+	float f;
+	i = 72.99f	//i is now 72
+	f = 136;	//f is now 136.0
+	f = i = 33.f; //f is now 33.
+	
+	i = 1;
+	k = 1 + (j = i); //not recommended, but valid. j=1, 1+1, k = 2;
+
+"lvalue"
+	Represents an object stored in computer memory, not a constant or result of a computation.
+	Variables are l-values. Expressions are not.
+	Assignment operator requires an lvalue 
+
+"Compound Assignments"
+	i += 2; //same as i = i + 2;
+	Adds the value of the right operand to the variable on the left.
+	-=	*=	/=	%=
+	i += j += k; //this means i += (j += k)
+
+"Increment/Decrement Operators"
+	++i (prefix) and i++ (postfix) are Increment; --i/i-- are Decrement.
+	Have higher precedence than unary plus/minus, and are left-associative.	
+	printf("i is %d\n", ++i);	//prints "i is 2"
+	printf("i is %d\n", i++);	//prints "i is 1", then increments to 2 *after*
+
+Avoid "undefined behavior" by separating statements that may be evaluated different ways
+	i = 2;
+	j = i * i++;	//will i or i++ be evaluated before? 
+	C doesn't define this, it all depends on the compiler!
+
+"Fetching" a variable mean retrieving it's value from memory. A later change will not
+	affect the fetched value, which is typically stored in the "register" in the CPU
+
+C allows *any* expression to be used as a statement if you append a semi-colon.
+	during i++; the statement executes, and the new value is fetched. its value is discarded,
+	though that new value remains permanent as it will be fetched from memory.
+
+
+#####################################
+ "Chapter 5 - Selection Statements"
+#####################################
+
+"Selection Statements" 	#if, switch
+	Allow a program to select a particular execution path from a set of alternatives
+"Iteration Statements" 	#while, do, for
+	Support iteration (looping)
+"Jump statements" 		#break, continue, goto, return
+	Cause an unconditional jump to some other place in the program
+"Compound statement"	#else (see Chapter 6 for more)
+	Groups several statements into a single statement
+"Null Statement"		#empty semi-solon (;)
+	Performs no action
+
+"Relational and Equiality operators" 
+	always return integer values: 0 (false), or 1 (true)
+
+	(i >=j) + (i ==j)
+		is equal to 0, 1, or 2, depending on whether i is less than,
+			greater than, or equal to j. this isn't recommended however as it makes
+			programs hard to understand
+
+"Logical Operators"
+	!	logical negation
+	&&	logical and
+	||	logical or
+
+!exp: 			has the value 1 if expr has the value 0
+exp1 && exp2: 	has the value 1 if the values are both non-zero.
+exp1 || exp2:	has the value 1 if either (or both) has a non-zero value
+	*In all other cases, these operators produce 0*
+
+&&/||: if left is non-zero, they will "short-circuit"
+	Neither will look at the right operators. && will be marked false, || true
+	i > 0 && ++j > 0 will not increment j if i=0
+
+"else" executes only when the "if" expression is 0 (aka not true)
+
+"Conditional Expressions"
+	expr1 ? expr2 : expr3
+
+	Considered a ternary operator, evaluated as "if ? then : else"
+	Parenthesis are often needed to prevent additional expressions being added by mistake
+	i.e. k = (i >= 0 ? i : 0) + j;
+
+	Tempting to use them to reduce returns or else statements:
+	if (i > j )
+		printf("%d\n", i);
+	else
+		printf("%d\n", j);
+	#is equal to:
+	printf("%d\n", i > j ? i : j);
+
+"C89 Boolean (or lack thereof)"
+	C89 lacks Boolean value. you can create an int variable and flag it 0 or 1
+	Better yet, use macro definitions. BOOL will just translate to int:
+	#define TRUE  1
+	#define FALSE 0
+	#define BOOL int
+	BOOL flag = FALSE;
+	if (flag == TRUE)
+
+"C99 Boolean"
+	Included in C99 as an unsigned integer. assigning non-value usually gives it a 1
+
+	_Bool flag;
+	
+	Also includes <stdbool.h> which adds "bool", a macro for _Bool. also adds TRUE/FALSE
+
+"Case"
+	Much cleaner than cascading if statements
+
+	switch (grade) {
+	case 4: printf("Excellent");
+		break;
+	case 3: printf ("Good");
+		break; } etc
+	
+	MUST be used with an integer expression in parentheses. Characters are integers. floats/strings
+		are not.
+
+	switch (expression) {
+		case constant-expression : statements
+
+"Constant Expression"
+	cannot contain variables or function calls. n+10 does not qualify unless n is defined as a constant macro
+	Only one constant expression can follow each case; however, multiple cases may precede statements
+		case 4:  case 3: printf("This will run in both case 3 and 4");
+		//notice they're both on the same line...often done to save space
+	Cannot use range of values (use if instead). without default, will simply bypass switch if no matches
+
+	Omiting break can sometimes be done to purposefully allow all cases below it to apply; usually, though,
+		it's just a coding mistake. To make it clear this was an intentional big-brain move, use a comment:
+		// FALL THROUGH //
+
+
+#####################################
+        "Chapter 6 - Loops" 
+#####################################
+
+"Controlling Expression"
+    Every time a loop body is executed (an "iteration"), the controlling expression is evalued. If true, aka
+        a non-zero value, the loop continues to execute. 
+
+Three kinds of iteration statements (and other useful loop terminology):
+
+"while"		Controlling Expression tested *before* the loop body is executed
+"do"		Controlling Expression tested *after* the loop body is executed
+"for"		Convenient for loops that increment/decrement using a counting variable (i++)
+
+"break"		Jumps out of a loop and transfers control to the next statement after the loop
+"continue"	Skips the rest of a loop iteration (like break, but restarts the loop)
+"goto"		Jumps to any statement within a function (generally poor practice in real-world uses, so I hear)
+"null"		Creates loops with empty bodies
+
+"The While Statement"
+    while	( expression )	statement
+
+    while (i < n)	/* controlling expression */
+	  i = i * 2  	/* loop daddy...I mean body*/
+
+    Braces can create a single compound statement (of course)
+    
+	As the controlling expression is tested before, it's possible the loop may not be executed
+
+	nonzero constants can create (purposefully) inifite loops:
+	    while (1)
+		/* a break, goto, or return is necessary to end the loop */
+
+"%10d%10d"
+    This trick can be used in place of tab to create pretty tables, since it is right-aligned as its a positive number
+
+"The Do Statement"
+	do	statement	while	( expression ) 
+
+"The For Statement"
+	for	( expr1 ; expr2 ; expr3 )	statement
+	
+	- Any and all expressions may be omitted
+    	for (; i > 0; --i)
+	- When the 2nd expression is missing, it defaults to true, and must be terminated in another fashion (or run forever)!
+		for (;;)
+	- Comma expression in 1st/3rd allows for multiple initialization or increment steps. The first value is evaluated and discarded.
+		Only the last value remains, and becomes the value of the entire expression
+C99:
+	- First expression can be replaced by a declaration (and is only visible *within* the loop!) Can declare multiple of same type
+		for (int 1 = 0, j = 0; i < n; i++)
+
+"Pre- vs Post-Increment"
+	The book does not cover this, but listening to engineers speak about the language, pre-increment should always be used
+	    over post-increment because post requires the i++ to be turned into i = i + 1 in memory. small difference that can add up!
+
+"Break"
+	- Transfers control just past the end of a loop (loop is ended)
+	- Only jumps out of the innermost brackets in cases of nested statements
+	- Can be used in Switch statements as well as loops
+
+"Continue"
+	- Transfers control just before the end of a loop (Meaning loop is evaluated again)
+
+"Goto"
+	- Transfers control to any statement in a function, provided that statement has a label
+	- "label" is any identifier placed at the beginning of a statement with a colon (done:)
+	- C99: Goto can't be used to bypass the declaration of a variable-length array
+	- Should be used seldomly (if at all?). break, continue, return, exit are preferred
+	- Can be used to exit a loop from within a subloop/switch statement
+
+"Null"
+	- Statement devoid of symbols except for a semicolon: for (;;), or a blank loop body
+
+
+
+#####################################
+      "Chapter 7 - Basic Types"
+#####################################
+
+"Two Integer Types: Integer and Floating"
+  - Integer types are whole numbers, while floating can have a fractional
+  - Integers: signed (postive/negative), or unsigned. Default Signed
+  
+  "Signed"
+    The sign takes the left-most bit, reducing the available size.
+
+  "Unsigned" 
+    declared as unsigned. Useful for systems programming, and low-level, machine-dependent applications (see Chapter 20)
+
+"Integer Sizes"
+  Short Int -> Unsigned Short Int -> Int -> Unsigned Int -> Long Int -> Unsigned Long Int
+
+  - Other combinations are synonyms for these six types. Can omit Int, as in Unsigned Short, or Long (best practice, some new languages require!)
+  - Order doesn't matter; Unsigned Short Int is identical to Short Unsigned Int
+  - Size is relative, and varies by compiler/computer. However, smaller sizes may not be larger than larger sizes. all three could be the same though!
+
+"Integer Constants"
+  - Numbers that appear in the text of a program. Not read, written, or computed. "Integer constants written in Decimal, Octal, or Hexadecimal"
+  - Integers are always stored in binary, regardless of how we write them. You can even mix them.
+  - Decimal cannot start with 0. Octal must start with 0. hex must start wiht 0x
+  - Octal and hex are convenient for low-level programs ( see Chapter 20)
+  - For extremely large constant, compilers can, in an emergency, attempt to use long or even unsigned long int.
+  - To force a compiler to treat a constant as long, follow with the letter L (U for unsigned, can be either order): 15L	0377:	0xfffUL
+
+"Integer Overflow"
+  - When arithmetic performed on int values cannot fit into an int, overflow occurs. 
+  - "Overflow of signed ints is undefined". Overflow of unsigned ints is defined as the number of bits used to store the result.
+
+"Reading and Writing Integers"
+  - in scanf, %d only works for signed integers. %u is used for unsigned, alongside %o (octal) and %x (hexadecimal)
+  - Short Integer: %hd (think 'half'), or %ho, %hu, %hx
+  - Long Integer: %ld	%lo  %lu  %lx
+  - Long Long:    %lld	%llo %llu %llx
+
+"Floating Point"
+  Float			Single-precision
+  Double		Double-Precision
+  Long Double	Extended-precision
+
+  - Float only suitable for precision to a ~one decimel point. double works for more programs. Long Double is rarely used. 
+  - C does not guarantee nor state specific precision for *any* of these.
+  - Constants stored as "double" by default, which are automatically converted to "float" when necessary
+  - Override double default with letter F, ie 57.0F. 57.0L forces constantls into Long Double
+
+"Reading and Writing Floating-Point"
+  - Same as Integers, add l to the wrong, as in %lf, for scanf. do NOT add for printf, simply choose from %e %f %g to properly display
+  - Long double gets a capital L: %Lf
+
+"Chars"
+  - C treats chars as small integers. C connects int and char so strongly, char const are actually int type rather than char! (just some fun trivia)
+    i = 'a';	// i is now 97
+    ch = 65;	// ch is now 'A'
+	ch = ch + 1;// ch is now 'B'
+  - Due to this, "Unsigned chars" exist. If you need to ensure it is one or the other, declare them as signed char, or unsigned char
+
+"Escape Sequences"
+  - Macros are recommended for escape characters, as they get a bit cryptic, per the book
+  #define ESC '\33'		// ASCII escape character
+
+"Character-Handling Functions"
+  - Convert lower-case letters to upper-case with C's "toupper" library function:
+  #include <ctype.h>
+  ch = toupper(ch);
+
+"Reading and Writing Characters using scanf and printf"
+  - Use %c to denote a single character
+  - scanf doesn't skip white-space before reading a character, so it will return a space as a character unless you use a space:
+      scanf(" %c"
+  - Since it doesn't skip white-space, you can use a simple loop to look for new-line character "\n" in an input line: 
+	  do {
+	  scanf(”%c”, &ch);
+	  } while (ch != ’\n');
+
+"Reading and Writing Characters using getchar and putchar"
+  - getchar() and putchar() are functions to pull the value of a character
+  - Often returns int type, not char. Does not skip whitespace (like scanf). Common function used:
+  - Mixing getchar() and scanf often leads to poor results. Remember scanf will read, then put back whitespace, \n, etc.
+      while ((getchar()) != '\n')
