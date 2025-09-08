@@ -408,3 +408,28 @@ C99:
   - Often returns int type, not char. Does not skip whitespace (like scanf). Common function used:
   - Mixing getchar() and scanf often leads to poor results. Remember scanf will read, then put back whitespace, \n, etc.
       while ((getchar()) != '\n')
+
+"Type Conversion"
+
+"Casting"
+  - A cast takes the form: (type_name) expression, like the below, that allows you to remove the whole numbers from a float:
+      float f, frac_part;
+	  frac_part = f - (int) f;
+  - Can also be used to increase precision during division of integers, by casting before division takes place:
+      quotient = (float) dividence / divisor;
+  - Casts are considered Unary Operators, giving them a higher precedence than Binary Operators
+  - IMPORTANT: overflow can occur before final assignment. In the following example, int * int is stored in memory, and thus overflows, before becoming long:
+    long = int * int
+
+7.5
+"Type Definitions" 
+  - Much like macros, type definitions add that type to the list of recognized types for a given name, and assign it an existing type to work within:
+      typedef int Bool;
+	  Bool flag; //note that this simply functions as an int right now
+  - Can be used like a template, to make all types easily replaceable for different systems. Say, making all dollars Long Double instead of Double
+  - C creates it's own types with typedef, ending names with _t like: ptrdiff_t, size_t, wchar_t
+
+"The sizeof Operator"
+  - Allows a program to determine how much memory is required to store values of a particular type: sizeof (type-name)
+  - The type of a sizeof expression is type size_t. in C89, best to convert to a known type before printing. C99 can do it directly:
+	  printf("Size of int: %zu\n", sizeof(int)); //note: c99 only. Notice the z in %zu? This is for size_t type!

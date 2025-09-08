@@ -1,0 +1,21 @@
+/******************************************
+ * Name: length.c
+ * Purpose: 
+ * Author: amai-aijou
+ * Date: Fri Aug 29 08:39:51 PM CDT 2025
+ ******************************************/
+
+#include <stdio.h>
+
+int main(void) {
+	
+	int len = 0;
+
+	printf("Enter a message: ");
+	while (getchar() != '\n') {
+		len++;
+	}
+	printf("Your message was %d character(s) long.\n", len);
+
+	return 0;
+}

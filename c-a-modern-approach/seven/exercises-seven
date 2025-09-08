@@ -1,0 +1,59 @@
+Exercises
+
+1.	(a) 63
+	(b) 119
+	(c) 12 + 176 + 2560 =  2748
+
+2.	(a) Legal, floating point
+	(b) Legal, integer
+	(c) Illegal; Octal would be integer, but 9 is not allowed in octal
+	(d) Illegal; _ is not a valid suffix for either int nor float
+	(e) Legal: -2 = 3.978 * (10 ^ -2)
+
+3.	(a) Legal
+	(b) Illegal
+	(c) Legal
+	(d) Legal
+
+4.	(a) Legal
+	(b) Legal
+	(c) Legal
+	(d) illegal (its not even in the right syntax!)
+
+5.	(b) Illegal. 0b, while a legitimate modern way to refer to binary that works in GCC and modern compilers,
+			is not actually part of the C standard (at least, I don't think! the other answers are all 100% valid)
+
+6.	(a) char
+	(b) short
+	(c) short
+	(d) long
+
+7. 	(a) \142    \b 98
+	(b) \156	\n 110
+	(c) \162	\r 114
+	(d) \164	\t 116
+
+8.	(a) \x62
+	(b) \x6E
+	(c) \x72
+	(d) \x74 
+ 
+9.	int. 'a' is converted via Integral Promotion to an integer.
+
+10.	unsigned int. (int) j * k = unsigned int. When a signed and unsigned int are compared, the int is converted to unsigned
+
+11. double
+
+12. double. (i + f) becomes a float, after which the right operand becomes the same type as the left operand before assignment
+
+13.	(a) -3 int
+	(b) 7 long
+	(c) 6.5 float
+	(d) 3.75 double
+	(e) -1	double
+	(f) 6 int
+
+14. Usually, but float has a larger memory size than int, so if the float number is too big, it may not fit!
+
+15. 
+	
