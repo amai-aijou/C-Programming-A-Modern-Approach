@@ -21,7 +21,7 @@ int main(void)
 				  // 	|| op != '-' || op != '*' || op != '/') {
 		printf("Enter an operator (+|-|*|/): ");
 		scanf("%s", &op);
-		printf("Current fucked-up value of op: %d", op);
+		printf("Current messed-up value of op: %d", op);
 
 		if (op_err >= 1) {
 			printf("ERROR: Invalid Operator. Allowed operators: (+|-|*|/)\n");
