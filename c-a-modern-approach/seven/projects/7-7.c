@@ -17,15 +17,15 @@ int main(void)
 	printf("Enter first fractions: ");
 	scanf("%d /%d", &num1, &denom1);
 
-	while (op != '+') {
-				  // 	|| op != '-' || op != '*' || op != '/') {
-		printf("Enter an operator (+|-|*|/): ");
-		scanf("%s", &op);
-		printf("Current messed-up value of op: %d", op);
-
+	while (op != '+' && op != '-' && op != '/' && op != '*'  ) {
+				  
 		if (op_err >= 1) {
 			printf("ERROR: Invalid Operator. Allowed operators: (+|-|*|/)\n");
 		}
+
+		printf("Enter an operator (+|-|*|/): ");
+		scanf("%s", &op);
+
 		op_err++;	
 	}
 

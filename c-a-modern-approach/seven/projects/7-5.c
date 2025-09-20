@@ -49,7 +49,7 @@ int main(void) {
 				break;	
 			default:
 				// I was going to make 1pt be default, but figured it'd be more
-				// readable to expand...but the book itself does that, so...
+				// readable to list them out...but the book itself does that, so...
 				// I just wanted it known that I did at least think of that =P
 				printf("This isn't a letter at all!\n");
 		}
