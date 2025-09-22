@@ -22,10 +22,7 @@ int main(void) {
 	total = input;
 
 	// Retrieve next operator and next operand, then update "total" variable
-	while (ch != '\n') { 
-
-		ch = getchar();
-		printf("DEBUG: Current value of ch: %d\n", ch);
+	while ((ch = getchar()) != '\n') { 
 
 		// Pull in input operand
 		scanf("%f", &input);
