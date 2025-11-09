@@ -51,10 +51,3 @@ int main(void) {
 
 	return 0;
 }
-
-	/*  Debugging statements	
-	 *	
-	 *	printf("Current value of ch: %c\n", ch);
-	 *	printf("Current value of total: %f\n", total);
-	 *	printf("Current value of input: %f\n", input);
-	 */
