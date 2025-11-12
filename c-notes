@@ -433,3 +433,14 @@ C99:
   - Allows a program to determine how much memory is required to store values of a particular type: sizeof (type-name)
   - The type of a sizeof expression is type size_t. in C89, best to convert to a known type before printing. C99 can do it directly:
 	  printf("Size of int: %zu\n", sizeof(int)); //note: c99 only. Notice the z in %zu? This is for size_t type!
+
+
+#####################################
+        "Chapter 8 - Arrays"
+#####################################
+
+"Scalar Variable"
+  - Variable Capable of holding a single data item
+"Aggregate Variables"
+  - Store collections of values
+  - two types: "arrays" and "structures"
