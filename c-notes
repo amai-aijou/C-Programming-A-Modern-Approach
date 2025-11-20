@@ -444,3 +444,19 @@ C99:
 "Aggregate Variables"
   - Store collections of values
   - two types: "arrays" and "structures"
+
+"8.1 One-Dimensional Arrays"
+
+"Elements"
+  - values in array are known as "elements"
+  - instantiated be declaring the type and number of elements
+  - array length can be specified by any constant expression; as such, macros are "Good Practice"
+
+"Array Subscripting"
+  - elements are accessed by writing the array name followed by the integer value in brackets [] (also known as "indexing" the array)
+  - elements are numbered from 0, so they go from 0 to n-1
+  - arrays and for loops go hand in hand, used to iterate through the dataset
+  - subscripts may run out of bounds, this is "undefined behavior"
+  - subscripts can be integer expressions, like a[i+j*10], or a[i++]
+  - modifying a variable in the same statement its value is accessed is also "undefined behavior", such as c=(b=a+2)-(a=1), or a[i] = b[i++]. use a[i] = b[i] instead!
+
