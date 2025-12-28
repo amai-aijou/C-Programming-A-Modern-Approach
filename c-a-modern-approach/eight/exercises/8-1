@@ -1,0 +1,1 @@
+sizeof(t) is not *guaranteed* to be the type that is actually being used in an array, especially if it's somehow been type cast
