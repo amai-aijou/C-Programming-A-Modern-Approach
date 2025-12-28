@@ -460,3 +460,27 @@ C99:
   - subscripts can be integer expressions, like a[i+j*10], or a[i++]
   - modifying a variable in the same statement its value is accessed is also "undefined behavior", such as c=(b=a+2)-(a=1), or a[i] = b[i++]. use a[i] = b[i] instead!
 
+"Array Initialization"
+  - Most common initializer is a list of constant expressions in braces:
+      int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  - If initializer is shorter than array, other values are given zero. Can be used to set all to zero while being visually friendly:
+      int a[10] = {0};
+  - Length of array can be omitted if initializer is present (though makes code less readable)
+
+"C99: Designated Initializers"
+  - Only those values you specifically want to set may be designated, and the rest will be set to zero
+      int a[15] = {[2] = 29, [9] = 7};
+  - The order they`re listed in doesn`t technically matt
+  - If no length if given, C99 is able to deduce the length of the array by the largest value provided, (i.e.: [9])
+
+"Using sizeof with arrays"
+  - sizeof(a) will return the size of an array; sizeof(a[0]) will return the size of a single value. Thus, you can combine the two to get the length of an array:
+      sizeof(a) / sizeof(a[0]0)
+  - The above can be used in the conditional section (section 2) of a For loop:
+      for (i = 0: i < sizeof(a) / sizeof(a[0]0); i++)
+        a[i] = 0;
+  - Some compilers will throw a warning, since you're comparing signed int vs unsigned size_t, but you can cast it to int:
+      (int) sizeof(a)
+
+"Multidimensional Arrays"
+  - arrays may have any number of dimensions!
