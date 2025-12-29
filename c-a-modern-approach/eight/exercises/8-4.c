@@ -11,8 +11,6 @@
 
 int main(void) {
 	int i;
-
-	// I made this a desiginated initializer, oops!
 	bool array[7] = {[0] = true, [6] = true};
 
 	for (i = 0; i < 7; i++) {
