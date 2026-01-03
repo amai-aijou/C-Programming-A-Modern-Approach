@@ -10,6 +10,16 @@
 int main(void) {
 	int a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z;
 
+	char ch = 'A';
+
+	printf("as decimel: %d\n", ch);
+	printf("as char: %c\n", ch);
+
+	ch = 90;
+
+	printf("as decimel: %d\n", ch);
+	printf("as char: %c\n", ch);
+/*
 	printf("%d\n", a);
 	printf("%d\n", b);
 	printf("%d\n", c);
@@ -36,7 +46,7 @@ int main(void) {
 	printf("%d\n", x);
 	printf("%d\n", y);
 	printf("%d\n", z);
-
+*/
 	return 0;
 
 }
