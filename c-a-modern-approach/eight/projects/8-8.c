@@ -14,18 +14,18 @@ int main(void) {
 	int array[N][N] = {0};
 	int i = 0;
 	int j = 0;
-	int avg = 0;
+	double avg = 0;
 	int rowSum = 0;
 	int	colSum = 0;
-	int highScore;
-	int lowScore = 0;
+	int highScore = 0;
+	int lowScore = 1000;
 
 	// Read the inputs for the two-dimensional array, one row at a time
 	for (i = 0; i < N; i++) {
 		printf("Enter grades for student #%d: ", (i+1));
 
 		for (j = 0; j < N; j++) {
-//			scanf("%d", &array[i][j]);
+			scanf("%d", &array[i][j]);
 		}
 	}
 	printf("\n");
@@ -44,10 +44,9 @@ int main(void) {
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
 			rowSum += array[i][j];
-			avg += rowSum;
 		}
 
-		printf("%6d%%", rowSum);	
+		printf("%7d", rowSum);	
 		rowSum = 0;
 	}
 	printf("\n");
@@ -58,11 +57,10 @@ int main(void) {
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
 			rowSum += array[i][j];
-			avg += rowSum;
 		}
 
-		avg /= N;
-		printf("%6d%%", avg);	
+		avg = rowSum / N;
+		printf("%7.1f", avg);	
 		rowSum = 0;
 		avg = 0;
 	}
@@ -85,10 +83,9 @@ int main(void) {
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
 			colSum += array[j][i];
-			avg += colSum;
 		}
-		avg /= N;
-		printf("%6d%%", avg);	
+		avg = colSum / N;
+		printf("%7.1f", avg);	
 		colSum = 0;
 		avg = 0;
 	}
@@ -103,7 +100,7 @@ int main(void) {
 			}
 		}
 
-		printf("%6d%%", highScore);	
+		printf("%7d", highScore);	
 		highScore = 0;
 	}
 	printf("\n");
@@ -117,14 +114,15 @@ int main(void) {
 			}
 		}
 
-		printf("%6d%%", lowScore);	
-		lowScore = 0;
+		printf("%7d", lowScore);	
+		lowScore = 1000;
 	}
 	printf("\n");
 
 	return 0;
 }
-/*
+
+/********SCHEMA********
 Student:		#1	#2	#3	#4	#5
 Total			10	10	10	10	10
 Average
