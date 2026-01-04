@@ -12,6 +12,10 @@
 
 #define N 10
 #define SIZE ((int) (sizeof(array) / sizeof(array[n][n]))) //array size
+#define UP 0
+#define RIGHT 1
+#define DOWN 2
+#define LEFT 3
 
 int main(void) {
 
@@ -21,6 +25,7 @@ int main(void) {
 	char array[N][N];
 	char ch = 'A';
 	int dir;
+	bool move[4] = {false, false, false, false};
 
 	// Instantiate array to "." to create the board
 	for (i = 0; i < N; i++) {
@@ -32,77 +37,105 @@ int main(void) {
 	// Create a random number(need to learn why this has to be called before rand)
 	srand((unsigned) time(NULL));
 
-
-	
-
 	/* Debugging
-	dir = (rand()) % 4;	
-
 	printf("dir: %d\n", dir);
 	printf("ch: %c\n", ch);
 	printf("ch: %c\n", ch+1);
-
-	NOTE: Additional debugging printf statements sprinkled throughout in comments
 	*/
 
 	// Place initial move at 0,0 starting with 'A'
 	array[0][0] = ch;
-	//printf("ch: %c\n", ch);
 
 	// Perform rest of random walk movement, with boundary checking
 	// 'Z' = 90 in ASCII
 	while (ch < 90) {
 
-	dir = (rand()) % 4;	
+		move[UP] = false;
+		move[RIGHT] = false;
+		move[DOWN] = false;
+		move[LEFT] = false;
 
-		switch (dir) {
-			case 1: //array[c-1][r];
-				if ((c-1 >= 0) && (array[c-1][r] == '.')) {
-					c -= 1;
-					ch++;
-					array[c][r] = (ch);
-					printf("1 - ch:%c c:%d r:%d\n", ch, c, r);
-					break;
-				}
-
-			case 2: //array[c][r+1];
-				if ((r+1 <= 9) && (array[c][r+1] == '.')) {
-					r += 1;
-					ch++;
-					array[c][r] = (ch);
-					printf("2 - ch:%c c:%d r:%d\n", ch, c, r);
-					break;
-				}
-			case 3: //array[c+1][r];
-				if ((c+1 <= 9) && (array[c+1][r] == '.')) {
-					c += 1;
-					ch++;
-					array[c][r] = (ch);
-					printf("3 - ch:%c c:%d r:%d\n", ch, c, r);
-					break;
-				}
-			case 4: //array[c][r-1];
-				if ((r-1 >= 0) && (array[c][r-1] == '.')) {
-					r -= 1;
-					ch++;
-					array[c][r] = (ch);
-					printf("4 - ch:%c c:%d r:%d\n", ch, c, r);
-					break;
-				}
+		// Check all potential moves and add to move[] array
+		if ((r-1 >= 0) && (array[r-1][c] == '.')) {
+			move[UP] = true;
+			printf("potential move up: ok\n");
 		}
 
-		if ((array[c-1][r] != '.') && (array[c][r+1] != '.') && (array[c+1][r] != '.') && (array[c][r-1] != '.')) {
-			//printf("NO - ch:%c c:%d r:%d\n", ch, c, r);
+		if ((c+1 <= 9) && (array[r][c+1] == '.')) {
+			move[RIGHT] = true;
+			printf("potential move right: ok\n");
+		}
+		
+		if ((r+1 <= 9) && (array[r+1][c] == '.')) {
+			move[DOWN] = true;
+			printf("potential move down: ok\n");
+		}
+
+		if ((c-1 >= 0) && (array[r][c-1] == '.')) {
+			move[LEFT] = true;
+			printf("potential move left: ok\n");
+		}
+
+		if (move[UP] + move[RIGHT] + move[DOWN] + move[LEFT] == 0) {
 			printf("*****YOU LOSE.*****\n");
 			break;
 		}
 
+		// Generate a new direction
+		dir = (rand()) % 4;	
+
+		// Attempt to move in that direction
+		switch (dir) {
+			case UP: //array[c-1][r];
+				if (move[UP] == true) {
+					r -= 1;
+					ch++;
+					array[r][c] = (ch);
+					printf("0 - ch:%c c:%d r:%d\n", ch, c, r);
+					break;
+				}
+
+			case RIGHT: //array[c][r+1];
+				if (move[RIGHT] == true) {
+					c += 1;
+					ch++;
+					array[r][c] = (ch);
+					printf("1 - ch:%c c:%d r:%d\n", ch, c, r);
+					break;
+				}
+			case DOWN: //array[c+1][r];
+				if (move[DOWN] == true) {
+					r += 1;
+					ch++;
+					array[r][c] = (ch);
+					printf("2 - ch:%c c:%d r:%d\n", ch, c, r);
+					break;
+				}
+			case LEFT: //array[c][r-1];
+				if (move[LEFT] == true) {
+					c -= 1;
+					ch++;
+					array[r][c] = (ch);
+					printf("3 - ch:%c c:%d r:%d\n", ch, c, r);
+					break;
+				}
+		}
+/*
+//		if ((array[r-1][c] != '.') && (array[r][c+1] != '.') && (array[r+1][c] != '.') && (array[r][c-1] != '.')) {
+
+			//printf("NO - ch:%c c:%d r:%d\n", ch, c, r);
+//			printf("*****YOU LOSE.*****\n");
+//			break;
+		//}
+//		|| ((move[0] == false) && (move[1] == false) && (move[2] == false)  && (move[3] == false))
+*/
 		if (ch == 90) {
 			printf("*****YOU WIN!!*****\n");
 		}
 
 	}
 
+	printf("ch:%c\n", ch);
 	// Print board
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
