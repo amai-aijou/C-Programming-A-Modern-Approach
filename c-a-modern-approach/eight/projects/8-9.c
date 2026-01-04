@@ -37,17 +37,11 @@ int main(void) {
 	// Create a random number(need to learn why this has to be called before rand)
 	srand((unsigned) time(NULL));
 
-	/* Debugging
-	printf("dir: %d\n", dir);
-	printf("ch: %c\n", ch);
-	printf("ch: %c\n", ch+1);
-	*/
-
 	// Place initial move at 0,0 starting with 'A'
 	array[0][0] = ch;
 
 	// Perform rest of random walk movement, with boundary checking
-	// 'Z' = 90 in ASCII
+	// 'Z' = 90 in ASCII; game is won upon Z successfully being placed
 	while (ch < 90) {
 
 		move[UP] = false;
@@ -58,24 +52,21 @@ int main(void) {
 		// Check all potential moves and add to move[] array
 		if ((r-1 >= 0) && (array[r-1][c] == '.')) {
 			move[UP] = true;
-			printf("potential move up: ok\n");
 		}
 
 		if ((c+1 <= 9) && (array[r][c+1] == '.')) {
 			move[RIGHT] = true;
-			printf("potential move right: ok\n");
 		}
 		
 		if ((r+1 <= 9) && (array[r+1][c] == '.')) {
 			move[DOWN] = true;
-			printf("potential move down: ok\n");
 		}
 
 		if ((c-1 >= 0) && (array[r][c-1] == '.')) {
 			move[LEFT] = true;
-			printf("potential move left: ok\n");
 		}
 
+		// Check for available moves, terminate early if lost
 		if (move[UP] + move[RIGHT] + move[DOWN] + move[LEFT] == 0) {
 			printf("*****YOU LOSE.*****\n");
 			break;
@@ -86,56 +77,44 @@ int main(void) {
 
 		// Attempt to move in that direction
 		switch (dir) {
-			case UP: //array[c-1][r];
+			case UP: //array[r-1][c];
 				if (move[UP] == true) {
 					r -= 1;
 					ch++;
 					array[r][c] = (ch);
-					printf("0 - ch:%c c:%d r:%d\n", ch, c, r);
 					break;
 				}
 
-			case RIGHT: //array[c][r+1];
+			case RIGHT: //array[r][c+1];
 				if (move[RIGHT] == true) {
 					c += 1;
 					ch++;
 					array[r][c] = (ch);
-					printf("1 - ch:%c c:%d r:%d\n", ch, c, r);
 					break;
 				}
-			case DOWN: //array[c+1][r];
+			case DOWN: //array[r+1][c];
 				if (move[DOWN] == true) {
 					r += 1;
 					ch++;
 					array[r][c] = (ch);
-					printf("2 - ch:%c c:%d r:%d\n", ch, c, r);
 					break;
 				}
-			case LEFT: //array[c][r-1];
+			case LEFT: //array[r][c-1];
 				if (move[LEFT] == true) {
 					c -= 1;
 					ch++;
 					array[r][c] = (ch);
-					printf("3 - ch:%c c:%d r:%d\n", ch, c, r);
 					break;
 				}
 		}
-/*
-//		if ((array[r-1][c] != '.') && (array[r][c+1] != '.') && (array[r+1][c] != '.') && (array[r][c-1] != '.')) {
 
-			//printf("NO - ch:%c c:%d r:%d\n", ch, c, r);
-//			printf("*****YOU LOSE.*****\n");
-//			break;
-		//}
-//		|| ((move[0] == false) && (move[1] == false) && (move[2] == false)  && (move[3] == false))
-*/
+		// Check for win condition!
 		if (ch == 90) {
 			printf("*****YOU WIN!!*****\n");
 		}
 
 	}
 
-	printf("ch:%c\n", ch);
 	// Print board
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
@@ -152,4 +131,11 @@ int main(void) {
  * 2. Use remainder divided by four (X % 4) to determine cardinal direction of move
  * 3. Check that move won't go outside array; or, overwrite a position already assigned
  * 4. If either condition is violated, move elsewhere. If no moves, terminate
+ *
+ ***DEBUGGING****
+ *	printf("dir: %d\n", dir);
+ *	printf("ch: %c\n", ch);
+ *	printf("ch: %c\n", ch+1);
+ *	printf("potential move up: ok\n");
+ *	printf("%d - ch:%c c:%d r:%d\n", dir, ch, c, r);
  */
