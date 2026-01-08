@@ -13,21 +13,19 @@
 int main(void) {
 
 	int i = 0;
-	char array[80] = {0};
+	char array[80] = {'0'};
 	int shiftAmt = 0;
-
 	char ch;
 
-	printf("test: %c\n", array[0]);
 	// Zero out the full array so it can become a  loop terminator
 	for (i = 0; i < SIZE; i++) {
 		array[i] = 0;
 	}
+	i = 0; //reset i back to zero
 
 	// Prompt user for message, read into array
 	printf("Enter message to be encrypted: ");
 	
-	i = 0;
 	while ((ch = getchar()) != '\n') {
 		array[i] = ch;
 		i++;
@@ -37,7 +35,7 @@ int main(void) {
 
 	// Prompt for shift amount
 	printf("Enter shift amount (1-25): ");
-	scanf("%d", shiftAmt);
+	scanf("%d", &shiftAmt);
 
 	// Output final message
 	printf("Encrypted message: ");
@@ -52,7 +50,6 @@ int main(void) {
 		// Set ch to array element, simply for code visibility
 		ch = array[i];
 
-		printf("ch: %c\n", ch);
 
 		// Capital letter cipher. Subtract 'A' (65), add shift amount, modulo 26, then add 'A' back in
 		// This ensures the number is 0-25, so if Z is entered, it becomes: (90-65 + 1) % 26 + 65) == 0 == 'A'
@@ -70,6 +67,8 @@ int main(void) {
 		// Print current character
 		printf("%c", ch);
 	}
+
+	printf("\nTo decode, enter: %d\n", (26 - shiftAmt));
 
 	return 0;
 }
