@@ -1,6 +1,6 @@
 /******************************************
  * Name: 8-16.c
- * Purpose: 
+ * Purpose: Anagram tester
  * Author: amai-aijou
  * Date: Wed Jan  7 09:03:09 PM CST 2026
  ******************************************/
@@ -52,6 +52,7 @@ int main(void) {
 		}
 	}
 
+	// If the two are anagrams, the sum total of all array elements will be 0.
 	for (i=0; i < SIZE; i++) {
 		sum += array[i];
 	}
