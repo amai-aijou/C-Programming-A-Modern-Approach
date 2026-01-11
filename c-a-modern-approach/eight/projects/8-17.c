@@ -38,9 +38,9 @@ int main(void) {
 	row = 0;
 	array[row][col] = (1);
 
-	// Number of moves equal to number of squares
+	// Number of moves equal to total squares (minus one as first moved already occurred)
 	// Count starts at 2 as first number already placed
-	moves = n * n;
+	moves = (n * n) - 1;
 	count = 2;
 
 	// Iterate through remaining values
@@ -64,13 +64,10 @@ int main(void) {
 			col += 1;
 		}
 
-		// Check if square to be written is zero
-		if (array[row][col] == 0) {
-			array[row][col] = count;
-		
-		// If square to be written is not zero, restore to backup, then move one row "down" (increase number by one)
-		} else {
+		// If square is already written (non-zero): restore to backup, then move one row "down" (increase number by one)
+		if (array[row][col] != 0) {
 
+			// Restore previous values
 			row = prevRow;
 			col = prevCol;
 
@@ -81,57 +78,18 @@ int main(void) {
 				row += 1;
 			}	
 
-			array[row][col] = count;
 		}
 
+		// Print row, increment count, decrement moves
+		array[row][col] = count;	
 		count++;
 		moves--;
-
 	}
-
-/*
-	for (i = 0; i < n; i++) {
-		row = n - (i % n) - 1;
-		col = (col + 1) % n;
-		array[row][col] = i;
-		*/
-
-	/**************SCRAPPED - ALGORITHM VERSION CAN'T TRAVERSE********
-	// Build square
-	for (i = 0; i < 5; i++) {
-
-		prevRow = row;
-		prevCol = col;
-
-		row = n - (i % n) - 1;i
-		col = (col + 1) % n;
-
-
-		valid = false;
-		row = n - (i % n) - 1;
-		col = (col + 1) % n;
-
-		if (array[row][col] == 0) {
-			valid = true;
-		}
-
-		if (valid == false) {
-			
-		}
-
-			row = n - (i % n) - 1;
-			col = (col + 1) % n;
-
-		array[row][col] = i+2;
-
-	printf("TEST - row:%d | col:%d | num:%d\n", row, col, i+2);
-	}
-	*/
 
 	// Print final square
 	for (i = 0; i < n; i++) {
 		for (j = 0; j < n; j++) {
-			printf("%d ", array[i][j]);
+			printf("%2d ", array[i][j]);
 		}
 		printf("\n");
 	}
@@ -139,9 +97,41 @@ int main(void) {
 	return 0;
 }
 
+/***************SCRAPPED - ALGORITHM VERSION CAN'T TRAVERSE********
 
+	// Build square
+	for (i = 0; i < 5; i++) {
 
-/*****SCHEMA*****
+		prevRow = row;
+		prevCol = col;
+
+		row = n - (i % n) - 1;
+		col = (col + 1) % n;
+
+		if (array[row][col] != 0) {
+		row = prevRow;
+		col = prevCol;
+		}
+
+		array[row][col] = i+2;
+
+	printf("TEST - row:%d | col:%d | num:%d\n", row, col, i+2);
+	}
+	
+
+	// Print final square
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < n; j++) {
+			printf("%2d ", array[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+*/
+
+/*******SCHEMA********
  * ^ 1 > 1 x 5; V 1; ^1 > 1 x5;
  * you go a row up and a column up until you hit an already-populated square;
  * then, go down one row and start again
@@ -162,10 +152,6 @@ int main(void) {
 
 		row = n - row + 1;
 		5 - (0 % 5) + 1 = 4
-		5 - 1+1 = 3
-		5 - 2+1 = 2
-		5 - 3+1 = 1
-		5 - 4+1 = 0
-		5 - (5 % 5)+1 = 4
+ ******DEBUGGING******
 		printf("TEST - row:%d | col:%d | num:%d\n", row, col, count);
  ****************/
