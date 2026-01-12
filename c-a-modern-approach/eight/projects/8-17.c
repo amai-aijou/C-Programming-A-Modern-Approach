@@ -14,7 +14,7 @@
 int main(void) {
 	int i, j;
 	int n; // n*n = square size
-	int row, col, prevRow, prevCol;
+	int row, col, nextRow, nextCol;
 	int moves, count;
 
 	printf("This program creates a magic square of a specified size.\n"
@@ -43,6 +43,25 @@ int main(void) {
 	moves = (n * n) - 1;
 	count = 2;
 
+/*****IMPROVED PROGRAM (MODULAR ARITHMETIC)*****/
+
+	while ( moves > 0) {
+
+		nextRow = (row - 1 + n) % n;
+		nextCol = (col + 1) % n;
+
+		if (array[nextRow][nextCol] != 0) {
+			row = (row + 1) % n;
+		} else {
+			row = nextRow;
+			col = nextCol;
+		}
+
+			array[row][col] = count;
+			count++;
+			moves--;
+	}
+/**************ORIGINAL PROGRAM*****************
 	// Iterate through remaining values
 	while ( moves > 0) {
 
@@ -85,7 +104,7 @@ int main(void) {
 		count++;
 		moves--;
 	}
-
+***********************************************/
 	// Print final square
 	for (i = 0; i < n; i++) {
 		for (j = 0; j < n; j++) {
@@ -97,61 +116,8 @@ int main(void) {
 	return 0;
 }
 
-/***************SCRAPPED - ALGORITHM VERSION CAN'T TRAVERSE********
-
-	// Build square
-	for (i = 0; i < 5; i++) {
-
-		prevRow = row;
-		prevCol = col;
-
-		row = n - (i % n) - 1;
-		col = (col + 1) % n;
-
-		if (array[row][col] != 0) {
-		row = prevRow;
-		col = prevCol;
-		}
-
-		array[row][col] = i+2;
-
-	printf("TEST - row:%d | col:%d | num:%d\n", row, col, i+2);
-	}
-	
-
-	// Print final square
-	for (i = 0; i < n; i++) {
-		for (j = 0; j < n; j++) {
-			printf("%2d ", array[i][j]);
-		}
-		printf("\n");
-	}
-
-	return 0;
-}
-*/
-
-/*******SCHEMA********
- * ^ 1 > 1 x 5; V 1; ^1 > 1 x5;
- * you go a row up and a column up until you hit an already-populated square;
- * then, go down one row and start again
+/******DEBUGGING******
  *
- * array[0][(n / 2) + 1] = 1;
- * [0-1][3-1]
+ * printf("TEST - row:%d | col:%d | num:%d\n", row, col, count);
  *
- * row:
- * 0 
- *
- * col:
- * (3 + 1) % n = 4
- * (4 +1) % 5 = 0
- * 0 +1 % 5 = 1
- * 1 +1 % 5 = 2
- * 2 +1 % 5 = 3 (TAKEN)
- * 3 + 1 % 5 = 4
-
-		row = n - row + 1;
-		5 - (0 % 5) + 1 = 4
- ******DEBUGGING******
-		printf("TEST - row:%d | col:%d | num:%d\n", row, col, count);
- ****************/
+ ********************/

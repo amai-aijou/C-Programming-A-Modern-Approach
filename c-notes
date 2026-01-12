@@ -484,3 +484,26 @@ C99:
 
 "Multidimensional Arrays"
   - arrays may have any number of dimensions!
+
+
+#######################################
+        "Chapter 9 - Functions"
+#######################################
+
+"Defining and Calling Functions"
+  - Function calls do not have to be variables. average(x,y) could simply be average(8,10)
+  - Printf statements can call functions instead of using a direct variable
+    - Used this way, functions are not saved anywhere. They are used once, then thrown away
+
+"Function Definitions"
+  - Functions may not return arrays (only restriction on type!)
+  - In C89, function with no type is presumed to be int; in C99 it's illegal to omit
+  - Some programmers put the return type on a line above the function (like "unsigned long int" and other such long names)
+  - Even when all parameters are the same type, they must all be marked!
+
+"Function Calls"
+  - printf() is actually a function, whose return value is ordinarily discarded. It actually returns the number of characters in the statement
+      count = printf("test");
+	  printf("%d", count); // Count will be 4, as test has four characters
+  - You can make it abundantly clear that you're discarding the return value by using (void), an explicit typecase
+      (void) printf("test\n");
