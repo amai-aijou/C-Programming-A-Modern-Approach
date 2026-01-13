@@ -507,3 +507,22 @@ C99:
 	  printf("%d", count); // Count will be 4, as test has four characters
   - You can make it abundantly clear that you're discarding the return value by using (void), an explicit typecase
       (void) printf("test\n");
+  - Reaching a return statement causes the code to return to where the function was called
+  - Variables in functions are normally considered local, and can be re-used in different functions as they exist in separate memory space
+  - Default return type for a function is "int", if not otherwise specified. 
+
+"Function Declarations"
+  - C does not require functions be before main. They can be after, as well!
+  - "Implicit Declaration": Most compilers provide a default type (int) for functions they encounter before they've been read by the code. This means errors can occur 
+      when the type is not int as expected, since the function can't always go before main
+  - "Explicit Function Declaration": to give your compiler a "sneak preview" of functions, you can declare them in the code without their body, simply to share the return type:
+      double average(double a, double b);
+      int main(void) {}
+      double average (double a, double b) {return (a+b) / 2;	
+  - the above is known as a 'function prototype', to differentiate it from an older style of function declaration in which parenthesis are left empty.
+  - Prototype must provide complete description of how to call a function, how many arguments to supply, what their types should be, and what type is returned
+  - It is not necessary to specify the names of the functions parameters, so long as their *types* are present: double average (double, double);
+  - Starting "C99: you *must* declare or define a function before it being used!"
+
+"Arguments"
+  -
