@@ -525,4 +525,42 @@ C99:
   - Starting "C99: you *must* declare or define a function before it being used!"
 
 "Arguments"
-  -
+  - Parameter vs Argument: Parameters are dummy names representing values to be supplied when a function is called. Arguments are expressions that appear in function calls
+  - Arguments are passed by value, meaning they are not altered by the function itself (unless the function actually returns something that alters that value)
+  - Arguments exist in the primary code, and Parameters are the values used in the function itself (or its prototype)
+      example_function(arg1, arg2);
+      int example_function(parameter1, parameter2) {}
+
+"Argument Conversions"
+  - If there is a prototype, arguments are implicitly converted to the type of the parameters in the prototype.
+  - If there is no prototype, default argument promotion will occur (float -> double; char -> int; short -> int...C99 only: int -> long int, etc etc.)
+  - Default argument promotion is very dangerous; if you pass a double to a function that expects an int, double is not converted down to int. In other words, undefined behavior occurs!
+
+"Array Arguments"
+  - with 1D-arrays, length is usually not specified. the function call will often give a limit instead, as a second argument:
+      int sum_array(int a[], int n) {
+        for (i=0; i< n; i++)
+   	      sum += a[i]; 
+
+"Compound Literals"
+  - "C99 Only": Functions that require an array which is only used as an argument for that function, do not need to be named, and can instead be directly initialized and used:
+    total = sum_array((int []){3, 0, 3, 4, 1}, 5);
+  - You can also use variables!
+
+"9.5: The Return Statement"
+  - Common to use conditional operator (if?then:else;) in return statements to generate specific error codes as needed:
+      return n >= 0 ? n : 0
+  - Variables of types other than the type of the function will be converted, ex. float -> int.
+  - "void" type functions can have "return;", but cannot return anything else. (Technically unnecessary, as functions return after last statement is executed)
+  - If a non-void function does not use a return statement, but tries to use a value, the behavior is undefined...so "always use a return statement for non-void functions!"
+
+"The Exit Function"
+  - Almost identical to return; however, "exit causes program to immediately terminate, no matter what function it is in. return only terminates main"
+  - part of <stdlib.h>, usually used like: exit(0); or exit(EXIT_SUCCESS); (EXIT_SUCCESS and EXIT_FAILURE are macros for 0 and 1, respectively)!
+
+"9.6: Recursion"
+  - Recursion in C is legal, but not used vey often. A function can call itself repeatedly, then break when certain criteria are met.
+
+"The Quicksort Algorithm"
+  - Recursion is used in sophisticated algorithms that call themselves many times
+  - "divide-and-conquer": technique where large problems are split into smaller pieces that are then tackled by the same algorithm. ex. quicksort
