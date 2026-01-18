@@ -22,38 +22,19 @@ int main(void) {
 
 int day_of_year(int month, int day, int year) {
 
+	int months[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	int dayOfYear = 0;
+	int x;
 
-	switch (month) {
-		case 12:
-			dayOfYear += 31;
-		case 11:
-			dayOfYear += 30;
-		case 10:
-			dayOfYear += 31;
-		case 9:
-			dayOfYear += 30;
-		case 8:
-			dayOfYear += 31;
-		case 7:
-			dayOfYear += 31;
-		case 6:
-			dayOfYear += 30;
-		case 5:
-			dayOfYear += 31;
-		case 4:
-			dayOfYear += 30;
-		case 3:
-			dayOfYear += 31;
-		case 2:
-			dayOfYear += 28;
-		case 1:
-			dayOfYear += 31;
+	for (x = 0; x < (month - 1); x++) {
+		dayOfYear += months[x];
 	}
 
 	dayOfYear += day;
 
-	dayOfYear = (dayOfYear + year) % 365;
+	if (((year % 4) == 0) && (month > 2)) {
+		dayOfYear++;
+	}
 
 	return (dayOfYear);
 }
