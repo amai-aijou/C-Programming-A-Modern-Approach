@@ -1,0 +1,4 @@
+(a) valid
+(b) valid
+(c) invalid
+(d) invalid (functions default to int)

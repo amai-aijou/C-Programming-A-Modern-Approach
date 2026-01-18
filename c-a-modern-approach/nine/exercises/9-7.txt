@@ -1,0 +1,6 @@
+(a) Legal
+(b) legal (output is promoted int -> float -> double)
+(c) legal (but will drop the decimal values)
+(d) legal (but will drop decimal values, then turn that whole number back to a
+double)
+(e) legal (just doesn't do anything)
