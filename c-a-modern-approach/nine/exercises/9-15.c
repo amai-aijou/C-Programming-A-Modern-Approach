@@ -23,43 +23,19 @@ int main(void) {
 
 double median(double x, double y, double z) {
 
-	double medianNum = 0;
+	double med = 0;
 
-	if (x <= y)
-		if (y <= z) 
-			medianNum = y;
-		else if (x <= z) 
-			medianNum = z;
-		else 
-			medianNum = x;
-	
-	if (z <= y)
-		medianNum = y;
-	else if (x <= z)
-		medianNum = x;
-	else
-		medianNum = z;
+	if (x <= y) {
+		if (y <= z) med = y;
+		else if (x <= z) med = z;
+		else med = x;
+	}
+	else {
+	if (z <= y) med = y;
+	else if (x <= z)  med = x;
+	else med = z;
+	}
 
-	return (medianNum);
+	return med;
 }
 
-/*-------------------------
-
-if (1 <= 2)
-	if (2 <= 3)
-		medianNum = 2;
-	else if (1 <= 3)
-		medianNum = 3;
-	else
-		medianNum = 1;
-
-? 2 1 ?
-
-if (3 <= 2)
-	medianNum = 2;
-if (1 <= 3)
-	medianNum = 1;
-else
-	medianNum = 3;
-	
-*/
