@@ -37,19 +37,23 @@ void pb(int n) {
 /*
  * n = 5
  *
+ * First, Recursion:
+ *
  * pb(5/2)
  * pb(2/2)
  * pb(1/2)
  * pb(0)
- * 0 + 0 % 2;
+ *
+ * Then, 'unwind', by starting with the putchar statement in the lowest function
+ * 0 <--This is ignored because of the "if" statement
+ * 1
  * 0
+ * 1
  *
+ *Final output: 101
  *
- * n = 4
+ * it is a binary generator!
  *
- * pb(4/2)
- * pb(2/2)
- * pb(1/2)
- * pb(0)
- * 0
  */
+
+
