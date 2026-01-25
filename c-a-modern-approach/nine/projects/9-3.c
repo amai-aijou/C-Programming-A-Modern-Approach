@@ -1,5 +1,5 @@
 /******************************************
- * Name: 8-9.c
+ * Name: 9-3.c
  * Purpose: Random walk "worm game"
  * Author: amai-aijou
  * Date: Sat Jan  3 01:07:05 PM CST 2026
@@ -11,31 +11,44 @@
 #include <time.h>
 
 #define N 10
-#define SIZE ((int) (sizeof(array) / sizeof(array[n][n]))) //array size
+#define SIZE ((int) (sizeof(walk) / sizeof(walk[n][n]))) //array size
 #define UP 0
 #define RIGHT 1
 #define DOWN 2
 #define LEFT 3
 
-
-void generate_random_walk(char walk[10][10]);
-
+// Function Prototypes
+void generate_random_walk(char walk[*][10]);
 void print_array(char walk[10][10]);
 
+// Main Function
 int main(void) {
+
+	char walk[N][N];
+
+	// Initialize array to contain '.' characters; then, conduct random walk by replacing A-Z as movement occurs
+	generate_random_walk(walk);
+	
+	// Displays the array on screen
+	print_array(walk);
+
+	return 0;
+}
+
+// Initialize array to contain '.' characters; then, conduct random walk by replacing A-Z as movement occurs
+void generate_random_walk(char walk[10][10]) {
 
 	int r = 0;
 	int c = 0;
 	int i, j;
-	char array[N][N];
 	char ch = 'A';
 	int dir;
 	bool move[4] = {false, false, false, false};
-
+	
 	// Instantiate array to "." to create the board
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			array[i][j] = '.';
+			walk[i][j] = '.';
 		}
 	}
 
@@ -43,7 +56,7 @@ int main(void) {
 	srand((unsigned) time(NULL));
 
 	// Place initial move at 0,0 starting with 'A'
-	array[0][0] = ch;
+	walk[0][0] = ch;
 
 	// Perform rest of random walk movement, with boundary checking
 	// 'Z' = 90 in ASCII; game is won upon Z successfully being placed
@@ -55,19 +68,19 @@ int main(void) {
 		move[LEFT] = false;
 
 		// Check all potential moves and add to move[] array
-		if ((r-1 >= 0) && (array[r-1][c] == '.')) {
+		if ((r-1 >= 0) && (walk[r-1][c] == '.')) {
 			move[UP] = true;
 		}
 
-		if ((c+1 <= 9) && (array[r][c+1] == '.')) {
+		if ((c+1 <= 9) && (walk[r][c+1] == '.')) {
 			move[RIGHT] = true;
 		}
 		
-		if ((r+1 <= 9) && (array[r+1][c] == '.')) {
+		if ((r+1 <= 9) && (walk[r+1][c] == '.')) {
 			move[DOWN] = true;
 		}
 
-		if ((c-1 >= 0) && (array[r][c-1] == '.')) {
+		if ((c-1 >= 0) && (walk[r][c-1] == '.')) {
 			move[LEFT] = true;
 		}
 
@@ -82,33 +95,33 @@ int main(void) {
 
 		// Attempt to move in that direction
 		switch (dir) {
-			case UP: //array[r-1][c];
+			case UP: //walk[r-1][c];
 				if (move[UP] == true) {
 					r -= 1;
 					ch++;
-					array[r][c] = (ch);
+					walk[r][c] = (ch);
 					break;
 				}
 
-			case RIGHT: //array[r][c+1];
+			case RIGHT: //walk[r][c+1];
 				if (move[RIGHT] == true) {
 					c += 1;
 					ch++;
-					array[r][c] = (ch);
+					walk[r][c] = (ch);
 					break;
 				}
-			case DOWN: //array[r+1][c];
+			case DOWN: //walk[r+1][c];
 				if (move[DOWN] == true) {
 					r += 1;
 					ch++;
-					array[r][c] = (ch);
+					walk[r][c] = (ch);
 					break;
 				}
-			case LEFT: //array[r][c-1];
+			case LEFT: //walk[r][c-1];
 				if (move[LEFT] == true) {
 					c -= 1;
 					ch++;
-					array[r][c] = (ch);
+					walk[r][c] = (ch);
 					break;
 				}
 		}
@@ -119,24 +132,19 @@ int main(void) {
 		}
 
 	}
+}
+
+// Displays the array on screen
+void print_array(char walk[10][10]) {
+	int i, j;
 
 	// Print board
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			printf("%c ", array[i][j]);
+			printf("%c ", walk[i][j]);
 		}
 		printf("\n");
 	}
-
-	return 0;
-}
-
-void generate_random_walk(char walk[10][10]) {
-	//initialize array to contain '.' characters; then, replace with A-Z 
-}
-
-void print_array(char walk[10][10]) {
-	// Displays the array on screen
 }
 
 /*****SCHEMA*****
