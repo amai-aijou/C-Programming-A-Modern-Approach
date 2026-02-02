@@ -1,0 +1,4 @@
+(a) int b (local f function), int c, int d
+(b) int a, int b, int c(local f function)
+(c) int a (in block), int b (global), int c (in function), int d (in block)
+(d) int b, int c (main function), int d

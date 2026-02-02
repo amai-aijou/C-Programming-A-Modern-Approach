@@ -1,0 +1,4 @@
+(a) int a, int b, int c
+(b) int a, int d
+(c) int a, int d, int e
+(d) int a, int f
