@@ -18,6 +18,7 @@
 
 char contents[STACK_SIZE];
 char top = 0;
+bool underflow = 'false';
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -39,33 +40,35 @@ char main(void) {
 	
 	char ch;
 	int maxStack = 0;
+	int i;
 
-	// printf("Enter parentheses and/or braces: ");
-	printf("Enter chars: ");
+	printf("Enter parentheses and/or braces: ");
 
-	/*while ((ch = getchar()) != '\n') {
-		contents[maxStack] = ch;	
+	while ((ch = getchar()) != '\n') {
+
+		if (ch == '{' || ch == '(') {
+			push(ch);	
+		}
+
+		if (ch == '}' || ch == ')') {
+			pop();	
+		}
+
 		maxStack++;
 	}
-*/
-	printf("\n");
-	push('a');
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
-	push('b');
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
-	push('c');
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
 
-	pop();
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
-	pop();
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
-	pop();
-	printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
-
-	if (is_empty()) {
-		printf("Empty!\n");
+	// Print current contents of model
+	printf("Current contents: ");
+	for (i = 0; i < maxStack; i++) {
+		printf("%c \n", contents[i]);
 	}
+	printf("\n");
+
+
+	if (is_empty() && (underflow == 'false')) {
+		printf("Parentheses/braces are nested properly.\n");
+		//printf("Empty!\n");
+	} else stack_underflow();
 
 	return 0;
 }
@@ -102,10 +105,15 @@ char pop(void) {
 
 void stack_underflow(void) {
 	printf("Stack Underflow.\n");
+	underflow = 'true';
 }
 
 void stack_overflow(void) {
 	exit(EXIT_FAILURE);
 }
 
+/*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+                   ❤︎︎࣪    D E B U G G I N G    ❤︎︎࣪    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
+// printf("Stack size: %d | Top of Stack: %c\n", top, contents[top - 1]);
