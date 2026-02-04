@@ -18,7 +18,7 @@
 
 char contents[STACK_SIZE];
 char top = 0;
-bool underflow = 'false';
+bool underflow = false;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -65,7 +65,7 @@ char main(void) {
 	printf("\n");
 
 
-	if (is_empty() && (underflow == 'false')) {
+	if (is_empty() && (underflow == false)) {
 		printf("Parentheses/braces are nested properly.\n");
 		//printf("Empty!\n");
 	} else stack_underflow();
@@ -105,7 +105,7 @@ char pop(void) {
 
 void stack_underflow(void) {
 	printf("Stack Underflow.\n");
-	underflow = 'true';
+	underflow = true;
 }
 
 void stack_overflow(void) {
