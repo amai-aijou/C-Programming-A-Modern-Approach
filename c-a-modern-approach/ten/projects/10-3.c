@@ -121,18 +121,6 @@ void read_cards(void) {
 			cards_read++;
 		}
 	}
-
-// DEBUGGING - DELETE THIS SECTION WHEN FINISHED!!
-	int i;
-	printf("DEBUG - Confirm fill in hand worked!\n");
-	for (i = 0; i < NUM_CARDS; i++){
-			printf("card %d r:%d s:%d\n", i, hand[i][0], hand[i][1]);
-		}
-	// delete after you're sure it works
-		//for (j = 0; j < 2; j++) {
-		//printf("\n");
-	printf("DEBUG complete - back to your regularly scheduled program!\n");
-// DEBUGGING - DELETE THIS SECTION WHEN FINISHED!!
 }
 
 /*****************************************************************
@@ -145,69 +133,71 @@ void read_cards(void) {
 *****************************************************************/
 void analyze_hand(void) {
 	
+	/*-----OLD VARIABLES-----
 	int num_consec = 0;
 	int rank, suit;
+	-----------------------*/
+
+	int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
+	int i, j;
+	int part_element = NUM_CARDS;
+	int largest = 0;
+	int sort = NUM_CARDS;
+
+	// Zero out all variables
 	straight  = false;
 	flush = false;
 	four = false;
 	three = false;
 	pairs = 0;
-	int hearts = 0;
-	int clubs = 0;
-	int diamonds = 0;
-	int spades = 0;
-	int i, j;
-	int part_element = NUM_CARDS;
-	int largest = 0;
-	int num_equal = 0;
 
-// NOTE: THIS IS BROKEN RIGHT NOW---------------------------------------------------LOOK HERE!!!!
-	// Sort the numbered cards in your hand (for Straight)
-	for (j = 2; j > 1; j--) {
-		for (i = 0; i < NUM_CARDS; i++) {
+	// Sort the numbered cards in your hand from smallest to largest 
+	for (j = NUM_CARDS; j > 0; j--) {
+		largest = 0;
+		part_element = j-1;
+
+		for (i = 0; i < sort; i++) {
 			if (hand[i][0] > largest) {
 				largest = hand[i][0];
 				part_element = i;
 			}
-		
+		}	
+
 		hand[part_element][0] = hand[j-1][0];
 		hand[j-1][0] = largest;
-		}
+		sort--;
 	}
 
-	printf("DEBUG - Confirm Sort worked!\n");
-	for (i = 0; i < NUM_CARDS; i++){
-			printf("card %d r:%d s:%d\n", i, hand[i][0], hand[i][1]);
-		}
-	// delete after you're sure it works
-		//for (j = 0; j < 2; j++) {
-		//printf("\n");
-	printf("DEBUG complete - back to your regularly scheduled program!\n");
-
-	/* Check for flush NEW */
+	// Check for flush
+	// First tally number of each suit...
 	for (i = 0; i < NUM_CARDS; i++) {
     	switch (hand[i][1])	{
 			case 0: clubs++;
+					break;
 			case 1: diamonds++;
+					break;
 			case 2: hearts++;
+					break;
 			case 3: spades++;
+					break;
 		}
 	}
 
-	if ((clubs >= 4) || (diamonds >= 4) || (hearts >= 4) || (spades >= 4)) {
+	// ...then, if there are four or more, declare a flush
+	if ((clubs == 5) || (diamonds == 5) || (hearts == 5) || (spades == 5)) {
 		flush = true;
 	}
 
-	/* Check for straight NEW */
-		if (i + 1 < NUM_CARDS && hand[i+1][0] - hand[i][0] > 1) {
-			if (i + 2 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
-				if (i + 3 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
-					if (i + 4 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
-						straight = true;
-					}
+	// Check for straight NEW
+	if (hand[1][0] - hand[0][0] == 1) {
+		if (hand[2][0] - hand[1][0] == 1) {
+			if (hand[3][0] - hand[2][0] == 1) {
+				if (hand[4][0] - hand[3][0] == 1) {
+					straight = true;
 				}
 			}
 		}
+	}
 
 	// check for 4-of-a-kind, 3-of-a-kind, and pairs
 	// NOTE: remember to differentiate between two pair and four of a kind!
@@ -290,7 +280,10 @@ void print_result(void) {
 
 	printf("\n\n");
 
-	for (int i = 0; i < NUM_CARDS; i++) {
-		printf("card %d: %d suit:%d\n", i, hand[i][0], hand[i][1]);
-	}
 }
+
+/*---------------DEBUGGING STATEMENTS---------------
+for (int i = 0; i < NUM_CARDS; i++) {
+	printf("card %d: %d suit:%d\n", i, hand[i][0], hand[i][1]);
+}
+----------------------------------------------------*/
