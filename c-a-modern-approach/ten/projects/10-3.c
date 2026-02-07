@@ -121,6 +121,18 @@ void read_cards(void) {
 			cards_read++;
 		}
 	}
+
+// DEBUGGING - DELETE THIS SECTION WHEN FINISHED!!
+	int i;
+	printf("DEBUG - Confirm fill in hand worked!\n");
+	for (i = 0; i < NUM_CARDS; i++){
+			printf("card %d r:%d s:%d\n", i, hand[i][0], hand[i][1]);
+		}
+	// delete after you're sure it works
+		//for (j = 0; j < 2; j++) {
+		//printf("\n");
+	printf("DEBUG complete - back to your regularly scheduled program!\n");
+// DEBUGGING - DELETE THIS SECTION WHEN FINISHED!!
 }
 
 /*****************************************************************
@@ -145,6 +157,32 @@ void analyze_hand(void) {
 	int diamonds = 0;
 	int spades = 0;
 	int i, j;
+	int part_element = NUM_CARDS;
+	int largest = 0;
+	int num_equal = 0;
+
+// NOTE: THIS IS BROKEN RIGHT NOW---------------------------------------------------LOOK HERE!!!!
+	// Sort the numbered cards in your hand (for Straight)
+	for (j = 2; j > 1; j--) {
+		for (i = 0; i < NUM_CARDS; i++) {
+			if (hand[i][0] > largest) {
+				largest = hand[i][0];
+				part_element = i;
+			}
+		
+		hand[part_element][0] = hand[j-1][0];
+		hand[j-1][0] = largest;
+		}
+	}
+
+	printf("DEBUG - Confirm Sort worked!\n");
+	for (i = 0; i < NUM_CARDS; i++){
+			printf("card %d r:%d s:%d\n", i, hand[i][0], hand[i][1]);
+		}
+	// delete after you're sure it works
+		//for (j = 0; j < 2; j++) {
+		//printf("\n");
+	printf("DEBUG complete - back to your regularly scheduled program!\n");
 
 	/* Check for flush NEW */
 	for (i = 0; i < NUM_CARDS; i++) {
@@ -156,17 +194,36 @@ void analyze_hand(void) {
 		}
 	}
 
-	if (clubs >= 4) || (diamonds >= 4) || (hearts >= 4) || (spades >= 4) {
+	if ((clubs >= 4) || (diamonds >= 4) || (hearts >= 4) || (spades >= 4)) {
 		flush = true;
 	}
 
 	/* Check for straight NEW */
-	// I need to figure out how to sort them in order first. then, since there are only five, I just need to make sure they're all consecutive!
+		if (i + 1 < NUM_CARDS && hand[i+1][0] - hand[i][0] > 1) {
+			if (i + 2 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
+				if (i + 3 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
+					if (i + 4 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
+						straight = true;
+					}
 				}
-				
 			}
 		}
-	}
+
+	// check for 4-of-a-kind, 3-of-a-kind, and pairs
+	// NOTE: remember to differentiate between two pair and four of a kind!
+	for (i = 0; i+1 < NUM_CARDS; i++) {
+		if (hand[i+1][0] == hand[i][0]) {
+			pairs++;
+			if (i + 2 < NUM_CARDS && hand[i+2][0] == hand[i][0]) {
+				three = true;
+				if (i + 3 < NUM_CARDS && hand[i+3][0] == hand[i][0]) {
+					four = true;
+				}
+			}
+		}
+	}		
+}
+
 
 /*-----------------BEGIN OLD PROGRAM-----------------
 	// check for flush 
@@ -176,7 +233,6 @@ void analyze_hand(void) {
 		}
 	}
 	
-
 
 	// check for straight 
 	rank = 0;
