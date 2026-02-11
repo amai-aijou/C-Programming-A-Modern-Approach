@@ -46,7 +46,6 @@ int main(void) {
 
 	// Call help() to serve as an intro and instruction set, then ask for expression
 	help();
-	printf("Enter an RPN expresssion: ");
 
 	/*
 	while ((ch = getchar()) != '\n') {
@@ -55,7 +54,7 @@ int main(void) {
 	*/
 
 /********* BUILDING A MENU -- WIP************/
-	while ((ch = getchar()) != '\n') {
+	while ((ch = getchar()) != 'q') {
 		
 		// Check for special options
 		switch (tolower(ch)) {
@@ -69,14 +68,15 @@ int main(void) {
 			case '0': case '1': case '2': case '3': case '4': 
 			case '5': case '6': case '7': case '8': case '9': 
 					  push(ch);
+					  break;
 			// Operators are applied to operands in the stack in reverse order
 			case '+': 
 					  push(pop() + pop());
+					  break;
 			case '-':
 			case '*':
 			case '/':
 		}
-
 		// example
 		// 5 8 * 4 9 - / =
 		// 
@@ -159,12 +159,16 @@ void help() {
 			
 	printf("Note: press h to repeat this message\n");
 	printf("##########################################\n\n");
+
+	printf("Enter an RPN expresssion: ");
 }
 void menu() {
 	printf("OPTIONS\n");
 	printf("h\thelp\n");
 	printf("m\tmenu\n");
 	printf("q\tquit\n\n");
+
+	printf("Enter an RPN expresssion: ");
 }
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                        ❤︎︎࣪    N O T E S    ❤︎︎࣪    
