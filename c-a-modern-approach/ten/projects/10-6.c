@@ -48,6 +48,13 @@ int main(void) {
 	help();
 	printf("Enter an RPN expresssion: ");
 
+	/*
+	while ((ch = getchar()) != '\n') {
+
+	}
+	*/
+
+/********* BUILDING A MENU -- WIP************/
 	while ((ch = getchar()) != '\n') {
 		
 		// Check for special options
@@ -81,9 +88,11 @@ int main(void) {
 		// pop() pop() 
 
 	}
+/******************************************/
 
 	// Print the stack
 	print_stack(10);
+	printf("top: %d\n", top);
 
 	return 0;
 }
