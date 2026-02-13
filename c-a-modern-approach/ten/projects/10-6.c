@@ -43,56 +43,52 @@ void menu();
 int main(void) {
 
 	char ch;
+	int num1 = 0, num2 = 0;
 
 	// Call help() to serve as an intro and instruction set, then ask for expression
 	help();
 
-	/*
-	while ((ch = getchar()) != '\n') {
-
-	}
-	*/
-
-/********* BUILDING A MENU -- WIP************/
+	// Core input and calculation loop
 	while ((ch = getchar()) != 'q') {
+
+		// Variables used to hold pop() results temporarily; reset with each loop
+		num1 = 0;
+		num2 = 0;
 		
-		// Check for special options
+		// Switch statement checks for special options, such as help() or menu(), then performs calculation
 		switch (tolower(ch)) {
+			
 			// Special menu selections
 			case 'h': help(); 
 					  break;
 			case 'm': menu();
-					  continue;
+					  break;
 			case 'q': exit(EXIT_SUCCESS);
+
 			// Numerical Operands are added to the stack
 			case '0': case '1': case '2': case '3': case '4': 
 			case '5': case '6': case '7': case '8': case '9': 
-					  push(ch);
+					  // Push subtracts 48 to convert from ASCII char to int
+					  push(ch - 48);
 					  break;
+
 			// Operators are applied to operands in the stack in reverse order
-			case '+': 
-					  push(pop() + pop());
+			case '+': push(pop() + pop());
 					  break;
-			case '-':
-			case '*':
-			case '/':
+			case '-': num2 = pop();
+					  num1 = pop(); 
+					  push(num1 - num2);
+					  break;
+			case '*': push(pop() * pop());
+					  break;
+			case '/': num2 = pop();
+					  num1 = pop();
+					  push(num1 / num2);
+			case '=':
+					  printf("Value of expression: %d\n", stack[top - 1]);
 		}
-		// example
-		// 5 8 * 4 9 - / =
-		// 
-		// push(5);
-		// push(8);
-		// pop() * pop();
-		// push(4)
-		// push(9)
-		// pop() pop() 
 
 	}
-/******************************************/
-
-	// Print the stack
-	print_stack(10);
-	printf("top: %d\n", top);
 
 	return 0;
 }
@@ -104,6 +100,7 @@ int main(void) {
 // Push an item onto the stack
 char push(char n) {
 
+	printf("push!\n");
 	if (is_full()) {
 		stack_overflow();
 	} else {
@@ -114,6 +111,10 @@ char push(char n) {
 // Remove an item from the stack
 char pop() {
 
+	printf("pop!\n");
+
+	//Confirm stack isn't empty, then reduce the stack position by one.
+	//NOTE: contents of array are not erased until overwritten
 	if (is_empty()) {
 		stack_underflow();
 	} else {
@@ -141,6 +142,8 @@ void stack_underflow() {
 
 // Prevents a push() on an already-full stack from causing unintended behavior
 void stack_overflow() {
+
+	printf("ERROR: Stack Overflow - Operation not permitted.\n");
 	//If stack is full and attempting to add another item, immediately close program
 	exit(EXIT_FAILURE);
 }
@@ -174,14 +177,4 @@ void menu() {
                        ❤︎︎࣪    N O T E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
-/* Stack
- *
- * 1 2 3 * + =
- *
- * push(1);
- * push(2);
- * push(3);
- *
- *
- * 
- */
+// print_stack() exists primarily for debugging purposes
