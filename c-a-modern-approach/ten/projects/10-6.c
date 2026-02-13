@@ -85,7 +85,10 @@ int main(void) {
 					  num1 = pop();
 					  push(num1 / num2);
 			case '=':
-					  printf("Value of expression: %d\n", stack[top - 1]);
+					  printf("Value of expression: %d\n\n", stack[top - 1]);
+					  printf("--------\n");
+					  printf("Note: Press m for menu\n");
+					  printf("Enter an RPN expresssion: ");
 		}
 
 	}
@@ -100,7 +103,10 @@ int main(void) {
 // Push an item onto the stack
 char push(char n) {
 
-	printf("push!\n");
+	// DEBUG ONLY
+	// printf("push!\n");
+
+	// Confirm stack isn't full, add current contents to stack, then increment top to next stack position
 	if (is_full()) {
 		stack_overflow();
 	} else {
@@ -111,10 +117,11 @@ char push(char n) {
 // Remove an item from the stack
 char pop() {
 
-	printf("pop!\n");
+	// DEBUG ONLY
+	// printf("pop!\n");
 
-	//Confirm stack isn't empty, then reduce the stack position by one.
-	//NOTE: contents of array are not erased until overwritten
+	// Confirm stack isn't empty, then reduce the stack position by one.
+	// NOTE: contents of array are not erased until overwritten
 	if (is_empty()) {
 		stack_underflow();
 	} else {
@@ -138,6 +145,8 @@ bool is_full() {
 // Prevents a pop() on an already-empty stack from causing unintended behavior
 void stack_underflow() {
 	printf("ERROR: Stack Underflow - Operation not permitted.\n");
+	printf("Resetting to original position.\n\n");
+	top = 0;
 }
 
 // Prevents a push() on an already-full stack from causing unintended behavior
@@ -157,8 +166,11 @@ int print_stack(int n) {
 
 void help() {
 	printf("############### CALCULATOR ###############\n\n");
-	printf("This calculator uses Reverse Polish Notation. Operators are placed"
-			"*after* their operands (and in reverse order!)\n Example: 1+2-3*5= becomes 1 2 3 5 * - + =");
+	printf("This calculator uses Reverse Polish Notation.\n"
+			"Operators are placed *after* their operands."
+			"Operators are also read in reverse order.\n"
+
+			"Example: 1+2-3*5= becomes 1 2 3 5 * - + =\n");
 			
 	printf("Note: press h to repeat this message\n");
 	printf("##########################################\n\n");
