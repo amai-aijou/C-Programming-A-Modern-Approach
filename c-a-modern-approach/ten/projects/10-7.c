@@ -59,10 +59,11 @@ int main(void) {
 			printf("Stack Overflow!!");
 			exit(EXIT_FAILURE);	
 		}
+
 		// If char is a digit, process_digit() and increment position
 		if (isdigit(ch)) {
 
-			process_digit(4, position);
+			process_digit((ch - '0'), position);
 			position++;
 		}
 	}
@@ -84,7 +85,7 @@ void clear_digits_array(void) {
 
 	for (i = 0; i < MAX_DIGITS; i++) {
 		for (j = 0; j < (MAX_DIGITS * 4); j++) {
-			digits[i][j] = 0;
+			digits[i][j] = ' ';
 		}
 	}
 }
@@ -95,7 +96,7 @@ void process_digit(int digit, int position) {
 	int i;
  
 	// For each segment position, check if it's set to true for a given digit; then, add its character to the array
-	for (i = 0; i < 8; i++) { 
+	for (i = 0; i < 7; i++) { 
 
 		// Check if that segment is a 1 or 0
 		if (segments[digit][i]) {
@@ -148,10 +149,6 @@ void print_digits_array(void) {
 
 /*	 
  * Zero is on top, Six is in the middle (seven locations total)
- *   _ 0   0
- * 5|_|1  5 1
- * 4|_|2  462
- *   3     3 
  *  _      _  _       _      _   _   _
  * | |  |  _| _| |_| |_  |_   | |_| |_|
  * |_|  | |_  _|   |  _| |_|  | |_|   |
@@ -161,7 +158,7 @@ void print_digits_array(void) {
  * 1|_|-
  * 2|_|-
  * 3----
- *                               0  1  2  3  4  5  6
+ *                   position:   0  1  2  3  4  5  6
  *                              ---------------------
  * const int segments[10][7] = {{1, 1, 1, 1, 1, 1, 0},
  *                     column:   1, 2, 2, 1, 0, 0, 1
@@ -179,4 +176,9 @@ void print_digits_array(void) {
  digit[1][0 + (digNum * 4)] //5 '|'
  digit[1][1 + (digNum * 4)] //6 '_'
 
+// DEBUGGING STATEMENTS
+printf("DEBUG TIME (sigh)....\n");
+printf("isdigit: %d\n", isdigit(ch));
+printf("digits[0][0]: %d\n", digits[0][0]);
+printf("values of ch(c):%c ch(d):%d\n", ch, ch);
 */
