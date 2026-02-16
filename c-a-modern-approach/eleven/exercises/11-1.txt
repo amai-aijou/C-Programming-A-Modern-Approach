@@ -1,0 +1,36 @@
+(a) *p	yes		alias for i
+(b) &p	no		alias for the memory location of pointer p
+(c) *&p no
+(d) &*p no
+(e) *i 	no		if i is 1, it will point to memory address 1
+(f) &i 	no		if i is 1, and in memory address 2000, &i = 2000
+(g) *&i yes		if &i = 2000, and if you use a pointer of 2000, it should resolve to i
+(h) &*i	no 		if i = 1, *i references the memory address of 1, &*i is the memory
+				address where *i is stored, which should be 2000?
+
+
+i = 1
+*p = &i;
+
+&i = 2000;
+&p = 3000;
+p = 2000;
+*p = 1; 
+*i = uninitialized
+
+*&p = 2000;
+&*p = 2000;
+*&i = 1;
+&*i = uninitialized
+
+
+
+
+
+
+
+
+
+
+
+

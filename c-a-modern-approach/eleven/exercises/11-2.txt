@@ -1,0 +1,51 @@
+(a) p = i;
+	illegal.
+	p is a pointer, and needs a dereferenced variable address (such as &i);
+
+(b) *p = &i;
+	illegal.	
+	*p says "use the number located at the memory location written in p"
+	since p doesn't yet have a location, it fails already...
+	...but &i would still only refer to its own address, setting i to &i
+
+(c) &p = q;
+	illegal.
+	can't set the memory address of p to equal anything but itself
+
+(d) p = &q;
+	illegal
+	p is expecting a pointer, such as &i, not the pointer of a pointer (&q)
+	
+(e) p = *&q;
+	legal
+	p is a pointer, and q is the direct value of a pointer of a pointer, aka a
+	pointer	
+
+(f) p = q;
+	legal!
+	finally, one that works. pointer p = pointer q
+
+(g) p = *q;
+	illegal.
+	GCC complains that it "makes pointer from integer without a cast"	
+	q hasn't been set to anything yet, and should
+
+(h) *p = q;
+	illegal
+	
+	
+(i) *p = *q;
+	legal.
+	"the data in the thing p points to, is equal to the data in the thing q
+	points to"
+
+
+REMEMBER:
+p = pointer
+*p = integer
+&p = pointer
+*&p = direct value to a pointer
+&*p = pointer to an integer
+
+
+

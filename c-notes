@@ -564,3 +564,24 @@ C99:
 "The Quicksort Algorithm"
   - Recursion is used in sophisticated algorithms that call themselves many times
   - "divide-and-conquer": technique where large problems are split into smaller pieces that are then tackled by the same algorithm. ex. quicksort
+
+#######################################
+       "Chapter 11 - Pointers"
+#######################################
+
+"11.2 - The Address and Indirection Operators"
+
+"Indirection Operator"
+  - Never apply indirection operator (*) to an uninitialized pointer. It produces undefined behavior and may even crash the program!
+  - Assigning values to *p is very dangerous, as it directly changes the data stored at that address
+
+"11.4 - Pointers as Arguments"
+  - Assigning &x to a function allows the function to directly alter the memory address of the variable, instead of spawning a new address and copy (which are destroyed at end of function)
+
+"Scanf"
+  - Passing a pointer to scanf consists of using it without its Indirection operator:
+      scanf("%d", p);
+    This is because scanf is looking for the memory address of a variable to write to, which p will give. *p would write to the p variable itself, instead!
+
+"Printing address of a variable"
+  - printf("%p");
