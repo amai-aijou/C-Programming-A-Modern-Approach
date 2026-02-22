@@ -585,3 +585,27 @@ C99:
 
 "Printing address of a variable"
   - printf("%p");
+
+#######################################
+   "Chapter 12 - Pointers & Arrays"
+#######################################
+
+"12.1 - Pointer Arithmetic"
+---------------------------
+
+"Pointer Arithmetic (Address Arithmetic)"
+  - C supports three ways to access other elements:
+    > Adding an integer to a pointer
+    > Subtracting an integer from a pointer
+    > Subtracting one pointer from another
+
+  - Performing arithmetic on a pointer that doesn't point to an array element causes undefined behavior
+  - Subtracting one pointer from another is also undefined unless both point to elements of the same array
+  - Pointers should be compared (< >) only when they both point to the same array. It also looks at element number, *not* underlying value:
+      p = &a[5];
+      q = &a[1];
+      (p <= q) = 0 ... (p >= q) = 1
+
+"12.3 - Using an Array Name as a Pointer"
+-----------------------------------------
+  - Using the name of an array as a pointer, refers to the first element in that aray, ex. (*a == a[0]) == 1;

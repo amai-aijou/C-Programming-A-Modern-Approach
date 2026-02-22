@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name:  
+   ❤︎︎࣪ Name: reverse3.c 
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Thu Feb 19 07:07:18 PM CST 2026
+   ❤︎︎࣪ Date: Sat Feb 21 09:23:49 PM CST 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -11,28 +11,31 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
+
+// Macros
+#define N 10
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int *find_largest(int a[], int n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	int n = 5;
-	int a[5] = {2,4,10,8,3};
+	int a[N], *p;
 
-	printf("Largest array element value: %d\n", *find_largest(a,n));
-	printf("Largest array element value: %d\n", find_largest(a,n));
+	printf("Enter %d numbers: ", N);
+	for (p = a; p < a + N; p++) {
+		scanf("%d", p);
+	}
 
-	printf("This memory address should match the above line: %d\n", &a[2]);
+	printf("In reverse order:");
+	for (p = a + N - 1; p >= a; p--) {
+		printf(" %d", *p);
+	}
+	printf("\n");
 
 	return 0;
 }
@@ -40,16 +43,3 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int *find_largest(int a[], int n) {
-
-	int i;
-	int *max = &a[0];
-
-	for (i = 0; i < n; i++) {
-		if (a[i] > *max) {
-			max = &a[i];		
-		}
-	}
-
-	return max;
-}
