@@ -32,6 +32,7 @@ int main(void) {
 	printf("    middle = (low + high) / 2;\n\n");
 
 	printf("A: Because the answer is an integer, not a memory address. Fixed:\n");
+	printf("    Specifically, you cannot add two pointers. You can subtract them, as long as they point to the same array (before *and* after)\n"
 	printf("middle = low + ((high - low) / 2);\n");
 
 	printf("*low: %d | *middle: %d | *high: %d\n", *low, *middle, *high);
