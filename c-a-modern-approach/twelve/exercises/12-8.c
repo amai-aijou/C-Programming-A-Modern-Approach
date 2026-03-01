@@ -3,7 +3,7 @@
    ❤︎︎࣪ Name:  
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Fri Feb 27 06:29:18 PM CST 2026
+   ❤︎︎࣪ Date: Sat Feb 28 07:24:15 PM CST 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -16,13 +16,13 @@
 #include <ctype.h>
 #include <time.h>
 
-// Global Variables
-
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int sum_array_subscript(const int a[*], int n);
-int sum_array_arithmetic(const int a[*], int n);
+void store_zeros(int a[*], int n);
+void store_zeros_arith(int a[*], int n);
+void store_ones(int a[*], int n);
+void print(int a[*], int n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -30,11 +30,23 @@ int sum_array_arithmetic(const int a[*], int n);
 int main(void) {
 
 	int n = 5;
-	int a[5] = {2, 4, 6, 8, 10};
+	int a[5];
+	int *p;
 
-	printf("Sum should be 30!\n\n");
-	printf("Array Subscripting: %d\n", sum_array_subscript(a, n));
-	printf("Pointer Arithmetic: %d\n", sum_array_arithmetic(a, n));
+	printf("Storing zeroes:\n");
+	store_zeros(a, n);
+	print(a, n);
+	printf("\n");
+
+	printf("Storing ones:\n");
+	store_ones(a, n);
+	print(a, n);
+	printf("\n");
+
+	printf("Storing zeroes (using Pointer Arithmetic):\n");
+	store_zeros_arith(a, n);
+	print(a, n);
+	printf("\n");
 
 	return 0;
 }
@@ -42,28 +54,39 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int sum_array_subscript(const int a[], int n) {
+void store_zeros(int a[], int n) {
 
-	int i, sum;
+	int i;
 
-	sum = 0;
 	for (i = 0; i < n; i++) {
-		sum += a[i];
+		a[i] = 0;
 	}
-
-	return sum;
 }
 
-int sum_array_arithmetic(const int a[], int n) {
+void store_zeros_arith(int a[], int n) {
 
-	int sum;
-	const int *p;
-
-	sum = 0;
+	int *p;
 
 	for (p = a; p < (a + n); p++) {
-		sum += *p;
+		*p = 0;
 	}
+}
 
-	return sum;
+void store_ones(int a[], int n) {
+
+	int *p;
+
+	for (p = a; p < (a + n); p++) {
+		*p = 1;
+	}
+}
+
+void print(int a[], int n) {
+
+	int *p;
+
+	for (p = a; p < (a + n); p++) {
+		printf("%d ", *p);
+	}
+	printf("\n");
 }
