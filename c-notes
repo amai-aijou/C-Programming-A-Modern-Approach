@@ -609,3 +609,34 @@ C99:
 "12.3 - Using an Array Name as a Pointer"
 -----------------------------------------
   - Using the name of an array as a pointer, refers to the first element in that aray, ex. (*a == a[0]) == 1;
+
+
+#######################################
+       "Chapter 13 - Strings"
+#######################################
+
+"Continuing a String Literal"
+  - In addition to being able to use two sets of quotes, the \ character can also join two or more lines together
+		printf("This is an"
+				 "example");
+		printf("This is an \
+				 example");
+  - When using \ the sentence *must* begin at the very start of the next line. This means you can't even use syntax indenting, so it is very ugly and not recommended (by me lol)
+
+  - String literals are stored as arrays, and treated by the compiler as a pointer of type "char *"
+  - Both printf and scanf expect a value of char * (a pointer to where those letters are stored in memory)
+  - can use a string literal anywhere a char * is allowed, such as:
+		char *p;  p = "abc"; *p == a
+  - this makes *p == a, because it points to the first character in the string
+  - Subscripting also works:
+		char ch;  ch = "abc"[1]; ch == b;
+  - Can be used for quirky things such as converting a digit to hex, since it will return only the one digit that corresponds to it:
+      char digit_to_hex_char(int digit) {
+		return "0123456789ABCDEF" [digit]; }
+  - Attempting to modify a string literal is "undefined behavior"!
+  - String literals are represented by a pointer to a memory location containing the characters, while a char const a is represented by an integer ASCII code for the character
+  - String = " | Char = '
+
+"Reading and Writing Strings"
+  - %.6s will show only the first six characters of a string, and %6s will display a sting in a field size of size 6 (a string larger than 6 will still be printed in full)
+  - The puts() function allows for strings to be read as well, by providing the name of the string to be printed. puts() always auto-places a \n (how nice!)
