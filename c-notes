@@ -640,3 +640,7 @@ C99:
 "Reading and Writing Strings"
   - %.6s will show only the first six characters of a string, and %6s will display a sting in a field size of size 6 (a string larger than 6 will still be printed in full)
   - The puts() function allows for strings to be read as well, by providing the name of the string to be printed. puts() always auto-places a \n (how nice!)
+
+  - scanf() can be made safer by using %ns to limit characters stored. For instance, the following creates a string array, then stores (at most) six digits in it:
+	  char sentence[SENT_LEN+1];
+      scanf("%6s", sentence);
