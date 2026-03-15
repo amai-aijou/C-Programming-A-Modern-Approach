@@ -644,3 +644,13 @@ C99:
   - scanf() can be made safer by using %ns to limit characters stored. For instance, the following creates a string array, then stores (at most) six digits in it:
 	  char sentence[SENT_LEN+1];
       scanf("%6s", sentence);
+
+"strcpy"
+  - A safer way is to use strncpy, which requires a third argument: the size of string 2. The easiest way to make sure you aren't overcopying (and causing undefined behavior) is:
+      strncpy(str1, str2, sizeof(str1) - 1);
+      str1[sizeof(str1-1] = '\0';
+    The second statement is to absolutely *guarantee* there's a null character at the end (thus making it a string), even if it somehow does not copy over
+
+"strcat"
+  - A safer way, like strcpy, is to use strncat:
+      strncar(str1, str2, sizeof(str1) - strlen(str1) - 1);

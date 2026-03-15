@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: test.c
+   ❤︎︎࣪ Name: planet.c.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sat Mar 14 04:24:39 PM CDT 2026
+   ❤︎︎࣪ Date: Sun Mar 15 05:27:45 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -11,48 +11,35 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
 #include <string.h>
+
+#define NUM_PLANETS 9
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int read_line(char str[], int n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int main(void) {
+int main(int argc, char *argv[]) {
 
-	int n = 100;
-	int count = 0;
-	int i;
+	char *planets[] = {"Mercury", "Venus", "Earth",
+					   "Mars", "Jupiter", "Saturn",
+					   "Uranus", "Neptune", "Pluto"};
+	int i, j;
 
-	char str[n];
-	char str2[n];
-
-	char *date = "June 14";
-	printf("%s\n", date);
-
-	count = read_line(str, n);
-
-	puts(str);
-
-	printf("%4.6s", str);
-	printf("<--\n");
-
-	for (i = 0; i < count + 2; i++) {
-		printf("%d ", str[i]);
+	for (i = 1; i < argc; i++) {
+		for (j = 0; j < NUM_PLANETS; j++) {
+			if (strcmp(argv[i], planets[j]) == 0) {
+				printf("%s is planet %d\n", argv[i], j + 1);
+				break;
+			}
+		}
+		if (j == NUM_PLANETS) {
+			printf("%s is not a planet\n", argv[i]);
+		}
 	}
-
-	printf("%s\n", date);
-
-	strcpy(str2, "abcd");
-
-	printf("str2: %s\n", str2);
 
 	return 0;
 }
@@ -60,13 +47,3 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int read_line(char str[], int n) {
-	
-	int ch, i = 0;
-
-	while ((ch = getchar()) != '\n')
-		if (i < n)
-			str[i++] = ch;
-	str[i] = '\0';
-	return i;
-}
