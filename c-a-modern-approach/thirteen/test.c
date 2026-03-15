@@ -32,16 +32,21 @@ int main(void) {
 
 	char str[n];
 
+	char *date = "June 14";
+	printf("%s\n", date);
+
 	count = read_line(str, n);
 
 	puts(str);
 
-	printf("%s\n", str);
+	printf("%4.6s", str);
+	printf("<--\n");
 
 	for (i = 0; i < count + 2; i++) {
 		printf("%d ", str[i]);
 	}
 
+	printf("%s\n", date);
 	return 0;
 }
 
