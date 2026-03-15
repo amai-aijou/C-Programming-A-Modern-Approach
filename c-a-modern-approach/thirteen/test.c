@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 13-1.c
+   ❤︎︎࣪ Name: test.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Fri Mar 13 10:20:40 PM CDT 2026
+   ❤︎︎࣪ Date: Sat Mar 14 04:24:39 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -11,43 +11,36 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int example_function(int i);
+int read_line(char str[], int n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("----------\n");
-//	printf("%c", '\n');	//(a)
-//	printf("%c", "\n"); //(b)
-//	printf("%s", '\n'); //(c)
-//	printf("%s", "\n"); //(d)
-//	printf('\n');		//(e)
-//	printf("\n");		//(f)
-//	putchar('\n');		//(g)
-//	putchar("\n");		//(h)
-//	puts('\n');			//(i)
-//	puts("\n");			//(j)
-//	puts("");			//(k)
-	printf("----------\n");
+	int n = 100;
+	int count = 0;
+	int i;
 
-	printf("My guesses:\n");
-	printf("(a) prints singular newline character (a blank line)\n");   
-	printf("(b) compiles, but won't work, expecting a string; specifically, expecting a pointer to a char (char *)\n");   
-	printf("(c) compiles, but won't work, expecting string\n");   
-	printf("(d) prints a string with one newline char and one null char\n");   
-	printf("(e) won't compile, as printf requires a string\n");   
-	printf("(f) will print a newline character using printf\n");   
-	printf("(g) will place newline char\n");   
-	printf("(h) won't compile. putchar expects a single char of type int, not a string (which is char *\n");   
-	printf("(i) won't compile. puts() expects const char * (String Literal), \n");   
-	printf("(j) will print a newline char, then automatically end with its *own* newline character (so prints two lines)\n");   
-	printf("(k) prints an empty string literal, then appends a newline char (so prints one empty line)\n");   
+	char str[n];
+
+	count = read_line(str, n);
+
+	puts(str);
+
+	printf("%s\n", str);
+
+	for (i = 0; i < count + 2; i++) {
+		printf("%d ", str[i]);
+	}
 
 	return 0;
 }
@@ -55,3 +48,13 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+int read_line(char str[], int n) {
+	
+	int ch, i = 0;
+
+	while ((ch = getchar()) != '\n')
+		if (i < n)
+			str[i++] = ch;
+	str[i] = '\0';
+	return i;
+}
