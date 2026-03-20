@@ -17,19 +17,30 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int capitalize(int str[*], int n);
+int capitalize(char str[*], int n);
+void print_array(char str[], int n);
+int capitalize_arith(char str[], int n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	n = 10;
-	str[n+1];
+	int n = 10;
+	int i = 0;
+	char ch;
+	char str[n+1];
 
-	print_array;
+	printf("Enter characters: ");
+
+	while ((ch = getchar()) != '\n') {
+		
+		str[i++] = ch;
+	}
+
+	print_array(str, n);
 	capitalize(str, n);
-	print_array;
+	print_array(str, n);
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -37,17 +48,37 @@ int main(void) {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 // Capitalizes all letters in its argument
-int capitalize(int str[], int n) {
+int capitalize(char str[], int n) {
+
+	int i;
+
+	for (i = 0; i < n; i++) {
+		str[i] = toupper(str[i]);
+	}
 
 	return i;
 }
 
-void print_array(int str[], int n) {
+// Capiralizes all letters, using pointer arithmetic
+int capitalize_arith(char str[], int n) {
+
+	char *p;
+	int i;
+
+	for (p = str; p < p + n; p++) {
+		*p = toupper(*p);
+		i++;
+	}
+
+	return i;
+}
+
+void print_array(char str[], int n) {
 	
 	int i;
 
 	for (i = 0; i < n; i++) {
-		printf("%d", str[i]);
+		printf("%c", str[i]);
 	}
 	printf("\n");
 }
