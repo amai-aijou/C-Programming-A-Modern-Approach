@@ -1,5 +1,5 @@
 /******************************************
- * Name: prog11.c
+ * Name: 13-7.c
  * Purpose: 
  * Author: jolson
  * Date: Mon May  5 07:54:49 PM CDT 2025
@@ -10,6 +10,9 @@
 int main(void) {
 
 	int input;
+
+//	char *num[10] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+//						"
 
 	// Take in a two-digit number
 	printf("Enter a two-digit number: ");
@@ -71,7 +74,7 @@ int main(void) {
 	}
 
 	switch (input % 10) {
-		case 0:	 printf("\n");
+		case 0:	 printf("\n"); 
 				 break;
 		case 1:  printf("one\n");
 				 break;
