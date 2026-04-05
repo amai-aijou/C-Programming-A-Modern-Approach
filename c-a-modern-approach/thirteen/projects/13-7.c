@@ -6,13 +6,16 @@
  ******************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
 
 	int input;
 
-//	char *num[10] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-//						"
+	char *num[] = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+						"eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+	char *tens[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+
 
 	// Take in a two-digit number
 	printf("Enter a two-digit number: ");
@@ -27,6 +30,24 @@ int main(void) {
 	
 	printf("You entered the number ");
 
+	if (input > 9 && input < 20) {
+		printf("%s\n", num[input]);
+		exit(EXIT_SUCCESS);
+	}
+	if (input >= 20) {
+		printf("%s", tens[input / 10]);
+	}
+
+	if (input % 10 != 0) {
+		printf("-");
+	}
+
+	printf("%s\n", num[input % 10]);
+
+	return 0;
+}
+
+/**********************OLD CODE*****************************	
 	switch (input) {
 		case 11: printf("eleven\n");
 				 return 0;
@@ -99,3 +120,4 @@ int main(void) {
 	return 0;
 }
 
+**********************OLD CODE*****************************/
