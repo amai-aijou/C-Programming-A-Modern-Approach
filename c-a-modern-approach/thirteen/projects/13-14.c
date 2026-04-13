@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <ctype.h> // necessary for tolower() and toalpha()
+#include <stdbool.h>
 
 // ALPHA is size of array dimension; SIZE is size of all array dimensions
 #define ALPHA 26
@@ -21,57 +22,43 @@ int main(void) {
 	int i;
 	int sum = 0;
 
-	// Zero out array before starting
-	for (i=0; i < ALPHA; i++) {
-		array[i] = 0;
-	}
+	const char word1[100] = "racecar";
+	const char word2[100] = "carrec";
 
-	// Ask for first word
-	printf("Enter first word: ");
-	
-	// Loop through input; for each char, increment array position for each alpha letter by 1
-	while ((ch = getchar()) != '\n') {
-		//Confirm character is a letter
-		if (isalpha(ch)) {
-			
-			// Increment array; tolower() ensures ASCII codes match, because 97 ('a') is then subtracted to ensure array is 0-25
-			// ex: ch = 'b' = "98-97" = "0"; thus, array[0] would be updated 
-			array[((tolower(ch))-97)]++;
-		}
-	}
-
-	// Ask for second word
-	printf("Enter second word: ");
-
-	// Loop through input; for each char, decrement array position for each alpha letter by 1
-	while ((ch = getchar()) != '\n') {
-		//Confirm character is a letter
-		if (isalpha(ch)) {
-			
-			// Decrement array; tolower() ensures ASCII codes match, because 97 ('a') is then subtracted to ensure array is 0-25
-			// ex: ch = 'b' = "98-97" = "0"; thus, array[0] would be updated 
-			array[((tolower(ch))-97)]--;
-		}
-	}
-
-	// If the two are anagrams, the sum total of all array elements will be 0.
-	for (i=0; i < ALPHA; i++) {
-		sum += array[i];
-	}
-
-	if (sum == 0) {
+	if (are_anagrams(word1, word2)) {
 		printf("The words are anagrams.\n");
-	}
-
-	if (sum > 0 ) {
+	} else {
 		printf("The words are not anagrams.\n");
 	}
 
 	return 0;
 }
 
-bool are_anagrams(const char *word1, const char *word2);
+bool are_anagrams(const char *word1, const char *word2) {
 
-/*****DEBUGGING*****
-printf("test: %d\n", array[(ch-97)]);
-*/
+	const char *p;
+	int i, sum;
+	int count[ALPHA] = {0};
+
+	for (p = word1; *p != 0; p++) {
+		if (isalpha(*p)) {
+			count[tolower(*p - 97)]++;
+		}
+	}
+
+	for (p = word2; *p != 0; p++) {
+		if (isalpha(*p)) {
+			count[tolower(*p - 97)]--;
+		}
+	}
+
+	for (i = 0; i < ALPHA; i++) {
+		sum += count[i];
+	}
+
+	if (sum == 0) {
+		return true;
+	}
+
+	return false;
+}
