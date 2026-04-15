@@ -29,18 +29,21 @@ void reverse(char *message);
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	char a[MAX];
-	int n = 0;
+	char a[MAX] = "this is a test.";
+	int n = 15;
 
 //	read_user_input(a, &n);
-	read_user_input_arith(a, &n);
+//	read_user_input_arith(a, &n);
 
 	print_array(a, &n);
 
 //	print_array_backwards_subscript(a, &n);
 
-	print_array_backwards_arith(a, &n);
+//	print_array_backwards_arith(a, &n);
 
+	reverse(a);
+
+	print_array(a, &n);
 	return 0;
 }
 
@@ -106,18 +109,26 @@ void print_array_backwards_arith(char a[], int *n) {
 	printf("(Pointer Arithmethic)\n\n");
 }
 
+// New one for Chapter 13-16
 void reverse(char *message) {
 
 	char *p, *q;
-	int n;
-	q = message;
+	char ch;
+	int n = 0;
 
 	// Move q to the last character of the string
 	for (p = message; *p != '\0'; p++) {
 		n++;	
 	}
 
-	for (p = message; *p != '\0'; p++) {
-		
+	printf("n: %d\n", n);
+
+	q = message + (n - 1);
+
+	for (p = message; p != q ; p++, q--) {
+
+		ch = *p;
+		*p = *q;
+		*q = ch;
 	}
 }
