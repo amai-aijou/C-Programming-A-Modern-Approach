@@ -693,3 +693,55 @@ C99:
   - Finally, the processed statements:
       i = ((j+k)>(m-n)?j+k):(m-n));
       if (((i)%2==0)) i++;
+
+"The # Operator"
+  - Allows for "stringization"; that is, you can turn the contents into a string
+      \#define PRINT_INT(n) printf(#n " = %d\n", n)
+      PRINT_INT(i/j);
+      printf("i/j" " = %d\n", i/j);
+  - Remember, "the compiler automatically joins adjacent string literals", so that printf becomes:
+      printf("i/j = %d\n", i/j);
+  - Once a statement is "stringized", it can be printed or added directly to an array/pointer
+
+"The ## Operator"
+  - allows you to combine two values together, almost like +:
+	  define: \#define MK_ID(n) i##n
+	  code:   int mk_ID(1), MK_ID(2), MK_ID(3);
+      final:  int i1, i2, i3;
+
+  - You can even make functions this way! define:
+
+      \#define GENERIC_MAX(type)     \
+      type type##_max(typex, type y) \
+      {                              \
+        return x > y ? x : y;        \
+      }
+
+      GENERIC_MAX(float  
+
+      float float_max(float x, float y) { return x > y ? x : y; }
+
+"#undef"
+  - Allows you to undefine a macro so you can use another
+
+"Parenthesis and Macros"
+  - Parentheses matter *greatly* with macros, as unexpected behavior can occur without the proper amounts
+  - There are "two rules":
+    - 1. If the replacement-list contains an operator, always enclose the list in parentheses
+        ex. \#define TWO_PI (2*3.14159)
+    - 2. If the macro has parameters, put parentheses around each parameter every time it appears:
+        ex. \# define SCALE(x) ((x) *10)
+      - This ensures that these operations occur *first*, since macros are just direct substitions into active code (parentheses have highest operator precedence)
+
+"Comma Operator: Creating Longer Macros"
+  - Allows for multiple replacement-list expressions
+      \#define ECHO(s) (gets(s), puts(s))
+      ECHO(str);   /* becomes (gets(str), puts(str)); */
+  - This trick doesn't always work; in instances where it does not, a "do { ...} while (0)" loop while work instead, to ensure it treats the macro as one statement in the code
+    - If you do this, omit the final semi-colon in the macro; then, you can add it to the final code and it will look like a normal statement:
+        ECHO(str);
+
+"Temporarily disabling code that contains comments"
+  - This can be used to remove blocks of code from your C program for debugging etc purposes (VERY useful)
+      #if 0
+      #endif
