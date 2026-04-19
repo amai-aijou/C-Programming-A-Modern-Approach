@@ -654,3 +654,42 @@ C99:
 "strcat"
   - A safer way, like strcpy, is to use strncat:
       strncar(str1, str2, sizeof(str1) - strlen(str1) - 1);
+
+
+#######################################
+    "Chapter 14 - The Preprocessor"
+#######################################
+
+"Preprocessing directives"
+  - Commands that begin with a \#, such as \#define and \#include
+  - Running "GCC -E" will allow you to see the preprocessor output 
+  - Three categories of directives (plus one miscellaneous group):
+    - "Macro Definition", such as \#define
+    - "File Inclusion", such as \#include
+    - "Conditional Compilation", such as \#if, \#ifdef, \#ifndef, \#elif, \#undef
+    - \#error, \#line, \#pragma
+  - Directives can technically appear anywhere in the program, and whitespace can be located anywhere in the statement
+  - They always end at the first new-line character unless explicitly continued via the "\" character
+
+"14.3 Macro Definitions"
+  - Simple macros are macros with no parameters (such as basic define statements)
+      #define identifier replacement-list
+    - Replacement-list is any sequence of "preprocessing tokens"
+    - This is a direct substitution; when the compiler sees an exact match to the identifier, it replaces it with the replacement-list
+
+"Parameterized Macros"
+  - These are "Function-like Macros" use parenthesis, (which must be directly after the identifier!) and perform complex tasks
+
+"Parameterized Macro Examples"
+  - First, the Macros themselves:
+      \#define identifier( x1, x2, xn) replacement-list
+      \#define MAX(x,y)  ((x)>(y)?(x):(y))
+      \#define IS_EVEN(n) ((n)%2==0)
+  
+  - Then, the example usage:
+      i = MAX(j+k, m-n);
+      if (IS_EVEN(i)) i++;
+
+  - Finally, the processed statements:
+      i = ((j+k)>(m-n)?j+k):(m-n));
+      if (((i)%2==0)) i++;
