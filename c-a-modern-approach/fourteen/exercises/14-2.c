@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 14-1.c
+   ❤︎︎࣪ Name: 14-2.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sun Apr 19 04:32:49 PM CDT 2026
+   ❤︎︎࣪ Date: Mon Apr 20 01:52:08 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -12,9 +12,7 @@
 
 #include <stdio.h>
 
-#define CUBED(x) (x * x * x) 	// 14-1(a)
-#define MOD4(x) (x % 4) 		// 14-1(b)
-#define HYAKUPROD(x,y) ((x) * (y) <= 100)
+#define NELEMS(a) ((int) (sizeof(a)) / (sizeof(a[0])))
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -25,16 +23,9 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	int a = 3;
-	int b = 13;
-	int c1 = 25, c2 = 5;
+	char a[50];
 
-	printf("(a) %d to the power of three is: %d\n", a, CUBED(a));
-	printf("(b) The remainder of %d when divided by four is: %d\n", b, MOD4(b));
-	printf("(c) The product of %d and %d is (1), or is not (0), less than 100: %d\n", c1, c2, HYAKUPROD(c1,c2));
-
-	printf("\nWould your Macros always work? If not, describe what arguments would make them fail:\n");
-	printf(" ");
+	printf("The size of the array is: %d\n", NELEMS(a));
 
 	return 0;
 }
