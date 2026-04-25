@@ -11,16 +11,18 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <string.h>
 
-#define LINES __LINE__
-#define FILES __FILE__
+#define N 10
+
+#define STR(x) #x " " __FILE__
+
+#define STR2(x) STR(x)
+
+#define LINE_FILE STR2(Line __LINE__ of file)
 
 
-
-
-
-
-// const char *str = 27 "14-8.c";
+// const char *str = Line 35 of "14-8.c";
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -31,7 +33,10 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
+
 	const char *str = LINE_FILE;
+
+	printf("%s\n", str);
 
 	return 0;
 }
