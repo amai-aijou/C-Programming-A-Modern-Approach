@@ -13,31 +13,53 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define CHECK(x,y,n) x >= 0 && x >= n-1 && y >= 0 && y >= n-1 ? TRUE : FALSE
+#define CHECK(x,y,n) (((x >= 0) && (x >= n-1) && (y >= 0) && (y >= n-1)) ? true : false)
 
-#define MEDIAN(x,y,z) 
+#define MEDIAN(x,y,z)											\
+	do {														\
+	if (((x > y) && (y > z)) || ((z > y) && (y > x))) {			\
+		printf("(b) The median is: %d\n", y);						\
+	} else if (((x > z) && (z > y)) || ((y > z) && (z > x))) {	\
+		printf("(b) The median is: %d\n", z);						\
+	} else {													\
+		printf("(b) The median is: %d\n", x);						\
+	}															\
+	} while (0)
 
-#define POLYNOMIAL(x) 3
+// 3x^5 + 2x^4 - 5x^3 - x^2 + 7x - 6
+#define POLYNOMIAL(x) (((((3 * x + 2) * x - 5) * x - 1) * x + 7) * x - 6) 
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int example_function(int i);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("%d\n", CHECK(3,5,3));
+	int median;
+
+
+	printf("(a) If accurate, the numbers should match!\n\t1: %d | 0: %d\n", CHECK(3,5,3), CHECK(1,1,5));
+
+	MEDIAN(3,5,9);
+
+	printf("(c) Polynomial(3):%d\n", POLYNOMIAL(3));
 
 	return 0;
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-                   ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int example_function(int i) {
-
-}
-
+                   ❤︎︎࣪    S C R A T C H    ❤︎︎࣪    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+#define MEDIAN(x,y,z)											\
+int median(int x, int y, int z) { 								\
+	if ((x > y) && (y < z)) || ((z > y) && (y < z)) {			\
+		return y;												\
+	} else if ((x > z) && (z < y)) || ((y > z) && (z < x)) {	\
+		return z;												\
+	} else {													\
+		return x;												\
+	}															
+****************************************************************/
