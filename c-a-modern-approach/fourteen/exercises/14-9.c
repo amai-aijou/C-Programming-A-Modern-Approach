@@ -11,8 +11,13 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <stdbool.h>
 
-#define CHECK(x,y,n) x>=n
+#define CHECK(x,y,n) x >= 0 && x >= n-1 && y >= 0 && y >= n-1 ? TRUE : FALSE
+
+#define MEDIAN(x,y,z) 
+
+#define POLYNOMIAL(x) 3
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -24,6 +29,9 @@ int example_function(int i);
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
+	printf("%d\n", CHECK(3,5,3));
+
+	return 0;
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
