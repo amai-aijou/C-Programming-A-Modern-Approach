@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 15-15.c
+   ❤︎︎࣪ Name: 14-16.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Fri May  1 12:05:51 PM CDT 2026
+   ❤︎︎࣪ Date: Fri May  1 12:19:43 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -12,7 +12,10 @@
 
 #include <stdio.h>
 
-#define ENGLISH 1
+#define IDENT(x) PRAGMA(ident #x)
+#define PRAGMA(x) _Pragma(#x)
+
+IDENT(foo)
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -23,14 +26,12 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-#if defined(ENGLISH)
-	printf("Insert Disk 1\n");
-#elif defined(FRENCH)
-	printf("Inserez Le Disque 1\n");
-#elif defined (SPANISH)
-	printf("Inserte El Disco 1\n");
-#endif
-
+	printf("BREAKDOWN OF DIRECTIVES:\n");
+	printf("1. IDENT(foo)\n");
+	printf("2. PRAGMA(ident \"foo\")\n");
+	printf("3. _Pragma(ident \"foo\")\n");
+	printf("4. #pragma ident \"foo\"\n");
+	
 	return 0;
 }
 
