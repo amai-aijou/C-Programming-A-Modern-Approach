@@ -1,0 +1,34 @@
+(a) Which files need to be compiled when the program is built for the first
+time?
+  main.c	f1.c	f2.c
+
+(b) If f1.c is changed after the program has been built, which files need to
+be recompiled?
+  f1.c  
+
+(c) If f1.h is changed after the program has been built, which files need to
+be recompiled?
+  f1.c		main.c
+
+(d) If f2.c is changed after the program has been built, which files need to
+be recompiled?
+  f2.c
+
+
+
+**************************
+Makefile (for reference):
+
+example: main.o f1.o f2.o
+    gcc -o example main.o f1.o f2.o
+
+main.o: main.c f1.h f2.h
+    gcc -c main.c
+
+f1.o: f1.c f1.h
+    gcc -c f1.c
+
+f2.o: f2.c f2.h
+    gcc -c f2.c
+
+*************************
