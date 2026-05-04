@@ -1,0 +1,12 @@
+(a) Function Prototypes
+  Belong in a header file. This is why they exist!
+
+(b) Function Definitions
+  Don't belong in a header. They go with code.
+
+(c) Macro Definitions
+  These generally go in header files when shared by multiple source files
+
+(d) Type Definitions
+  These generally also go in  headers; like macros, they may be modified, and
+  are easier to modify from the header.

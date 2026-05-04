@@ -1,0 +1,11 @@
+3. Writing #include <file> instead of #include "file" may not work if file is
+one that we've written. Would there be any problem with writing #include
+"file" instead of #include <file> if file is a system header?
+
+A. There would likely be no issues, as include statements surrounded by quotes
+  are first searched for in the current directory, then in the standard system
+  directories.
+
+  Using the brackets simply means that it omits the search of the current
+  directory, and is only used when you know, for a fact, that the header in
+  question will not be found in the current directory (to save .00001 seconds)

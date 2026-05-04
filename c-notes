@@ -745,3 +745,41 @@ C99:
   - This can be used to remove blocks of code from your C program for debugging etc purposes (VERY useful)
       #if 0
       #endif
+
+
+#######################################
+       "Chapter 13 - Strings"
+#######################################
+
+"The #include Directive"
+  - Three forms:
+    1.System Headers: 	#include <header.h> // Usually in /usr/include
+    2.Personal Headers: #include "header.h" // Made as part of your program
+    3.Macro Headers:	 #include CPU_FILE  // #define CPU_FILE "ia64.h"
+
+"Sharing Macro Definitions and Type Definitions"
+  - If you need to share macros between files, add them to a header
+  - typedef and include statements are both common in headers
+
+"Sharing variable declarations"
+  - Definitions and Declarations are actually separated in larger program. In smaller programs, you would use:
+      int i;
+    This sets up i as an integer *and* sets aside space for it in the compiler. In larger programs you don't want the compiler to set aside space yet!
+      extern int i; // Declares i *without* defining it!
+  - This is how you avoid the compiler setting aside space for six different "i" variables when you are using it in six files
+  - The compiler won't be able to type check between files, so you better get it right! Using "int i" in one place, and "extern long i" elsewhere can cause errors
+  - To avoid this, declarations of shared variables are usually placed in header files, which allows the compiler to check to be sure that example.h matches example.c
+
+"Nested Includes"
+  - Purists of C shun the nested include, but since it's essentially standard now in C++, people have begun to accept it.
+  - example would be adding "\#include <stdbool.h> in a header statement that uses the Bool type in its declarations
+
+"Protecting Header Files"
+  - Oftentimes, you will include two header files, and each will include the same file. Sometimes it can compile twice without issue, but it's best not to risk it (and more efficient!)
+  - Use conditional define blocks to sandwich header values that should only be created if they don't already exist
+      "#ifndef BOOLEAN_H \ #define BOOLEAN_H \ #define TRUE 1 \ #define FALSE 0 \ typedef int Bool; \ #endif" 
+
+"Defining Macros Outside a Program"
+  - GCC allows you to specify a Macro value with the -D option. The -U option allows to "undefine", as well:
+      gcc -D DEBUG=1 foo.c
+      gcc -U DEBUG foo.c

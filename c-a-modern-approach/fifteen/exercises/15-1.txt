@@ -1,0 +1,11 @@
+(a) Programs with multiple source files are easier to debug (sometimes), since
+you know the approximate place where the wrong code is. It's also easier to
+maintain, as you can push the files up to a repository, for people to check
+out as needed
+
+(b) programs with multiple source files are *harder* to debug (sometimes),
+because the code is so spread out, and it can be difficult to know where the
+problem is (especially if you have multiple functions leveraging the same
+code). It can be harder for newer programmers as well, who don't know how to
+compile from source, and have to link together multiple files (especially if
+ther'es no Makefile provided).
