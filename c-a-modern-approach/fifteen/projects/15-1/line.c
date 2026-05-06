@@ -49,7 +49,7 @@ void write_line(void) {
 				spaces_to_insert = extra_spaces  / (num_words - 1);
 //				printf("\nDEBUG: spaces to insert = (extra_spaces / (num_words - 1): %d | extra_spaces: %d | num_words: %d\n", spaces_to_insert, extra_spaces, num_words);
 			} else {
-				spaces_to_insert = (extra_spaces) / (num_words - 1);
+				spaces_to_insert = (extra_spaces) / (num_words - 2);
 //				printf("\nDEBUG: spaces to insert (extra_spaces / (num_words - 1): %d | extra_spaces: %d | num_words: %d\n", spaces_to_insert, extra_spaces, num_words);
 			}
 			for (j = 1; j <= spaces_to_insert + 1; j++)
@@ -91,7 +91,7 @@ void flush_line(void) {
 // 2 / 2 - 1 = 2
 
 // insert behavior when line is odd:
-// 10 -3
-// 7 - 3
-// 4 - 2
-// 2 - 2
+// spaces_to_insert = 10 / (5 - 2) = 3
+// 7 / (4 - 2) = 3
+// 4 / (3 - 2) = 4
+// 0 / (2 - 2) = UNDEFINED (crashes)
