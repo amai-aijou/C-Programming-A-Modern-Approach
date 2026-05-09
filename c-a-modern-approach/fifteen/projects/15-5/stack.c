@@ -114,6 +114,13 @@ void menu() {
 
 	printf("Enter an RPN expresssion: ");
 }
+
+double calc() {
+  printf("Value of expression: %d\n\n", stack[top - 1]);
+  printf("--------\n");
+  printf("Note: Press m for menu\n");
+  printf("Enter an RPN expresssion: ");
+}
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                        ❤︎︎࣪    N O T E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/

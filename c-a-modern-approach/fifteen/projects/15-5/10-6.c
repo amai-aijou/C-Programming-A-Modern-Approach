@@ -10,21 +10,12 @@
                       ❤︎︎࣪    G L O B A L    ❤︎︎࣪     
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
-/* Include statements
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
 #include "stack.h"
-*/
-
-// Macro definitions
-#define STACK_SIZE 100
-
-// Global variables
-char stack[STACK_SIZE];
-int top;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -73,11 +64,7 @@ int main(void) {
 			case '/': num2 = pop();
 					  num1 = pop();
 					  push(num1 / num2);
-			case '=':
-					  printf("Value of expression: %d\n\n", stack[top - 1]);
-					  printf("--------\n");
-					  printf("Note: Press m for menu\n");
-					  printf("Enter an RPN expresssion: ");
+			case '=': calc();
 		}
 
 	}

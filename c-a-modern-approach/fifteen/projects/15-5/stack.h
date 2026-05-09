@@ -22,5 +22,6 @@ void stack_overflow();
 int print_stack(int n);
 void help();
 void menu();
+double calc();
 
 #endif
