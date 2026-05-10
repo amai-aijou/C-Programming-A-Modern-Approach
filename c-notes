@@ -783,3 +783,31 @@ C99:
   - GCC allows you to specify a Macro value with the -D option. The -U option allows to "undefine", as well:
       gcc -D DEBUG=1 foo.c
       gcc -U DEBUG foo.c
+
+
+#####################################
+           "Chapter 16"
+"Structures, Unions and Enumerations"
+#####################################
+
+  - elements of a structure (the "members") are not required to have the same type
+  - Structures use key-value pairs, with te name being used to refer to that member's value
+  - Similar to a SQL table, which might have information about a variety of 
+  - "Declaring a struct:"
+
+      struct {
+        int numer;
+   	    char name[NAME_LEN+1];
+        int on_hand;
+      } part1, part2;
+
+  - First you declare the struct; then, you assign it to variables that use those keys (but with potentially different values) 
+  - Each struct has a separate "namespace" for its members; this means you can use the variable int name in two different structs and they will not interact
+  - "Initializing a struct:" (using the same struct as above as an example again)
+
+      struct {
+        ...
+      } part1 = {518, "Disk drive", 10},
+        part2 = {914, "Printer cable", 5};
+
+   - "Values in a struct must appear in the same order as the struct!" However, it need not be complete. Any leftover members with no value will be zeroed out (as with arrays).
