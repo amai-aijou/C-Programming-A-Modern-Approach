@@ -49,7 +49,7 @@ void write_line(void) {
 				// this gives us num_words - 2
 				spaces_to_insert = extra_spaces / (num_words - 1);
 			} else {
-				spaces_to_insert = (extra_spaces + (num_words - 2)) / (num_words - 1); // current formula doesn't work...but the formula has to change somehow!
+				spaces_to_insert = (extra_spaces + (num_words - 2)) / (num_words - 1);
 			}
 			for (j = 1; j <= spaces_to_insert + 1; j++)
 				putchar(' ');
