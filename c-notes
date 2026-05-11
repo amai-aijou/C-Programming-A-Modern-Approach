@@ -796,7 +796,7 @@ C99:
   - "Declaring a struct:"
 
       struct {
-        int numer;
+        int number;
    	    char name[NAME_LEN+1];
         int on_hand;
       } part1, part2;
@@ -810,4 +810,90 @@ C99:
       } part1 = {518, "Disk drive", 10},
         part2 = {914, "Printer cable", 5};
 
-   - "Values in a struct must appear in the same order as the struct!" However, it need not be complete. Any leftover members with no value will be zeroed out (as with arrays).
+  - "Values in a struct must appear in the same order as the struct!" However, it need not be complete. Any leftover members with no value will be zeroed out (as with arrays).
+      If you want to omit values that do not appear at the end of your listed struct values, you should use a Designated Initializer
+
+"Designated Initializers"
+  - Similar to Array Designated Initizalizers, but uses a very different syntax. Allows you to pick and choose which elements of the struct to assign (rest receive zeros!):
+  - Order does not matter!
+
+  {.number = 528, .name = "Disk drive", .on_hand = 10}
+   
+"Operations on Structures"
+  - Structures are accessed by name
+  - Members of a struct are lvalues, meaning they can exist on the left-hand side and be assigned to, as well
+
+      part1.number = 258;
+      printf("Part number: %d\n", part1.number);
+      part1.number++;
+
+  - The period symbol is actually a "C Operator", and has precedence (Precedence group 1, the highest; same as postfix ++)
+  - Structs can actually be copied using the equals operator
+
+      part2 = part1;
+
+"Declaring a Structure Tag"
+  - Structs are not considered the same "type" (the way int and char are different); if you want structs to share a type, declare the type with a tag!
+
+    struct part {
+      int number;
+      char name[NAME_LEN+1];
+      int on_hand;
+    };
+	struct part part1, part2; // Notice how it almost behaves like its own type
+
+  - You can still combine the declaration of a struct with a number of member declarations (after the brace, before the semi-colon); doing it this way, you can declare more later!
+  - "typedef" can also work for this:
+
+    typedef struct {
+      int number:
+      char name[NAME_LEN+1];
+      int on_hand;
+    } Part;
+
+    Part part1, part2;
+
+  - The name of the part must come at the "end", not the beginning! Also, Part is a typedef, so it's not struct Part, just Part
+  - "When a struct is to be used with a linked list, a structure tag is mandatory!"
+
+"Structures as Arguments and Return Values"
+  - Functions may have structures as arugments and return values:
+
+      void print_part(struct part p) {
+        printf("Part number: %d\n", p.number);
+      }
+      print_part(part1); // This it how you'd call it, for example, from main()
+
+      struct part build_part(int number, const char *name, int on_hand) {
+	    struct part p;
+
+        p.number = number;
+        strcpy(p.name, name);
+	    p.on_hand = on_hand;
+	    return p;
+      }
+
+  - Since they have their own name space, it's legal to use variable names that match the struct names
+  - C99 allows for "Compound Literals" with structs, just as it does for arrays:
+
+      print_part((struct part) {528, "Disk drive", 10}; // Compound Literal used as a parameter for a function
+      part1 = (struct part_ {528, "Disk drive", 10}; // Compound Literaly used to create a variable
+
+"16.3 - Nested Arrays and Structures"
+  - Structures and arrays can both be combined without restriction. Arrays can have a struct as an element, and a struct may contain arrays (and other structs) as members
+  - They almost function as objects or classes. You can have struct name, which is one of the members of struct student (which could be a member of struct people!)
+    
+      strcpy(studen1.name.first, "Fred");
+
+
+  - This allows us to pass a single argument to a function that requires the name, rather than needing to pass First, Middle, and Last separately
+
+"Arrays of Structures"
+  - Allows you to use arrays (or other structs) in your structs, and might look like:
+
+      struct part inventory[100];
+      print_part(inventory[i]);
+      inventory[i].number = 883;
+      inventory[i].name[0] = '\0';
+
+  - Too much to explain right now...will need some time to sink in. See sixteen/inventory.c for details
