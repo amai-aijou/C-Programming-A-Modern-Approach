@@ -883,7 +883,7 @@ C99:
   - Structures and arrays can both be combined without restriction. Arrays can have a struct as an element, and a struct may contain arrays (and other structs) as members
   - They almost function as objects or classes. You can have struct name, which is one of the members of struct student (which could be a member of struct people!)
     
-      strcpy(studen1.name.first, "Fred");
+      strcpy(student1.name.first, "Fred");
 
 
   - This allows us to pass a single argument to a function that requires the name, rather than needing to pass First, Middle, and Last separately
@@ -897,3 +897,32 @@ C99:
       inventory[i].name[0] = '\0';
 
   - Too much to explain right now...will need some time to sink in. See sixteen/inventory.c for details
+
+"16.4 - Unions"
+  - A union is similar to a struct; however, the compiler only allocates enough space for the largest of the members (as they overlay each other in space)
+  - A union might be int i and double d; writing to int i will also write a whole number to double d. Writing to double d will overwrite the old int i, and give it a new whole number
+  - It essentially gives you flexibility in how you call a number. You can call it as a double or an int depending on whether you want the decimal
+  - You can initialize a union like a struct; however, "only the first member in a union can be given a value" (it actually doesn't have to be the first!)
+  - C99 Designated initializers allow us to specify which member will be initialized:
+
+    union {
+      int i;
+      double d;
+    } = {.d = 10.0}; // Yes, the braces are required!
+
+"16.5 - Enumerations"
+  - Enumerations cover variables that can only have one of a specified list of values
+  - These lists are populated with "enumeration constants":
+
+      enum {CLUBS, DIAMONDS, HEARTS, SPADES} s1, s2;
+
+  - Enumerations follow the same scope rules as variables; if you declare one in a function, you can't use it outside!
+  - Can declare a tag, or use typedef to create a type:
+
+      enum suit {CLUBS, DIAMONDS, HEARTS, SPADES};
+      typedef enum {CLUBS, DIAMONDS, HEARTS, SPADES} Suit;
+
+"Enumerations as Integers"
+  - C treats enum as integers. You're essentially creating a define statement of sorts, but with C itself, rather than the pre-processor
+  - If needed, you can choose custom integers with "CLUBS = 1" in the above examples. More than one can even have the same value! (think multiple names for the same color, for example)
+  - It's probably horrible practice, but once declared you could even say int i = CLUBS; and i would equal 1
