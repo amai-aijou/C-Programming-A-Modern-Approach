@@ -16,7 +16,7 @@ int main(void) {
 
 	printf("Enter two numbers: ");
 	scanf("%d %d", &m, &n);
-
+  
 	if (n > m) {
 		x = m;
 		m = n;
