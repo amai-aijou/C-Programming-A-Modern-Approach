@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 16-11.c
+   ❤︎︎࣪ Name: 16-12.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sat May 16 03:47:28 PM CDT 2026
+   ❤︎︎࣪ Date: Sat May 16 04:57:35 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -12,15 +12,15 @@
 
 #include <stdio.h>
 
-struct {
+union {
 	double a;
-	union {
+	struct {
 		char b[4];
 		double c;
 		int d;
 	} e;
 	char f[4];
-} s;
+} u;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -31,16 +31,19 @@ struct {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("Size of Struct s:  %d\n", sizeof(s));
-	printf("Note: modern 64-bit CPUs allocate memory as a multiple of the largest alignment (variable)\n");
-	printf("Here, the largest is double, which is 8; so, the below members add up to 20, but the CPU requires 24!\n\n"); 
+	printf("The compiler will allocate %d for u\n\n", sizeof(u));
 
-	printf("Size comprised of the following (added together):\n");
-	printf("Size of double a:  %d\n", sizeof(s.a));
-	printf("Size of double c:  %d\t(the largest member of union e)\n", sizeof(s.e.c));
-	printf("Size of char f[4]: %d\n", sizeof(s.f));
-	
-	
+	printf("Union u size comprised of the following (added together):\n");
+	printf("Size of struct e:  %d\n", sizeof(u.e));
+	printf("(Struct e is the largest member of union u)\n\n");
+
+	printf("Struct e is comprised of the following (added together):\n");
+	printf("char b[4]: %d\n", sizeof(u.e.b));
+	printf("double c : %d\n", sizeof(u.e.c));
+	printf("int d    : %d\n\n", sizeof(u.e.d));
+
+	printf("The struct is 24 because 64-bit CPUs pad each member to the largest size (in this case, 8 * 4)\n");
+
 	return 0;
 }
 

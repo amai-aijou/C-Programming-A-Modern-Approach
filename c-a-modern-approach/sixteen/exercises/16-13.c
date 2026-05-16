@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 16-11.c
+   ❤︎︎࣪ Name: 16-13.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sat May 16 03:47:28 PM CDT 2026
+   ❤︎︎࣪ Date: Sat May 16 06:10:13 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -12,14 +12,24 @@
 
 #include <stdio.h>
 
-struct {
-	double a;
+#define RECTANGLE 0
+#define SQUARE 1
+
+struct point {
+	int x,y;
+};
+
+struct shape {
+	int shape_kind;
+	struct point center;
 	union {
-		char b[4];
-		double c;
-		int d;
-	} e;
-	char f[4];
+		struct {
+			int height, width;
+		} rectangle;
+		struct {
+			int radius;
+		} circle;
+	} u;
 } s;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -31,16 +41,21 @@ struct {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("Size of Struct s:  %d\n", sizeof(s));
-	printf("Note: modern 64-bit CPUs allocate memory as a multiple of the largest alignment (variable)\n");
-	printf("Here, the largest is double, which is 8; so, the below members add up to 20, but the CPU requires 24!\n\n"); 
+	s.shape_kind = RECTANGLE; 	// (a)
+	printf("s.shape_kind: %d\n", s.shape_kind);
 
-	printf("Size comprised of the following (added together):\n");
-	printf("Size of double a:  %d\n", sizeof(s.a));
-	printf("Size of double c:  %d\t(the largest member of union e)\n", sizeof(s.e.c));
-	printf("Size of char f[4]: %d\n", sizeof(s.f));
-	
-	
+	s.center.x = 10;			// (b)
+	printf("s.center.x: %d\n", s.center.x);
+
+	s.u.rectangle.height = 25;	// (c)
+	printf("s.u.rectangle.height: %d\n", s.u.rectangle.height);
+
+	s.u.rectangle.width = 8;	// (d)
+	printf("s.u.rectangle.width: %d\n", s.u.rectangle.width);
+
+	s.u.circle.radius = 5;		// (e & f)
+	printf("s.u.circle.radius: %d\n", s.u.circle.radius);
+
 	return 0;
 }
 
