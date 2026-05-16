@@ -28,11 +28,12 @@ struct color {
 int main(void) {
 
 	// (a)
-	const struct color MAGENTA {255,0,255};
+	// const struct color MAGENTA = {255,0,255};
 	
 	// (b) C99 Designated Initializer
-	const struct color MAGENTA {.red = 255, .blue = 255};	
+	const struct color MAGENTA = {.red = 255, .blue = 255};	
 
+	return 0;
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
