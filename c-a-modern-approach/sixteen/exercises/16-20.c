@@ -24,6 +24,7 @@ enum {NORTH, SOUTH, EAST, WEST} direction;
 int main(void) {
 	int x = 0,y = 0;
 
+	printf("\n-------------------EXERCISE 16-20------------------\n");
 	// Print original coordinates
 	printf("coordinates: %d,%d\n", x, y);
 
