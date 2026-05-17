@@ -41,20 +41,27 @@ struct shape {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	s.shape_kind = RECTANGLE; 	// (a)
-	printf("s.shape_kind: %d\n", s.shape_kind);
+	printf("-------------------EXERCISE 16-3-------------------\n");
 
-	s.center.x = 10;			// (b)
-	printf("s.center.x: %d\n", s.center.x);
+	// (a)
+	s.shape_kind = RECTANGLE;
+	printf("(a) s.shape_kind: 		   %d\n", s.shape_kind);
 
-	s.u.rectangle.height = 25;	// (c)
-	printf("s.u.rectangle.height: %d\n", s.u.rectangle.height);
+	// (b)
+	s.center.x = 10;
+	printf("(b) s.center.x: 		   %d\n", s.center.x);
 
-	s.u.rectangle.width = 8;	// (d)
-	printf("s.u.rectangle.width: %d\n", s.u.rectangle.width);
+	// (c)
+	s.u.rectangle.height = 25;
+	printf("(c) s.u.rectangle.height:  %d\n", s.u.rectangle.height);
 
-	s.u.circle.radius = 5;		// (e & f)
-	printf("s.u.circle.radius: %d\n", s.u.circle.radius);
+	// (d)
+	s.u.rectangle.width = 8;
+	printf("(d) s.u.rectangle.width:   %d\n", s.u.rectangle.width);
+
+	// (e & f)
+	s.u.circle.radius = 5;
+	printf("(e & f) s.u.circle.radius: %d\n", s.u.circle.radius);
 
 	return 0;
 }
