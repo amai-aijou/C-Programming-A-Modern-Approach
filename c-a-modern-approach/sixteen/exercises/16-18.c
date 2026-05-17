@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 16-16.c
+   ❤︎︎࣪ Name: 16-18.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sat May 16 09:05:35 PM CDT 2026
+   ❤︎︎࣪ Date: Sun May 17 03:28:03 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -12,8 +12,15 @@
 
 #include <stdio.h>
 
-enum suit {CLUBS, DIAMONDS, HEARTS, SPADES};
-enum ages {JOE = 37, SUJI = 8, MILU = 8};
+// (a)
+enum Piece {empty,PAWN,ROOK,KNIGHT,BISHOP,QUEEN,KING};
+enum Color {WHITE,BLACK};
+
+// (b)
+struct Square {
+	enum Piece piece;
+	enum Color color;
+};
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -24,38 +31,28 @@ enum ages {JOE = 37, SUJI = 8, MILU = 8};
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("\n-------------------EXERCISE 16-16------------------\n");
-	printf("Which of the following statements about enumeration constants are true?\n\n");
+	// (c), (d)
+	struct Square board[8][8] =
 
-	// (a)
-	printf("(a) Q: An enum constant may represent any integer specified by the programmer.\n");
-	printf("    A: TRUE\n");
-	printf(" Why?: The programmer may assign any integer to an enum constant element\n");
-	printf("   ex: The 'ages' enum has been explicitly assigned a value of 37: %d\n\n", JOE);
+	// Board is turned sidways!
+	// A little messy, but this was the only way to do without using subscripting ([0][0].piece, [0][0].color), so imo it's cleaner
+	//V ROW  COL -->0              1              2              3              4              5             6               7
+	/*0 a*/{{{ROOK  , BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {ROOK  ,WHITE}},
+	/*1 b*/	{{KNIGHT, BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {KNIGHT,WHITE}},
+	/*2 c*/	{{BISHOP, BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {BISHOP,WHITE}},
+	/*3 d*/	{{QUEEN , BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {QUEEN ,WHITE}},
+	/*4 e*/	{{KING  , BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {KING  ,WHITE}},
+	/*5 f*/	{{BISHOP, BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {BISHOP,WHITE}},
+	/*6 g*/	{{KNIGHT, BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {KNIGHT,WHITE}},
+	/*7 h*/	{{ROOK  , BLACK}, {PAWN,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {empty,BLACK}, {PAWN,WHITE}, {ROOK  ,WHITE}}};
 
-	// (b)
-	printf("(b) Q: Enum constant have exactly the same properties as constants created using #define.\n");
-	printf("    A: FALSE\n");
-	printf(" Why?: They're similar, but different. For example, #define is substituted by the pre-processor\n"
-		   "       before compile, and isn't subject to scope rules (enums are!)\n\n");
-	
-	// (c)
-	printf("(c) Q: Enum constants have the values 0,1,2... by default.\n");
-	printf("    A: TRUE\n");
-	printf(" Why?: If you don't otherwise specify, enum constants will start at 0 and go up as integers\n");
-	printf("   ex: The 'suit' enum has been declared without an integer, and should start at 0: %d\n\n", CLUBS);
+	printf("\n-------------------EXERCISE 16-18------------------\n");
+	printf("      TESTING    \n");
+	printf("Should print queen (5) | black (1):\n");
+	printf("Board 3,0 - piece: %d | color: %d\n\n", board[3][0].piece, board[3][0].color);
 
-	// (d)
-	printf("(d) Q: All constants in an enum must have different values.\n");
-	printf("    A: FALSE\n");
-	printf(" Why?: You can set the same value to multiple constants\n");
-	printf("   ex: The enum 'ages' has two entries that are the same age: %d %d\n\n", SUJI, MILU);
-
-	// (e)
-	printf("(e) Q: Enum constants may be used as integers in expressions.\n");
-	printf("    A: TRUE\n");
-	printf(" Why?: While they work differently under the hood, they function similar to  #define statements and represent integer values\n");
-	printf("   ex: Total from 'ages' enum: %d\n\n", (JOE + SUJI + MILU));
+	printf("Should print queen (5) | white (0):\n");
+	printf("Board 3,7 - piece: %d | color: %d\n\n", board[3][7].piece, board[3][7].color);
 
 	return 0;
 }
@@ -63,3 +60,19 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+
+/*
+ *   BOARD LAYOUT
+ *
+ *   a b c d e f g h
+ *   0 1 2 3 4 5 6 7
+ * 0 r n b q k b n r
+ * 1 p p p p p p p p
+ * 2 . . . . . . . .
+ * 3 . . . . . . . .
+ * 4 . . . . . . . .
+ * 5 . . . . . . . .
+ * 6 P P P P P P P P
+ * 7 R N B Q K B N R
+ *
+ ******************/
