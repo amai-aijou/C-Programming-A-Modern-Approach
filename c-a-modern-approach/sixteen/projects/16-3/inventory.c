@@ -161,7 +161,7 @@ void update(struct part inventory[], int *num_parts) {
 	i = find_part(inventory, num_parts, number);
 	if (i >= 0) {
 		printf("Enter change in quantity on hand: ");
-		scanf("%dd", &change);
+		scanf("%d", &change);
 		inventory[i].on_hand += change;
 	} else {
 		printf("Part not found.\n");	

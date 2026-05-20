@@ -55,6 +55,8 @@ int main(void) {
 	printf("Enter an international dialing code: ");
 	scanf("%d", &nCode);
 
+	// Since no country has a code of "0", we can simply run this loop until we get a blank value
+	// probably not best practice, but this is a controlled environment :)
 	while (country_codes[x].code) {
 		
 		if (country_codes[x].code  == nCode) {

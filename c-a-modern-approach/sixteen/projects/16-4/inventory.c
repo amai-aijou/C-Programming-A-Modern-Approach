@@ -11,6 +11,7 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <ctype.h>
 #include "readline.h"
 
 #define NAME_LEN 25
@@ -20,6 +21,7 @@ struct part {
 	int number;
 	char name[NAME_LEN+1];
 	int on_hand;
+	float price;
 } inventory[MAX_PARTS];
 
 int num_parts = 0;
@@ -32,9 +34,7 @@ void insert(void);
 void search(void);
 void update(void);
 void print(void);
-void menu(void);
-void selection_sort();
-
+void change_price(void); // 16-4
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -50,13 +50,15 @@ int main(void) {
 	char code;
 
 	for (;;) {
-		printf("Enter operation code (press m for menu): ");
+		printf("Enter operation code: ");
 		scanf(" %c", &code);
 		while (getchar() != '\n') { 	// Skips to end of line
 			;
 		}
 
 		switch (code) {
+			case 'c': change_price(); // 16-4
+					  break;
 			case 'i': insert();
 					  break;
 			case 's': search();
@@ -66,8 +68,6 @@ int main(void) {
 			case 'p': print();
 					  break;
 			case 'q': return 0;
-			case 'm': menu();
-					  break;
 			default:  printf("Illegal code\n");
 		}
 		printf("\n");
@@ -125,6 +125,9 @@ void insert(void) {
 	read_line(inventory[num_parts].name, NAME_LEN);
 	printf("Enter quantity on hand: ");
 	scanf("%d", &inventory[num_parts].on_hand);
+	printf("Enter part price: ");
+	scanf("%f", &inventory[num_parts].price);
+
 	num_parts++;
 }
 
@@ -158,6 +161,8 @@ void search(void) {
 void update(void) {
 
 	int i, number, change;
+	char changePrice;
+	float price;
 
 	printf("Enter part number: ");
 	scanf("%d", &number);
@@ -166,6 +171,15 @@ void update(void) {
 		printf("Enter change in quantity on hand: ");
 		scanf("%d", &change);
 		inventory[i].on_hand += change;
+
+		printf("Change part price? (y/n): ");
+		scanf(" %c", &changePrice);
+		if (tolower(changePrice) == 'y') {
+			printf("Enter new price: ");
+			scanf("%f", &price);
+			inventory[i].price = price;
+		}
+
 	} else {
 		printf("Part not found.\n");	
 	}
@@ -182,83 +196,28 @@ void print(void) {
 	
 	int i;
 
-	// Sorts the inventory by number!
-	selection_sort();
-
-	printf("Part Number   Part Name		"
-			"Quantity on Hand\n");
+	printf("Part Number   Part Name			"
+			"Quantity on Hand	Price\n");
 	for (i = 0; i < num_parts; i++) {
-		printf("%7d		%-25s%11d\n", inventory[i].number,
-				inventory[i].name, inventory[i].on_hand);
-	}
-
-}
-
-void menu() {
-	printf("OPTIONS\n");
-	printf("i\tinsert\n");
-	printf("s\tsearch\n");
-	printf("u\tupdate\n");
-	printf("p\tprint\n\n");
-
-}
-
-void selection_sort() {
-	int i, j;
-	int largest;
-	int sort = num_parts;
-
-	struct part largest_part;
-
-	for (j = num_parts; j > 0; j--) {
-		largest = 0;
-		int part_element = j-1;
-
-		for (i = 0; i < sort; i++) {
-			if (inventory[i].number > largest) {
-				largest = inventory[i].number;
-				largest_part = inventory[i];
-				part_element = i;
-			}
-		}
-
-		inventory[part_element] = inventory[j-1];
-		inventory[j-1] = largest_part;
-		sort--;
+		printf("%7d		%-25s%11d%11.2f\n", inventory[i].number,
+				inventory[i].name, inventory[i].on_hand, inventory[i].price);
 	}
 }
 
-/*
-void broken_selection_sort(struct part sorted_inventory[]) {
-	int i,j;
+// 16-4
+void change_price(void) {
 
-	int number;
-	char *name;
-	int  on_hand;
-	int sort = num_parts;
+	int i, number, change;
+	float price;
 
-	for (j = num_parts; j > 0; j--) {
-		int largest = 0;
-		int part_element = j-1;
-
-		for (i = 0; i < sort; i++) {
-			if (sorted_inventory[i].number > largest) {
-				largest = sorted_inventory[i].number;
-				name = sorted_inventory[i].name;
-				on_hand = sorted_inventory[i].on_hand;
-				part_element = i;
-			}
-		}
-
-		sorted_inventory[part_element].number = sorted_inventory[j-1].number;
-		sorted_inventory[part_element].name = sorted_inventory[j-1].name;
-		sorted_inventory[part_element].on_hand = sorted_inventory[j-1].on_hand;
-
-		sorted_inventory[j-1].number = largest;
-		sorted_inventory[j-1].name = name;
-		sorted_inventory[j-1].on_hand = on_hand;
-		sort--;
-
+	printf("Enter part number: ");
+	scanf("%d", &number);
+	i = find_part(number);
+	if (i >= 0) {
+		printf("Enter new price: ");
+		scanf("%f", &price);
+		inventory[i].price = price;
+	} else {
+		printf("Part not found.\n");	
 	}
 }
-*/
