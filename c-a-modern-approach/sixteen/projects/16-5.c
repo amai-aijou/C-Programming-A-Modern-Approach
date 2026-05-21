@@ -1,5 +1,5 @@
 /******************************************
- * Name: 8-10.c
+ * Name: 16-5.c (Formerly prog8.c from Chap. 5)
  * Purpose: 
  * Author: jolson
  * Date: Sat May  3 08:07:26 PM CDT 2025
@@ -7,21 +7,33 @@
 
 #include <stdio.h>
 
-#define SIZE ((int) sizeof(departures) / sizeof(departures[0]))
+#define MAX_FLIGHTS 8
+
+// 16-5: departTime and arriveTime are integers that show the number of minutes that have elapsed since midnight
+struct flight_times {
+	int departTime;
+	int arriveTime;
+} daily_flights[MAX_FLIGHTS] =   {{ 480, 616},	// Depart  8:00am	Arrive 10:16am
+					  			  { 583, 712},  // Depart  9:43am	Arrive 11:52am
+								  { 679, 811},	// Depart 11:19am	Arrive  1:31pm
+								  { 767, 900},	// Depart 12:47pm	Arrive  3:00pm
+								  { 840, 968},	// Depart  2:00pm	Arrive  4:08pm
+								  { 945,1075},	// Depart  3:45pm	Arrive  5:55pm
+								  {1140,1280},	// Depart  7:00pm	Arrive  9:20pm
+								  {1305,1438}};	// Depart  9:45pm	Arrive 11:58pm
+
+
 
 int main(void) {
 	
 	int hInputTime, mInputTime, hDepartTime, mDepartTime, hArriveTime, mArriveTime;
 	int inputMinutes, outputMinutes;
 	char departAmPm, arriveAmPm;
-
-	// 8-10: New variables for array of departures and arrivals
-	int departures[8] = {480, 583, 679, 767, 840, 945, 1140, 1305};
-	int arrivals[8] = {616, 712, 811, 900, 968, 1075, 1280, 1438};
+	
+	// 16-5 variables
 	int i = 0;
 	int newDepartTime = 0;
 	int newArriveTime = 0;
-
 
 	//ask user for 24-hour time
 	printf("Enter a 24-hour time: ");
@@ -30,39 +42,46 @@ int main(void) {
 	//convert time to minute
 	inputMinutes = (hInputTime * 60) + mInputTime;	
 
-	// Used for debugging. uncomment to confirm times are correct
-	//printf("hInputTime: %d\n mInputTime: %02d\n inputMinutes: %d\n", hInputTime, mInputTime, inputMinutes);
+	//handle Out Of Range errors
+	if (inputMinutes < 0 || inputMinutes >= 1440) {
+			printf("Now you messed up! Now you messed up. You have messed up now. now you messed- u-erm, I mean...Out Of Range Error.\n");
+			return 1;
+	}
 
-	if (inputMinutes > departures[(SIZE - 1)]) {
-		newDepartTime = departures[0];
-		newArriveTime = arrivals[0];
+	// 16-5: Create array of structs for departure and arrival times, then utilize
+	i = 0;
+
+	if (inputMinutes > daily_flights[(MAX_FLIGHTS - 1)].departTime) {
+		newDepartTime = daily_flights[0].departTime;
+		newArriveTime = daily_flights[0].arriveTime;
 	}
 
 	while (newDepartTime == 0) {
-		if (i >= SIZE) {
+		if (i >= MAX_FLIGHTS) {
 			i = 0;
 		}
 
-		if (departures[i] >= inputMinutes) {
-			newDepartTime = departures[i];			
-			newArriveTime = arrivals[i];
+		if (daily_flights[i].departTime >= inputMinutes) {
+			newDepartTime = daily_flights[i].departTime;
+			newArriveTime = daily_flights[i].arriveTime;
 		}
-		
+
 		i++;
 	}
 
-	hDepartTime = newDepartTime / 60; 
+	hDepartTime = newDepartTime / 60;
 	mDepartTime = newDepartTime % 60;
 	hArriveTime = newArriveTime / 60;
-	mArriveTime = newArriveTime % 60;	
+	mArriveTime = newArriveTime % 60;
 
-	printf("Closest departure time is %d:%02d, arriving at %d:%02d\n", hDepartTime, mDepartTime, hArriveTime, mArriveTime);
+	if ((newDepartTime / 60) > 11) {
+		departAmPm = 'p';
+	} else {
+		departAmPm = 'a';
+	}
 
-/*
-	//handle Out Of Range errors
-	if (inputMinutes < 0 || inputMinutes >= 1440) {
-			printf("Error: Out of Range.\n");
-			return 1;
+/*******************************************************************
+ *                   OLD CODE
 	//check times
 	} else if ((inputMinutes <= 480) || inputMinutes >= 1305) {
 			hDepartTime = 8; mDepartTime = 0;
@@ -97,6 +116,8 @@ int main(void) {
 			hArriveTime = 9; mArriveTime = 20;
 			departAmPm = 'p'; arriveAmPm = 'p';
 	}
+ *
+*******************************************************************/
 
 	// Print the closest departure and arrival time
 	printf("Closest departure time is %d:%02d %cm, arriving at %d:%02d %cm\n", hDepartTime, mDepartTime, departAmPm, hArriveTime, mArriveTime, arriveAmPm);
@@ -107,11 +128,6 @@ int main(void) {
 				printf("Hurry up, the plane is literally leaving NOW!\n");	
 				break;
 	}
-
-*/
-
-	return 0;
-}
 
 /*         CONVERT TO MINUTES
  * *************************************
@@ -125,4 +141,6 @@ int main(void) {
  * 7:00 pm - 9:20 pm	=	1140 - 1280
  * 9:45 pm - 11:58 pm	=	1305 - 1438
  *
- */
+ */ 
+	return 0;
+}
