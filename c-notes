@@ -940,4 +940,29 @@ Note: I think it's time to put the big boy pants on! I get the feeling things ar
     * malloc:  Allocates a block of memory (but does not initialize it)
     * calloc:  Allocates a block of memory and cleras it
     * realloc: Resizes a previously-allocated block of memory
-  - functions can't return a pointer to a standard type (since it does not know the type you used!); instead, it returns "void *"
+  - functions can't return a pointer to a standard type (since it does not know the type you used!); instead, it returns "void *", essentially just a blank memory address
+
+"Null Pointers"
+  - When a block large enough to satisfy the request cannot be located, a Null Pointer is returned, which points to nothing
+  - "After returning a function's return value in a pointer, we *must* check to see if it's Null"
+  - Attempting to access a null pointer is undefined, and can result in terrible behavior, including crashes!
+  - Null is represented by a macro named NULL, so you can test like so:
+      p = malloc(10000);	// You can combine the two by adding this line into the if conditional section ()
+      if (p == NULL) {/* Allocation failed; take appropriate action */}
+
+"17.2 Dynamically Allocated Strings"
+  - Allows us to decide how large to make an array after the program runs
+
+"Using malloc to Allocate Memory for a String"
+  - malloc() has the following prototype:
+
+      void *malloc(size_t size);
+
+  - size_t is just an unsigned variable of the largest size available on your system, to guarantee true portability (see sizeof() earlier in this document)
+  - allocating memory for a string is simple; similar to allocating an array, you can simply provide malloc n + 1, which allows for a '\0' character after:
+
+      char *p;
+      p = malloc(n + 1);
+
+  - void * pointers are automatically converted to the type you're working with; even still, you can use (char *) to explicitly convert (especially nice for human readers)
+  - malloc() does not clear nor initialize memory; it may well contain old information! strncpy() is one way to initialize
