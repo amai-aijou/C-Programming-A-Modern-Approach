@@ -926,3 +926,18 @@ C99:
   - C treats enum as integers. You're essentially creating a define statement of sorts, but with C itself, rather than the pre-processor
   - If needed, you can choose custom integers with "CLUBS = 1" in the above examples. More than one can even have the same value! (think multiple names for the same color, for example)
   - It's probably horrible practice, but once declared you could even say int i = CLUBS; and i would equal 1
+
+
+#####################################
+           "Chapter 16"
+    "Advanced Uses of Pointers"
+#####################################
+
+Note: I think it's time to put the big boy pants on! I get the feeling things are about to get a lot tougher in the second half of the book (FINALLY doing memory allocation :D)
+
+"17.1 Dynamic Storage Allocation"
+  - Allows the size and memory allocated to arrays to be reduced or enlarged as necessary via memory allocation functions:
+    * malloc:  Allocates a block of memory (but does not initialize it)
+    * calloc:  Allocates a block of memory and cleras it
+    * realloc: Resizes a previously-allocated block of memory
+  - functions can't return a pointer to a standard type (since it does not know the type you used!); instead, it returns "void *"
