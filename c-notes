@@ -1145,3 +1145,53 @@ Note: There is no body in this for loop. Just an example of how powerful for() c
       pf = f;
 
   - Like befor,e you can call a variable that holds a pointer to a function with (*pf)(i); ... or pf(i);
+
+"17.8 Restricted Pointers (C99)"
+
+Note: The textbook claims 17.8/17.9 are only of interest to advanced C programmers, and that *most readers* will want to skip them...not a chance!
+
+  - This deals with the keyword "restrict", which appears as follows:
+
+      int * restrict p;
+
+  - If p points to an object that is later modified, then that object cannot be accessed in any way other than through p
+  - Having multiple ways to access an object is called "aliasing"
+  - If a restricted variable is declared as a local variable without "extern" storage class, restrict applies only to p when the block p is  declared is executed (aka body of a function)
+  - restrict allows programmers to see that variables are not meant to overlap, and helps to explain the behavior of certain built-in functions that, before C99, couldn't warn you of the danger
+  - Restrict was actually created for Optimization (along with "register" storage class)
+
+"17.8 Flexible Array Members (C99)"
+  - Sometimes you don't know how large you want an array to be; so, traditionally, programmers would carry out "the struct hack":
+
+    struct vstring {
+      int len;
+      char chars[1];
+    };
+    struct vstring *str = malloc(sizeof(struct vstring) +n -1);
+    str->len = n;
+
+  - You set the length of chars to 1, that way you can just manually allocate as much as you want for each string of n length 
+  - This procedure has become so popular, it actually made it into C99. Now, you declare the array without a size, like so:
+
+      struct vstring {
+        int len;
+        char chars[]; 	/* Note how the length has been omitted...C99 automatically turns this into a "flexible array member" upon creation!
+      };
+
+  - This works because C99 will simply ignore the size of the chars[] array when sizing up the struct, which means you will get exact n characters, and do not need to subtract for the array
+  - "Special rules": FAM must appear last in the struct, and struct must have 1+ other members. Copying a struct with an FAM will copy the other members, but *not* the FAM Array!
+  - This is considered an "incomplete type", meaning the compiler does not have enough information to determine how much memory it requires (and is thus subject to restrictions)
+  - "incomplete type" (or a struct that contains it) cannot be a member of another struct, or an element of an array (an array can have pointers to structs with FAM though!)
+
+"Q&A"
+  - Casting the return type of malloc() is usually not necessary, since void * is automatically converted to any other pointer type upon assignment.
+  - "A safer way to use malloc()":
+
+      struct part *p;			// Initialize p as a pointer to a struct
+      p = malloc(sizeof(*p));	// sizeof(*p) returns the size of the space that contains the value for p, not the value itself (so it allocates enough memory for a full struct part)
+
+
+#####################################
+           "Chapter 18"
+		  "Declarations"
+#####################################

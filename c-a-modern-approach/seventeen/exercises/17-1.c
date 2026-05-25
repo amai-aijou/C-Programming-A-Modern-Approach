@@ -1,50 +1,32 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: tabulate.c
+   ❤︎︎࣪ Name: 17-1.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sun May 24 08:10:33 PM CDT 2026
+   ❤︎︎࣪ Date: Mon May 25 12:35:27 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                       ❤︎︎࣪    G L O B A L    ❤︎︎࣪     
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
-#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void tabulate(double (*f)(double), double first, double last, double incr);
+void *my_malloc(size_t n);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	double final, increment, initial;
+	int *test = (int *) my_malloc(sizeof(int));
+	*test = 10;
 
-	printf("Enter initial value: ");
-	scanf("%lf", &initial);
-
-	printf("Enter final value: ");
-	scanf("%lf", &final);
-
-	printf("Enter increment: ");
-	scanf("%lf", &increment);
-
-	printf("\n		x		cos(x)"
-		   "\n	-------	   -------\n");
-	tabulate(cos, initial, final, increment);
-
-	printf("\n		x		sin(x)"
-		   "\n	-------	   -------\n");
-	tabulate(sin, initial, final, increment);
-
-	printf("\n		x		tan(x)"
-		   "\n	-------	   -------\n");
-	tabulate(tan, initial, final, increment);
+	printf("Value of test (should be 10!): %d\n\n", *test);
 
 	return 0;
 }
@@ -52,14 +34,15 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void tabulate(double (*f)(double), double first, double last, double incr) {
+void *my_malloc(size_t n) {
 
-	double x;
-	int i, num_intervals;
+	void *p;
 
-	num_intervals = ceil((last - first) / incr);
-	for (i = 0; i <= num_intervals; i++) {
-		x = first + i * incr;
-		printf("%10.5f %10.5f\n", x, (*f)(x));
+	p = malloc(n);
+	if (p == NULL) {
+		printf("ERROR: Null Pointer created. My fault, your responsibility!\n");
+		exit(EXIT_FAILURE);
 	}
+
+	return p;
 }
