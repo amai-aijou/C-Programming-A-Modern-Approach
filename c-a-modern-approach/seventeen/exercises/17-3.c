@@ -17,16 +17,12 @@
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 void *my_malloc(size_t n);
+int *create_array(int n, int initial_value);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
-
-	int *test = (int *) my_malloc(sizeof(int));
-	*test = 10;
-
-	printf("Value of test (should be 10!): %d\n\n", *test);
 
 	return 0;
 }
@@ -45,4 +41,14 @@ void *my_malloc(size_t n) {
 	}
 
 	return p;
+}
+
+int *create_array(int n, int initial_value) {
+
+	int i;
+	int *new_array = my_malloc(n * sizeof(int));
+
+	for (i = 0; i < n; i++) {
+		new_array[i] = initial_value;
+	}
 }

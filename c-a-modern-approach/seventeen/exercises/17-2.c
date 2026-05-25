@@ -43,23 +43,27 @@ void *my_malloc(size_t size) {
 
 	p = malloc(size);
 	if (p == NULL) {
-		printf("ERROR: Null Pointer created. My fault, your responsibility!\n");
-		exit(EXIT_FAILURE);
+		printf("ERROR: Null Pointer created. My fault, *your* responsibility!\n");
+		return NULL;	
 	}
 
 	return p;
 }
 
+#define SIZE (int) sizeof(array) / sizeof(array[0])
+
 char *duplicate(char *str) {
 
-	char *stringCopy = my_malloc(sizeof(str));
+	char *stringCopy = my_malloc(strlen(str));
 
+	if (stringCopy == NULL) {
+		return stringCopy;
+	}
 	strcpy(stringCopy, str);
 
 	if (strcmp(stringCopy, str) != 0) {
 		return NULL;
 	}
-
 
 	return stringCopy;
 }
