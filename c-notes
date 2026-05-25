@@ -942,7 +942,7 @@ Note: I think it's time to put the big boy pants on! I get the feeling things ar
     * realloc: Resizes a previously-allocated block of memory
   - functions can't return a pointer to a standard type (since it does not know the type you used!); instead, it returns "void *", essentially just a blank memory address
 
-"Null Pointers"
+ "Null Pointers"
   - When a block large enough to satisfy the request cannot be located, a Null Pointer is returned, which points to nothing
   - "After returning a function's return value in a pointer, we *must* check to see if it's Null"
   - Attempting to access a null pointer is undefined, and can result in terrible behavior, including crashes!
@@ -953,7 +953,7 @@ Note: I think it's time to put the big boy pants on! I get the feeling things ar
 "17.2 Dynamically Allocated Strings"
   - Allows us to decide how large to make an array after the program runs
 
-"Using malloc to Allocate Memory for a String"
+ "Using malloc to Allocate Memory for a String"
   - malloc() has the following prototype:
 
       void *malloc(size_t size);
@@ -966,3 +966,182 @@ Note: I think it's time to put the big boy pants on! I get the feeling things ar
 
   - void * pointers are automatically converted to the type you're working with; even still, you can use (char *) to explicitly convert (especially nice for human readers)
   - malloc() does not clear nor initialize memory; it may well contain old information! strncpy() is one way to initialize
+
+"17.3 Dynamically Allocated Arrays"
+
+  - The sizeof() operator is required to properly determine the size of the array:
+
+      int *a;
+      a = malloc(n * sizeof(int));
+
+  - Once a points to a dynamic block of memory, it can be treated like an array, and referred to simply by name[] or name as needed.
+
+  "The calloc function"
+  - calloc() is simillar to malloc(), but ensures all bits are set to 0.
+
+  - calloc() takes two arguments: 1. the number of elements; 2. the size of the elements. you can free up enough space for any single variable with calloc():
+
+      struct point (int x, y; } *p;
+      p = calloc(1, sizeof(struct point));
+
+  "The realloc function"
+  - Used to reallocate an existing array that needs to be resized. it's prototype:
+
+      void *realloc(void *ptr, size_t size;
+
+  - ptr is a pointer to a previous call of malloc, calloc, or realloc; size is the new size of the block.
+  - realloc() will generally not destroy the data contained within; even if the whole thing must be moved to a new address, realloc() will copy the actual contents as well, preserving them (in theory!)
+  - Be sure to update all pointers, since realloc() may well have moved your block elsewhere (and double-check the content is still there maybe!)
+
+"17.4 Deallocating Storage"
+
+  - memory allocation functions obtain memory blocks from a storage pool known as the "heap"
+  - Calling these functions too often can exhaust the heap, causing functions to return a null pointer!
+  - Programs may even allocate memory, then lose track of them! This is called a "memory leak":
+
+      p = malloc(...);
+      q = malloc(...);
+      p = q;
+      // Notice how the original p allocation is lost forever? It will remain there until the program crashes, very bad!
+
+  "The free function"
+  - C has no automatic garbage collection...you need to put on your big boy/girl pants and do it yourself. The free() function exists for exactly this!
+
+      p = malloc(...);
+      q = malloc(...);
+      free(p);
+      p = q;
+      // Notice how we free p and set it loose before we lose sight of it!
+
+  - It's legal to send free() a Null pointer; it just will not have any effect
+
+  "The 'Dangling bointer' Problem"
+
+  - The above call of free(p) deallocates the memory block, but doesn't change p itself
+  - You *must* either destroy or stop utilizing a dangling pointer once a block is freed!
+
+"17.5 Linked Lists"
+
+Note: Further Reading: Algorithms in C, Parts 1-4: Fundamentals, Data Structures, Sorting, Searching (likely required for coding interviews!)
+
+  "linked list"
+  - A chain of structures (called "nodes") with each node containing a pointer to the next node in the chain
+  - The last node in the chain contains a null pointer, shown as a diagonal line in graphical representations.
+
+  "Declaring a Node Type"
+
+  - Setting up a "linked list" requires a struct that represents a single node in the list:
+
+      struct node {
+        int value;
+        struct node *next;
+      };
+
+  - *next is a pointer to a node structure
+  - After, we need to track where the list begins:
+
+      struct node *first = NULL;  // null indicates the list is initially empty
+
+  "Creating a Node"
+  - Notes must be created one by one, each adding to the list:
+    "1" Allocate Memory
+          struct node *new_node;
+
+    "2" Store data 
+          new_node = malloc(sizeof(struct node));
+
+    "3" Insert the node into the list
+         (*new_node).value = 10;
+
+    "4" Modify new node's next member to point to the node that was previously at the beginning of the list
+          new_node->next = first;
+
+    "5" Make *first point to the new node:
+          first = new_node;
+
+  "The -> Operator"
+  - Allows us to access a member of a struct using a pointer. Known as "right arrow selection". Replaces step 3 above with the following:
+
+      new_node->value = 10;
+
+  - It essentially combines * and . operators for you. "-> produces an lvalue", so it can be used anywhere normal variables are allowed:
+
+      scanf("%d", &new_node->value); // Note: Dereference operator (&) still required; otherwise it would point to the value, not the location
+
+  "Inserting a Node at the Beginning of a Linked List"
+  - in a Linked List, nodes can be inserted into any point, not just the end/s! it's easiest to start at the beginning though, so the book will follow that, first
+  - Let's say *new_node points to the node to be added, and first points to the first node in the list:
+
+
+    Note: These statements will still work if the list is empty when a node is inserted
+
+  "Searching a Linked List"
+  - The for loop is generally used for this, via the following idiom:
+
+      for (p = first; p != NULL; p=p->next) {}
+
+  "Deleting a Node from a Linked List"
+
+    "1" Locate the node to be deleted
+      for (cur = list, prev = NULL; cur != NULL && cur->value != n; prev = cur, cur = cur->next) {}
+
+    "2" Alter the previous node so it "bypasses" the deleted node.
+      prev->next = cur->next;
+
+    "3" Call free() to reclaim the space occupied by the deleted node
+      free(cur);
+
+  - Locating the node is harder than it looks, since once you locate the node, you need to know the *previous* node, so you can rebuild the chain
+  - The "trailing pointer" is one way:
+
+      for (cur = list, prev = NULL; cur != NULL && cur->value != n; prev = cur, cur = cur->next) {}
+
+Note: There is no body in this for loop. Just an example of how powerful for() can be!
+
+  - Perform the bypass required above in step 2, making the pointer in the previous node point to the node after the current:
+
+      prev->next = cur->next;
+
+  "Ordered Lists"
+  - Similar to a Linked List, but with the nodes sorted by the data inside the nodes, instead of their original order.
+
+"17.6 Pointers to Pointers"
+  - a pointer to a char has type char *; a pointer to *that* pointer, has type char **
+  - I'll circle back here, because I do not entirely understand why their function example requires a pointer to a pointer. I think I need real-world examples first!
+
+"17.7 Pointers to Functions"
+  - C allows you to create pointers not only to data, like integers, arrays, and structs; but to functions themselves
+
+      double integrate (double (*f) (double), double a, double b);
+
+  - Parentheses around *f indicate it is a pointer to a function, not a funciton that returns a pointer, though "it's legal to declare f as if it were a function, too:"
+
+      double integrate(double f(double), double a, double b);  // the compiler regards this as identical to the above example
+
+  - "When there are no parenthese around a function name, C generates a pointer to that function", instead of a function call
+  
+      result = integrate(sin, 0.0, PI / 2);
+
+  - similarly, within the body of the function you've created a pointer for, you can display it either with parentheses, or simply as a function:
+
+      y = (*f)(x)
+
+  - Using (*f)(x) instead of f(x) reminds us that it is a pointer to a function though, so it's better for human-readability (which I would guess is the basis of all good programs!)
+
+  "The qsort Function"
+  - For a real-world example of pointers to functions, qsort in stdlib.h uses exactly that!
+  - qsort can sort almost anything, including arrays, based on any criteria we choose, of any *type*
+  - qsort must be told how to determine the smaller/larger elements through a "comparison function", which returns a negative integer if less-than, and positive if greater-than
+
+      void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));  
+
+  "Other Uses of Function Pointers"
+  - You can do all sorts of crazy things with them, since "C treats pointers to functions just like pointers to data"
+  - Can be added to variables, used as elements of an array, a struct, a union, or a function that returns a function pointer
+  - Here is a variable that can store a pointer to a function:
+
+      void f(int x);
+      void (*pf)(int);
+      pf = f;
+
+  - Like befor,e you can call a variable that holds a pointer to a function with (*pf)(i); ... or pf(i);

@@ -1,75 +1,50 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: remind2.c.c
+   ❤︎︎࣪ Name: tabulate.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sat May 23 03:38:24 PM CDT 2026
+   ❤︎︎࣪ Date: Sun May 24 08:10:33 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                       ❤︎︎࣪    G L O B A L    ❤︎︎࣪     
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
+#include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define MAX_REMIND 50
-#define MSG_LEN 60
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int read_line(char str[], int n);
+void tabulate(double (*f)(double), double first, double last, double incr);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	char *reminders[MAX_REMIND];
-	char day_str[3], msg_str[MSG_LEN+1];
-	int day, i, j, num_remind = 0;
+	double final, increment, initial;
 
-	for (;;) {
-		if (num_remind == MAX_REMIND) {
-			printf("-- No space left --\n");
-			break;
-		}
+	printf("Enter initial value: ");
+	scanf("%1f", &initial);
 
-		printf("Enter day and reminder: ");
-		scanf("%2d", &day);
-		if (day == 0) {
-			break;
-		}
-		sprintf(day_str, "%2d", day);
-		read_line(msg_str, MSG_LEN);
+	printf("Enter final value: ");
+	scanf("%1f", &final);
 
-		for (i = 0; i < num_remind; i++) {
-			if (strcmp(day_str, reminders[i]) < 0) {
-				break;
-			}
-		}
-		for (j = num_remind; j > i; j--) {
-			reminders[j] = reminders[j-1];
-		}
+	printf("Enter increment: ");
+	scanf("%1f", &increment);
 
-		reminders[i] = malloc(2 + strlen(msg_str) + 1);
-		if (reminders[i] == NULL) {
-			printf("-- No space left --\n");
-			break;
-		}
+	printf("\n		x		cos(x)"
+		   "\n	-------	   -------\n");
+	tabulate(cos, initial, final, increment);
 
-		strcpy(reminders[i], day_str);
-		strcpy(reminders[i], msg_str);
+	printf("\n		x		sin(x)"
+		   "\n	-------	   -------\n");
+	tabulate(sin, initial, final, increment);
 
-		num_remind++;
-	}
-
-	printf("\nDay Reminder\n");
-	for (i = 0; i < num_remind; i++) {
-		printf(" %s\n", reminders[i]);
-	}
+	printf("\n		x		tan(x)"
+		   "\n	-------	   -------\n");
+	tabulate(tan, initial, final, increment);
 
 	return 0;
 }
@@ -77,15 +52,14 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int read_line(char str[], int n) {
+void tabulate(double (*f)(double), double first, double last, double incr) {
 
-	int ch, i = 0;
+	double x;
+	int i, num_intervals;
 
-	while ((ch = getchar()) != '\n') {
-		if (i < n) {
-			str[i++] = ch;
-		}
+	num_intervals = ceil((last - first) / incr);
+	for (i = 0; i <= num_intervals; i++) {
+		x = first + i * incr;
+		printf("%10.5f %10.5f\n", x, (*f)(x));
 	}
-	str[i] = '\0';
-	return i;
 }
