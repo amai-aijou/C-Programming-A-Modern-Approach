@@ -50,8 +50,6 @@ void *my_malloc(size_t size) {
 	return p;
 }
 
-#define SIZE (int) sizeof(array) / sizeof(array[0])
-
 char *duplicate(char *str) {
 
 	char *stringCopy = my_malloc(strlen(str));

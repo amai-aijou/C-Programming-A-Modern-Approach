@@ -40,7 +40,7 @@ void *my_malloc(size_t n) {
 
 	p = malloc(n);
 	if (p == NULL) {
-		printf("ERROR: Null Pointer created. My fault, your responsibility!\n");
+		printf("ERROR: Null Pointer created. My fault, my responsibility! Exiting.\n");
 		exit(EXIT_FAILURE);
 	}
 

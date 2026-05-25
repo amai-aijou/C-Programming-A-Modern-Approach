@@ -24,6 +24,16 @@ int *create_array(int n, int initial_value);
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
+	int n = 5;
+	int *array;
+
+	array = create_array(n, 7);
+
+	printf("Should return all 7s:\n");
+	printf("array[0]: %d\n", array[0]);
+	printf("array[1]: %d\n", array[1]);
+	printf("array[2]: %d\n", array[2]);
+
 	return 0;
 }
 
@@ -36,8 +46,7 @@ void *my_malloc(size_t n) {
 
 	p = malloc(n);
 	if (p == NULL) {
-		printf("ERROR: Null Pointer created. My fault, your responsibility!\n");
-		exit(EXIT_FAILURE);
+		printf("ERROR: Null Pointer created. My fault, your responsibility! Doing nothing.\n");
 	}
 
 	return p;
@@ -48,7 +57,14 @@ int *create_array(int n, int initial_value) {
 	int i;
 	int *new_array = my_malloc(n * sizeof(int));
 
+	if (new_array == NULL) {
+		printf("Returning NULL pointer...not good!\n");
+		return new_array;
+	}
+
 	for (i = 0; i < n; i++) {
 		new_array[i] = initial_value;
 	}
+
+	return new_array;
 }
