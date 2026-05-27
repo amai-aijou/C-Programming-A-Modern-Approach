@@ -133,36 +133,34 @@ struct node *delete_from_list(struct node *list, int n) {
 	return list;
 }
 
-// Exercise 17-6 - "Good taste" code from the master himself: Linus Torvalds!
+// Exercise 17-6 - "Good taste" code from the master himself, Linus Torvalds!
 struct node *delete_from_list_new(struct node *list, int n) {
 
-	//create a pointer to a pointer, aimed at the *list pointer's memory address
+	//1. Create a pointer to a pointer, aimed at the *list pointer's memory address
 	struct node **p = &list;
 
-	// Iterate through *p (the list itself) to find n (stop if found)
+	//2. Iterate through *p (the list) to find n. Stop if found
 	while ((*p != NULL) && ((*p)->value != n)) {
 		p = &(*p)->next;
 	}
 
-	// The while loop will only produce two results: NULL, or a pointer to the struct whose .next member is n
-	
-	// If we found the number, *p will point to the struct to be removed
+	//3. The while loop will only produce two results: NULL, or a pointer to the node with value n
 	if (*p != NULL) {
 
-		// Print a brief message explaining what we're doing
 		printf("DEL NODE %d\n",(*p)->value);
 
-		// Create a temporary stuct to hold the memory location of the node we wish to remove...
+		// Create a temporary struct to hold the memory location of the node we wish to remove...
 		struct node *trash = *p;
 
-		// Move our pointer forward, from the location of the bad node, to the next node (stored in .next in the current node)
+		// Move our pointer forward, from the location of the bad node, to the next node
 		*p = (*p)->next;
 
-		// Since *p no longer points to the bad node, we can't use free() on it. That's why we created *trash!
+		// Since *p no longer points to the bad node, *trash is the only remaining reference to the bad memory. Delete it!
 		free(trash);
 		return *p;
 	}
-	// If *p is NULL, return list.  Since we used **p for the search, *list never changed :)
+
+	//Fail: If *p is NULL, return list.  Since we used **p for the search, *list never changed :)
 	printf("DEL NODE %d -- ERROR: NOT FOUND!\n", n);
 	return list;
 }
