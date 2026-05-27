@@ -22,10 +22,12 @@ struct node {
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 struct node *add_to_list(struct node *list, int n);
+void add_to_list_new(struct node **list, int n);
 struct node *read_numbers(void);
 struct node *search_list(struct node *list, int n);
 struct node *delete_from_list(struct node *list, int n);
 struct node *delete_from_list_new(struct node *list, int n);
+void *print_list(struct node *list);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -35,7 +37,25 @@ int main(void) {
 	struct node *first = NULL;
 
 	first = add_to_list(first, 10);
+	print_list(first);
+	printf("\n\n");
+
 	first = add_to_list(first, 20);
+	print_list(first);
+	printf("\n\n");
+
+	first = add_to_list(first, 30);
+	print_list(first);
+	printf("\n\n");
+
+	first = delete_from_list(first, 30);
+	print_list(first);
+	printf("\n\n");
+
+	first = delete_from_list_new(first, 20);
+	print_list(first);
+	printf("\n\n");
+
 
 	return 0;
 }
@@ -50,7 +70,7 @@ struct node *add_to_list(struct node *list, int n) {
 	new_node = malloc(sizeof(struct node));
 	if (new_node == NULL) {
 		printf("Error: malloc failed in add_to_list\n");
-		exist(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 
 	new_node->value = n;
@@ -67,14 +87,14 @@ struct node *add_to_list(struct node *list, int n) {
 // **list   = the current pointer value of new_node->next
 // &(*list) = the memory location of &new_node->next
 //
-void node *add_to_list_new(struct node **list, int n) {
+void add_to_list_new(struct node **list, int n) {
 
 	struct node *new_node;
 
 	new_node = malloc(sizeof(struct node));
 	if (new_node == NULL) {
 		printf("Error: malloc failed in add_to_list\n");
-		exist(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 
 	new_node->value = n;
@@ -137,16 +157,35 @@ struct node *delete_from_list(struct node *list, int n) {
 struct node *delete_from_list_new(struct node *list, int n) {
 
 	//pointer to list->first, which is a pointer to the first list item
-	struct node **p = &list->first;
+	struct node **p = &list;
 
 	while ((*p != NULL) && ((*p)->value != n)) {
 		p = &(*p)->next;
 	}
 
-	if (*p != NULL) {
-		struct node *trash = p;
-		*p = (*p)->next;
+	if ((*p) != NULL) {
+		printf("DEBUG - DELETE from list new (should be %d): %d\n", n, (*p)->value);
+	} else {
+		printf("DEBUG - DELETE from list new - NOT FOUND!\n");
 	}
 
-	return *list;
+	if (*p != NULL) {
+		struct node *trash = *p;
+		*p = (*p)->next;
+		free(trash);
+		return *p;
+	}
+
+	return list;
+}
+
+void *print_list(struct node *list) {
+
+	struct node *p;
+	int i = 1;
+
+	for (p = list; p != NULL; p = p->next) {
+		printf("List Element: %d | List Value: %d\n", i, p->value);
+	}
+
 }
