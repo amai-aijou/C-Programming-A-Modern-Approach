@@ -33,30 +33,35 @@ void *print_list(struct node *list);
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
+	printf("\n");
 
 	struct node *first = NULL;
 
+	// Add 10 to List
 	first = add_to_list(first, 10);
 	print_list(first);
 	printf("\n\n");
 
-	first = add_to_list(first, 20);
+	// Add 20 to list - new style
+	add_to_list_new(&first, 20);
 	print_list(first);
 	printf("\n\n");
 
+	// Add 30 to list
 	first = add_to_list(first, 30);
 	print_list(first);
 	printf("\n\n");
 
+	// Remove 30 to list
 	first = delete_from_list(first, 30);
 	print_list(first);
 	printf("\n\n");
 
+	// Remove 20 to list - new style
 	first = delete_from_list_new(first, 20);
 	print_list(first);
-	printf("\n\n");
 
-
+	printf("\n");
 	return 0;
 }
 
@@ -76,17 +81,12 @@ struct node *add_to_list(struct node *list, int n) {
 	new_node->value = n;
 	new_node->next = list;
 
+	printf("ADD entry %d to  list\n",new_node->value);
+
 	return new_node;
 }
 
-// 17.6 pg. 438: add new with pointer to a pointer
-// 
-// **list breakdown:
-// list     = the memory location of &first
-// *list    = the value of first, which is the memory location of &new_node->next
-// **list   = the current pointer value of new_node->next
-// &(*list) = the memory location of &new_node->next
-//
+// Pointer to pointer allows us to alter the list directly within the function
 void add_to_list_new(struct node **list, int n) {
 
 	struct node *new_node;
@@ -100,6 +100,8 @@ void add_to_list_new(struct node **list, int n) {
 	new_node->value = n;
 	new_node->next = *list;
 	*list = new_node;
+
+	printf("ADD entry %d to  list\n",(*list)->value);
 }
 
 struct node *read_numbers(void) {
@@ -140,12 +142,15 @@ struct node *delete_from_list(struct node *list, int n) {
 	}
 
 	if (cur == NULL) {
+		printf("DELETE entry %d from list -- NOT FOUND!\n", n);
 		return list;
 	}
 
 	if (prev == NULL) {
+		printf("DELETE entry %d from list\n",list->value);
 		list = list->next;
 	} else {
+		printf("DELETE entry %d from list\n",prev->value);
 		prev->next = cur->next;
 	}
 
@@ -154,6 +159,7 @@ struct node *delete_from_list(struct node *list, int n) {
 	return list;
 }
 
+// "Good taste" code from the master himself (Linus Torvalds)
 struct node *delete_from_list_new(struct node *list, int n) {
 
 	//pointer to list->first, which is a pointer to the first list item
@@ -163,19 +169,15 @@ struct node *delete_from_list_new(struct node *list, int n) {
 		p = &(*p)->next;
 	}
 
-	if ((*p) != NULL) {
-		printf("DEBUG - DELETE from list new (should be %d): %d\n", n, (*p)->value);
-	} else {
-		printf("DEBUG - DELETE from list new - NOT FOUND!\n");
-	}
-
 	if (*p != NULL) {
+		printf("DELETE entry %d from list\n",(*p)->value);
 		struct node *trash = *p;
 		*p = (*p)->next;
 		free(trash);
 		return *p;
 	}
 
+	printf("DELETE entry %d from list -- NOT FOUND!\n", n);
 	return list;
 }
 
