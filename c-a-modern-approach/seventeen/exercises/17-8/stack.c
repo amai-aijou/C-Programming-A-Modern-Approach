@@ -27,7 +27,7 @@ int top;
 
 // Node struct
 struct node {
-	int value;
+	char value;
 	struct node *next;
 };
 
@@ -49,12 +49,15 @@ bool push(char n) {
 	if(new_node == NULL) {
 		printf("ERROR: Failed to add to list. Memory may not be available...or you just didn't want it bad enough\n");
 		exit(EXIT_FAILURE);
+	}
 
 	new_node->value = n;
 	new_node->next = first;
 
 	first = new_node;
 	
+	printf("DEBUG - new_node->value: %d\n", new_node->value);
+	printf("DEBUG - push() adding: %d\n", first->value);
 	//Returns TRUE if memory allocation was successful
 	return first != NULL; 
 }
@@ -62,13 +65,21 @@ bool push(char n) {
 // Remove an item from the stack
 char pop() {
 
+	struct node *trash;
+	char stackValue;
+
 	printf("pop!\n");
 
 	if (is_empty()) {
 		stack_underflow();
 	} else {
-
+		stackValue = first->value;
+		first = first->next;
+		free(trash);
 	}
+
+	printf("DEBUG - pop() stackValue: %d\n", stackValue);
+	return stackValue;
 }
 
 // Check if stack is empty
@@ -80,7 +91,7 @@ bool is_empty() {
 // Prevents a pop() on an already-empty stack from causing unintended behavior
 void stack_underflow() {
 	printf("ERROR: Stack Underflow - Operation not permitted. Resetting to original position.\n");
-	print("Note: this may result in a memory leak. Please close this application and re-open if necessary.\n");
+	printf("Note: this may result in a memory leak. Please close this application and re-open if necessary.\n");
 	first = NULL;
 }
 
@@ -122,17 +133,16 @@ void menu() {
 }
 
 double calc() {
-  printf("Value of expression: %d\n\n", stack[top - 1]);
-  printf("--------\n");
-  printf("Note: Press m for menu\n");
-  printf("Enter an RPN expresssion: ");
+
+	printf("Value of expression: %d\n\n", first->value);
+
+	free(first);
+
+	printf("--------\n");
+	printf("Note: Press m for menu\n");
+	printf("Enter an RPN expresssion: ");
 }
+
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                        ❤︎︎࣪    N O T E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-
-// print_stack() exists primarily for debugging purposes
-//
-// 1 2 3 5 * - + =
-//
-// NULL 1 2 
