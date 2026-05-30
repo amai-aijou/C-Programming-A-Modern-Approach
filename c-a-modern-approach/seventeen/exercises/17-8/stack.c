@@ -32,7 +32,7 @@ struct node {
 };
 
 // Create Linked List Framework
-struct node *first;
+struct node *first = NULL;
 
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -73,6 +73,7 @@ char pop() {
 	if (is_empty()) {
 		stack_underflow();
 	} else {
+		trash = first;
 		stackValue = first->value;
 		first = first->next;
 		free(trash);
