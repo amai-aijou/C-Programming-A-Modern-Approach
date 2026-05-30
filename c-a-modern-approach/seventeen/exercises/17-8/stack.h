@@ -13,7 +13,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-char push(char n);
+bool push(char n);
 char pop();
 bool is_empty();
 bool is_full();

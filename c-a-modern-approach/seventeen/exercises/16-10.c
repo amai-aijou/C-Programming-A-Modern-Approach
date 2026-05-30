@@ -1,76 +1,50 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name:  
+   ❤︎︎࣪ Name: 16-10.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Sun Feb  8 12:15:48 PM CST 2026
+   ❤︎︎࣪ Date: Fri May 29 08:37:30 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-
-/* Reverse Polish Notation (RPN) Calculator */
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                       ❤︎︎࣪    G L O B A L    ❤︎︎࣪     
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
-#include "stack.h"
+
+#define NAME_LEN 50
+
+struct part {
+	int number;
+	char name[NAME_LEN+1];
+	int on_hand;
+};
+
+struct part part1 = {10, "Example", 2};
+
+/*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+                  ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void print_part(struct part *p);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-
 int main(void) {
 
-	char ch;
-	int num1 = 0, num2 = 0;
 
-	// Call help() to serve as an intro and instruction set, then ask for expression
-	help();
-
-	// Core input and calculation loop
-	while ((ch = getchar()) != 'q') {
-
-		// Variables used to hold pop() results temporarily; reset with each loop
-		num1 = 0;
-		num2 = 0;
-		
-		// Switch statement checks for special options, such as help() or menu(), then performs calculation
-		switch (tolower(ch)) {
-			
-			// Special menu selections
-			case 'h': help(); 
-					  break;
-			case 'm': menu();
-					  break;
-			case 'q': exit(EXIT_SUCCESS);
-
-			// Numerical Operands are added to the stack
-			case '0': case '1': case '2': case '3': case '4': 
-			case '5': case '6': case '7': case '8': case '9': 
-					  // Push subtracts 48 to convert from ASCII char to int
-					  push(ch - 48);
-					  break;
-
-			// Operators are applied to operands in the stack in reverse order
-			case '+': push(pop() + pop());
-					  break;
-			case '-': num2 = pop();
-					  num1 = pop(); 
-					  push(num1 - num2);
-					  break;
-			case '*': push(pop() * pop());
-					  break;
-			case '/': num2 = pop();
-					  num1 = pop();
-					  push(num1 / num2);
-			case '=': calc();
-		}
-
-	}
+	print_part(&part1);
 
 	return 0;
+}
+
+/*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+                   ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void print_part(struct part *p) {
+
+	printf("Part number: %d\n", p->number);
+
+	printf("Part name: %s\n", p->name);
+	printf("Quantity on hand: %d\n", p->on_hand);
 }

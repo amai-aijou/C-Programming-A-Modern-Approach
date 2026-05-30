@@ -6,6 +6,8 @@
    ❤︎︎࣪ Date: Sun Feb  8 12:15:48 PM CST 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
+/* Reverse Polish Notation (RPN) Calculator */
+
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                       ❤︎︎࣪    G L O B A L    ❤︎︎࣪     
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
@@ -14,8 +16,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
 #include "stack.h"
 
 // Macro definitions
@@ -25,57 +25,63 @@
 char stack[STACK_SIZE];
 int top;
 
+// Node struct
+struct node {
+	int value;
+	struct node *next;
+};
+
+// Create Linked List Framework
+struct node *first;
+
+
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 // Push an item onto the stack
-char push(char n) {
+bool push(char n) {
 
-	// DEBUG ONLY
-	// printf("push!\n");
+	printf("push!\n");
 
-	// Confirm stack isn't full, add current contents to stack, then increment top to next stack position
-	if (is_full()) {
-		stack_overflow();
-	} else {
-		return stack[top++] = n;
-	}
+	struct node *new_node = malloc(sizeof(struct node));
+
+	if(new_node == NULL) {
+		printf("ERROR: Failed to add to list. Memory may not be available...or you just didn't want it bad enough\n");
+		exit(EXIT_FAILURE);
+
+	new_node->value = n;
+	new_node->next = first;
+
+	first = new_node;
+	
+	//Returns TRUE if memory allocation was successful
+	return first != NULL; 
 }
 
 // Remove an item from the stack
 char pop() {
 
-	// DEBUG ONLY
-	// printf("pop!\n");
+	printf("pop!\n");
 
-	// Confirm stack isn't empty, then reduce the stack position by one.
-	// NOTE: contents of array are not erased until overwritten
 	if (is_empty()) {
 		stack_underflow();
 	} else {
-		return stack[--top];
+
 	}
 }
 
 // Check if stack is empty
 bool is_empty() {
-	// returns "true" if stack is empty
-	return top == 0;
-}
 
-// Check if stack is full
-bool is_full() {
-	//returns "true" if stack is full
-	return top == STACK_SIZE;
-
+	return first == NULL;
 }
 
 // Prevents a pop() on an already-empty stack from causing unintended behavior
 void stack_underflow() {
-	printf("ERROR: Stack Underflow - Operation not permitted.\n");
-	printf("Resetting to original position.\n\n");
-	top = 0;
+	printf("ERROR: Stack Underflow - Operation not permitted. Resetting to original position.\n");
+	print("Note: this may result in a memory leak. Please close this application and re-open if necessary.\n");
+	first = NULL;
 }
 
 // Prevents a push() on an already-full stack from causing unintended behavior
@@ -126,3 +132,7 @@ double calc() {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 // print_stack() exists primarily for debugging purposes
+//
+// 1 2 3 5 * - + =
+//
+// NULL 1 2 
