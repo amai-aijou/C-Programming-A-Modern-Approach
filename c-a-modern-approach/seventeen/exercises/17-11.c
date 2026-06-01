@@ -23,7 +23,7 @@ struct node {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int count_occurrences(struct node *list, int n);
 struct node *create_linked_list_recursive(struct node *list, int numNodes);
-void *print_list(struct node *list);
+void print_list(struct node *list);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -31,13 +31,14 @@ void *print_list(struct node *list);
 int main(void) {
 
 	struct node *first = NULL;
+	int n = 50;
 
 	first = create_linked_list_recursive(first, 5);
 
 	printf("Printing again after function: \n");
 	print_list(first);
 
-//	count_occurrences(first, n);
+	printf("occurrences of %d: %d\n", n, count_occurrences(first, n));
 
 	return 0;
 }
@@ -46,7 +47,18 @@ int main(void) {
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int count_occurrences(struct node *list, int n) {
+	
+	struct node **p;
+	int counter = 0;
 
+	for (p = &list; *p != NULL; p = &(*p)->next) {
+		if ((*p)->value == n) {
+			counter++;
+			printf("DEBUG - HIT!\n");
+		}
+	}
+
+	return counter;
 }
 
 // I made it recursive because I'm ridiculous like that
@@ -70,7 +82,7 @@ struct node *create_linked_list_recursive(struct node *list, int numNodes) {
 	return new_node;
 }
 
-void *print_list(struct node *list) {
+void print_list(struct node *list) {
 
 	struct node *p;
 
