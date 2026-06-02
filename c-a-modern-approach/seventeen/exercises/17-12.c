@@ -15,13 +15,14 @@
 
 struct node {
 	int value;
+	int nodeNum;
 	struct node *next;
 };
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int count_occurrences(struct node *list, int n);
+struct node *find_last(struct node *list, int n);
 struct node *create_linked_list_recursive(struct node *list, int numNodes);
 void print_list(struct node *list);
 
@@ -30,16 +31,19 @@ void print_list(struct node *list);
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("-------------------EXERCISE 17-11-------------------\n");
+	printf("-------------------EXERCISE 17-12-------------------\n");
+
 	struct node *first = NULL;
-	int n = 50;
+	struct node *last;
+	int n = 30;
 
 	first = create_linked_list_recursive(first, 5);
 
-	printf("Printing again after function: \n");
+	printf("Printing current linked list: \n");
 	print_list(first);
 
-	printf("occurrences of %d: %d\n", n, count_occurrences(first, n));
+	last = find_last(first, n);
+	printf("last occurrence of %d: [#%d: %d]\n", n, last->nodeNum, last->value);
 
 	return 0;
 }
@@ -47,19 +51,22 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-int count_occurrences(struct node *list, int n) {
+struct node *find_last(struct node *list, int n) {
 	
 	struct node **p;
-	int counter = 0;
+	struct node *last;
 
 	for (p = &list; *p != NULL; p = &(*p)->next) {
 		if ((*p)->value == n) {
-			counter++;
-			printf("DEBUG - HIT!\n");
+			last = *p;
 		}
 	}
 
-	return counter;
+	if (last != NULL) {
+		return last;
+	} else {
+		return NULL;
+	}
 }
 
 // I made it recursive because I'm ridiculous like that
@@ -72,13 +79,15 @@ struct node *create_linked_list_recursive(struct node *list, int numNodes) {
 		exit(EXIT_FAILURE);
 	}
 	
-	new_node->value = (numNodes * 10);
+	new_node->value = 30;
 
 	if (numNodes > 1 ) {
 		new_node->next = create_linked_list_recursive(new_node, (numNodes - 1));
 	} else {
-		print_list(list);
+		new_node->value = 10;
 	}
+
+	new_node->nodeNum = numNodes;
 
 	return new_node;
 }
@@ -94,7 +103,7 @@ void print_list(struct node *list) {
 			printf(" -> ");
 		}
 
-		printf("%d", p->value);
+		printf("#%d.[%d]", p->nodeNum, p->value);
 	}
 	printf("]");
 	printf("\n\n");
