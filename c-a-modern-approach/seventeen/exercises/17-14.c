@@ -11,15 +11,19 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 struct node {
 	int value;
+	int nodeNum;
 	struct node *next;
-} 
+}; 
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void delete_from_list_void(struct node **list, int n);
+struct node *delete_from_list(struct node *list, int n);
 struct node *create_linked_list_recursive(struct node *list, int numNodes);
 void print_list(struct node *list);
 
@@ -30,8 +34,18 @@ int main(void) {
 
 	struct node *first;
 
-	first = create_linked_list_recursive(first,5);
+	printf("-------------------EXERCISE 17-14-------------------\n");
 
+	first = create_linked_list_recursive(first,5);
+	print_list(first);
+
+	first = delete_from_list(first, 30);
+	print_list(first);
+
+	delete_from_list_void(&first, 50);
+	print_list(first);
+
+	printf("Tested: Deleting first node from list, last node from list, middle node.\n\n");
 
 	return 0;
 }
@@ -39,11 +53,11 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-struct node *delete_from_list_new(struct node *list, int n) {
+void delete_from_list_void(struct node **list, int n) {
 
 	struct node *cur, *prev;
 
-	for (cur = list, prev = NULL;
+	for (cur = *list, prev = NULL;
 		 cur != NULL && cur->value != n;
 		 prev = cur, cur = cur->next) {
 		;
@@ -51,20 +65,17 @@ struct node *delete_from_list_new(struct node *list, int n) {
 
 	if (cur == NULL) {
 		printf("DELETE entry %d from list -- NOT FOUND!\n", n);
-		return list;
 	}
 
 	if (prev == NULL) {
-		printf("DELETE entry %d from list\n",list->value);
-		list = list->next;
+		printf("DELETE entry %d from list\n",(*list)->value);
+		*list = (*list)->next;
 	} else {
 		printf("DELETE entry %d from list\n",prev->value);
 		prev->next = cur->next;
 	}
 
 	free(cur);
-
-	return list;
 }
 
 struct node *delete_from_list(struct node *list, int n) {
@@ -105,7 +116,7 @@ struct node *create_linked_list_recursive(struct node *list, int numNodes) {
 		exit(EXIT_FAILURE);
 	}
 	
-	new_node->value = 30;
+	new_node->value = (numNodes * 10);
 
 	if (numNodes > 1 ) {
 		new_node->next = create_linked_list_recursive(new_node, (numNodes - 1));
@@ -116,89 +127,6 @@ struct node *create_linked_list_recursive(struct node *list, int numNodes) {
 	new_node->nodeNum = numNodes;
 
 	return new_node;
-}
-
-// Pointer to pointer allows us to alter the list directly within the function
-void delete_from_list_new(struct node **list, int n) {
-
-	struct node **p;
-
-	for (p = list; p != NULL && (*p)->value != n; p = &(*p)->next) {
-		;
-	}
-
-	if (*p != NULL) {
-		free(*p);	
-	}
-}
-
-/***************************
- 
-FIRST        **P
- 50  -> 40 -> 30 -> 20 -> 10
-        ^
-       p->next = 20
-****************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Pointer to pointer allows us to alter the list directly within the function
-void add_to_list_new(struct node **list, int n) {
-
-	struct node *new_node;
-
-	new_node = malloc(sizeof(struct node));
-	if (new_node == NULL) {
-		printf("Error: malloc failed in add_to_list\n");
-		exit(EXIT_FAILURE);
-
- 92
-	}
-
-	new_node->value = n;
-	new_node->next = *list;
-	*list = new_node;
-
-	printf("ADD entry %d to  list\n",(*list)->value);
 }
 
 void print_list(struct node *list) {
