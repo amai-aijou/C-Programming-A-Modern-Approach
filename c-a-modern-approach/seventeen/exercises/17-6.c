@@ -136,15 +136,15 @@ struct node *delete_from_list(struct node *list, int n) {
 // Exercise 17-6 - "Good taste" code from the master himself, Linus Torvalds!
 struct node *delete_from_list_new(struct node *list, int n) {
 
-	//1. Create a pointer to a pointer, aimed at the *list pointer's memory address
+	// Create a pointer to a pointer, aimed at the *list pointer's memory address
 	struct node **p = &list;
 
-	//2. Iterate through *p (the list) to find n. Stop if found
+	// Iterate through *p (the list) to find n. Stop if found
 	while ((*p != NULL) && ((*p)->value != n)) {
 		p = &(*p)->next;
 	}
 
-	//3. The while loop will only produce two results: NULL, or a pointer to the node with value n
+	// The while loop will only produce two results: NULL, or a pointer to the node with value n
 	if (*p != NULL) {
 
 		printf("DEL NODE %d\n",(*p)->value);
@@ -152,11 +152,14 @@ struct node *delete_from_list_new(struct node *list, int n) {
 		// Create a temporary struct to hold the memory location of the node we wish to remove...
 		struct node *trash = *p;
 
-		// Move our pointer forward, from the location of the bad node, to the next node
+		// *p is the ->next value of the node *before* the bad one...(*p)->next is currently pointing at the good node after it
+		// Now the ->next value of the node before the bad one, will point to the good one (creating a new chain without the bad node!)
 		*p = (*p)->next;
 
 		// Since *p no longer points to the bad node, *trash is the only remaining reference to the bad memory. Delete it!
 		free(trash);
+
+		// As we have directly altered the objects in the heap, we need only return a pointer to the first value in the list!
 		return list;
 	}
 
