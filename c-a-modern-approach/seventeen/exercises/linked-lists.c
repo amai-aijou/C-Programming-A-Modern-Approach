@@ -28,7 +28,9 @@ struct node *read_numbers(void);
 struct node *search_list(struct node *list, int n);
 struct node *delete_from_list(struct node *list, int n);
 struct node *delete_from_list_new(struct node *list, int n);
-void *print_list(struct node *list);
+struct node *create_linked_list_recursive(struct node *list, int numNodes);
+struct node *create_ordered_list_recursive(struct node *list, int numNodes);
+void print_list(struct node *list);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -213,13 +215,65 @@ struct node *delete_from_list_new(struct node *list, int n) {
 	return list;
 }
 
-void *print_list(struct node *list) {
+// I made it recursive because I'm ridiculous like that
+struct node *create_linked_list_recursive(struct node *list, int numNodes) {
 
-	struct node *p;
-	int i = 1;
+	struct node *new_node = malloc(sizeof(struct node));
+	
+	if (new_node == NULL) {
+		printf("ERROR: Memory could not be allocated. Exiting to prevent null pointer!\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	new_node->value = 30;
 
-	for (p = list; p != NULL; p = p->next) {
-		printf("List Element: %d | List Value: %d\n", i, p->value);
+	if (numNodes > 1 ) {
+		new_node->next = create_linked_list_recursive(new_node, (numNodes - 1));
+	} else {
+		new_node->value = 10;
 	}
 
+	new_node->nodeNum = numNodes;
+
+	return new_node;
+}
+
+// I made it recursive because I'm ridiculous like that
+// This time it's tail recursion, which reverses the order they're made; that way, the list is in order :)
+struct node *create_ordered_list_recursive(struct node *list, int numNodes) {
+
+	if (numNodes == 0) {
+		return list;
+	}
+
+	struct node *new_node = malloc(sizeof(struct node));
+
+	if (new_node == NULL) {
+		printf("ERROR: Memory could not be allocated. Exiting to prevent null pointer!\n");
+		exit(EXIT_FAILURE);
+	}
+
+	new_node->nodeNum = numNodes;
+	new_node->value = (numNodes * 10);
+
+	new_node->next = list;
+
+	return create_linked_list_recursive(new_node, (numNodes - 1));
+}
+
+void print_list(struct node *list) {
+
+	struct node *p;
+
+	printf("[");
+	for (p = list; p != NULL; p = p->next) {
+
+		if (p != list) {
+			printf(" -> ");
+		}
+
+		printf("#%d.[%d]", p->nodeNum, p->value);
+	}
+	printf("]");
+	printf("\n\n");
 }

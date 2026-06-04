@@ -41,11 +41,11 @@ int main(void) {
 	first = generate_list();
 
 	// Remove 30 from list using standard method
-	first = delete_from_list(first, 30);
+	first = delete_from_list_new(first, 20);
 	print_list(first);
 
 	// Remove 20 from list -- Exercise 17-6
-	first = delete_from_list_new(first, 20);
+	first = delete_from_list_new(first, 10);
 	print_list(first);
 
 	return 0;
@@ -157,7 +157,7 @@ struct node *delete_from_list_new(struct node *list, int n) {
 
 		// Since *p no longer points to the bad node, *trash is the only remaining reference to the bad memory. Delete it!
 		free(trash);
-		return *p;
+		return list;
 	}
 
 	//Fail: If *p is NULL, return list.  Since we used **p for the search, *list never changed :)
