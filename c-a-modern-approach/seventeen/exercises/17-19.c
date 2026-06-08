@@ -42,6 +42,7 @@ struct {
   {"save all",	save_all_cmd},
   {"print",		print_cmd},
   {"exit",		exit_cmd},
+  {NULL,		NULL},
  };
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -49,9 +50,9 @@ struct {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	char *str = "new";
+	char *str = "open";
 
-	search_and_run("new");
+	search_and_run(str);
 
 	return 0;
 }
@@ -63,9 +64,7 @@ void search_and_run (char *string) {
 
 	char ch, i = 0, j = 0;
 
-
-//	while (file_cmd[i].cmd_name[j] != '\0') {
-//		printf("DEBUG - test: |%c|\n", file_cmd[i].cmd_name[j]);
+	while (file_cmd[i].cmd_pointer != NULL) { 
 
 		while (string[j] == file_cmd[i].cmd_name[j] && string[j] != '\0') {
 			printf("letter match!\n");
@@ -75,9 +74,12 @@ void search_and_run (char *string) {
 		if (string[j] == '\0' && file_cmd[i].cmd_name[j] == '\0') {
 			printf("word match!\n");
 			(*file_cmd[i].cmd_pointer)();
+			return;
 		} else {
 			printf("no match\n");
 		}
+		i++;
+	}
 
 }
 
