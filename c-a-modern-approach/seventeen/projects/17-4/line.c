@@ -10,6 +10,7 @@ struct node {
 };
 
 struct node *line = NULL;
+struct node *tail = NULL;
 
 /*********************************/
 
@@ -46,7 +47,26 @@ void clear_line(void) {
 // The list will need to be *reversed*, however, using a "tail" pointer
 void add_word(const char *word) {
 
-	if (num_words > 0)
+	int word_ptr = 0;
+	char *p;
+
+	struct node *new_node;
+
+	if (num_words > 0) {
+		new_node->word[0] = ' ';
+		line_len++;
+	}
+
+	strcat(new_node->word,word);
+	line_len += strlen(word);
+	num_words++;
+
+	// HEAD -> NULL
+	// HEAD WORD1 -> NULL
+	// new_node->next = tail->next
+	// Word1->Next = new_node;
+	// tail = new_node;
+
 }
 
 /*********************************
