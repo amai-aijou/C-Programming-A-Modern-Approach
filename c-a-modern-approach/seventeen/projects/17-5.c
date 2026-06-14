@@ -14,10 +14,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_STORAGE 100
+
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int read_line(char str[], int n);
+void print_array(char *str[], int n);
+int compare(const void *p, const void *q);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -25,18 +29,30 @@ int read_line(char str[], int n);
 int main(void) {
 
 	char ch;
-	char *storage[100];
+	char *storage[MAX_STORAGE];
 	char word[20];
-	int n = 20;
+	int maxChars = 20;
+	int i = 0;
+	int length;
 
 	for (;;) {
 		printf("Enter word: ");
 
-		if (read_line(word,n) == 0) {
+		if ((length = (read_line(word,maxChars))) == 0) {
 			break;
 		}
 
+		storage[i] = malloc(length + 1);
+		strcpy(storage[i], word);
+
+		i++;
 	}
+
+	printf("As entered: ");
+	print_array(storage, i);
+	qsort(storage, i, sizeof(char *),compare);
+	printf("\nAfter sorting: ");
+	print_array(storage, i);
 
 	return 0;
 }
@@ -56,4 +72,35 @@ int read_line(char str[], int n) {
 	str[i] = '\0';
 
 	return i;
+}
+
+int compare(const void *p, const void *q) {
+
+	const char *p1 = *(const char **) p;
+	const char *q1 = *(const char **) q;
+
+	if (strcmp(p1,q1) < 0) {
+		return -1;
+	} else if (strcmp(p1,q1) == 0) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+		
+void print_array(char *str[], int n) {
+
+	int i;
+
+	for (i = 0; i < n; i++) {
+
+		if (i ==0) {
+			printf("%s", str[i]);
+			continue;
+		}
+
+		printf(" %s", str[i]);
+	}
+
+	printf("\n");
 }
