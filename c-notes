@@ -1227,3 +1227,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 "18.3 Type Qualifiers"
   - two types: "const" and "volatile" (the latter is low-level programming only)
   - In embedded systems, const identifies memory to be stored in ROM
+  - const differs from using a declare statement in a few key ways:
+    * const provides context to viewers of your source code, explains what the functions are supposed to do (And shows which variables will not change)
+    * const cannot be used in arrays, such as const int n; array[n] = x;
+    * declare is pre-compiler only, so anything that must occur at runtime should use const
