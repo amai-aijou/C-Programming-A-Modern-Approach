@@ -1195,3 +1195,35 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
            "Chapter 18"
 		  "Declarations"
 #####################################
+
+"18.1 Declaration Syntax"
+  - A declaration generally appears in the format "declaration-specifiers declarators ;"
+  - A "declaration specifier" describes the properties of the variable/function. A "declarator" gives their names and provides additional information about their properties
+  - Declaration Specificers fall into three categories:
+    * "Storage Classes": auto, static, extern, register (may contain only one storage class per declaration. It should come first)
+    * "Type Qualifiers": const, volatile, restrict (may contain 0 or more qualifiers)
+    * "Type Specifiers": void, char, short, int, long, float, double, signed, unsigned, etc (may be combined)
+        Note: structs and typedefs are specifiers, as well
+    * "Function Specifiers": inline (used only in function declarations in C99)
+  - "initializer": the content used to provide an initial value (int n = 10 would have an initializer of 10)
+
+"18.2 Storage Classes"
+  - "Storage Duration": determines when memory is set aside. a "static" variable stays at the same memory location as long as the program is running
+  - "Linkage": a variable with "external linkage" can be shared by several files in a program; "internal linkage" is limited to functions in same file; no linkage restricted to single function
+    * variables declared outside of functions (such as "global scope" variables) will have "external linkage". Using "static" will make that same global variable now limited to the same file
+  - "Static Variable values are shared between recursive functions!"
+  - variables in an "extern" declaration always have static duration
+
+  "The register Storage Class"
+  - using the register storage class asks the compiler to store the variable in the CPU register instead of in memory. this is a request, not a command!
+  - legal only for variables in a block. Shares all properties of an auto variable, *except* "you cannot use &, as it lacks an address (even if the compiler puts it in memory!)
+
+  "The Storage Class of a Function"
+  - May only use extern and static
+  - "extern": specifies the function has external linkage (and may be called from other files). This is the default
+  - "static": indicates internal linkage, and can only be called within the file in which it's defined.
+  - "name space pollution": occurs when the same function name is used in multiple files, which can cause issues when external. "static" reduces the impact of this
+
+"18.3 Type Qualifiers"
+  - two types: "const" and "volatile" (the latter is low-level programming only)
+  - In embedded systems, const identifies memory to be stored in ROM
