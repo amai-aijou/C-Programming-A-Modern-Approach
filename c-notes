@@ -1231,3 +1231,34 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
     * const provides context to viewers of your source code, explains what the functions are supposed to do (And shows which variables will not change)
     * const cannot be used in arrays, such as const int n; array[n] = x;
     * declare is pre-compiler only, so anything that must occur at runtime should use const
+
+"18.4 Declarations"
+  - array brackets can be left empty if the array is a parameter, has an initializer, or if its storage class is "extern" (since we won't know its size yet)
+  - C99 allows the use of "static" to declare an array's minimum length, like: static array[5], or an asterisk to denote variable-length: array[*]
+  - C allows parameter names to be omitted. Even parentheses can be empty! Note: this is VERY old (pre-C89), don't use it. modern prototypes kick butt comparatively
+  - 
+
+"18.5 Initializers"
+  - the equals sign (=) is an initializer; however, much like an asterisk (*) is different during declaration, so is the equals. It's not the same as declaration!
+  - the initializer for a "static" variable must be constant! You can use define macros, but *not* variables!
+  - the same is true of arrays of *all kinds* in C89; however, in C99, you can use variables for arrays as long as they aren't static
+  - the initializer for an auto struct or union can be another struct or union
+
+  "Uninitialized Variables"
+  - the initial value of a variable depends on its storage duration, it is NOT always undefined!
+  - variables with "auto" storage duration have "no default value"
+  - variables with "static" storage durationhave "default value of zero". It is correctly initialized by type, meaning "a static float will be 0.0, not 0"
+  - As a matter of style (and perhaps good taste), it's better to always provide an initializer for static variables
+
+"18.6 Inline Functions (C99)"
+  - C99 has the keyword "inline", which relates to machine instructions for a function
+  - C *always* copies its functions by value (which is why you need pointers to make changes to objects passed into functions)
+  - this, and the work to return the function, are collectively called "overhead". C99's "inline" keyword is aimed at "reducing function overhead"
+  - using "inline", every call of the function is replaced by the machine instructions for that function. It reduces overhead, but may increase size
+  - inline does not actually force the compiler to use anything specific though; it simply explains that it should make these calls as fast as possible
+  - like register and restrict, the compiler is free to ignore inline. These days, compilers are so fast, it's probably only *rarely* even beneficial (and only slightly)
+  
+  "Inline Definitions"
+  - if the standard call of a function has external linkage (can be called elsewhere), adding inline will break that functionality. It will cause an error
+  - adding "static" explicitly claims "internal linkage" so it can't be called. There is another way, but it is DIRTY: make a second prototype for the function in another file
+  - adding a second definition of a function is not recommended because you can't guarantee they will remain consistent when the function is modified
