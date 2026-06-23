@@ -12,6 +12,13 @@
 
 #include <stdio.h>
 
+#define COLOR_RED "\033[1;31m"
+#define COLOR_GREEN "\033[1;32m"
+#define COLOR_YELLOW "\033[1;33m"
+#define COLOR_MAGENTA "\033[1;35m"
+#define COLOR_CYAN "\033[1;36m"
+#define COLOR_RESET "\033[1;0m"
+
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
@@ -22,40 +29,40 @@
 int main(void) {
 
 	printf("-------------------EXERCISE 18-1-------------------\n\n");
-	printf("Q. For each of the following declarations, identify the:\n"
-		   "  * Storage Class\n"
+	printf(COLOR_MAGENTA "Q. For each of the following declarations, identify the:\n"
+		   COLOR_CYAN "  * Storage Class\n"
 		   "  * Type Qualifiers\n"
 		   "  * Type Specifiers\n"
 		   "  * Declarators\n"
 		   "  * Initializers\n\n");
 
-	printf("(a) static char **lookup(int level);\n"
-		   "  * Storage Class: static\n"
-		   "  * Type Qualifiers: -\n"
-		   "  * Type Specifiers: char\n"
-		   "  * Declarators: **lookup(int level), level\n"
-		   "  * Initializers:\n\n");
+	printf(COLOR_MAGENTA "(a) static char **lookup(int level);\n"
+		   COLOR_CYAN "  * Storage Class: " COLOR_RESET "static\n"
+		   COLOR_CYAN "  * Type Qualifiers: " COLOR_RESET "-\n"
+		   COLOR_CYAN "  * Type Specifiers: " COLOR_RESET "char\n"
+		   COLOR_CYAN "  * Declarators: " COLOR_RESET "**lookup(int level), level\n"
+		   COLOR_CYAN "  * Initializers: " COLOR_RESET "-\n\n");
 
-	printf("(b) volatile unsigned long io_flags;\n"
-		   "  * Storage Class: -\n"
-		   "  * Type Qualifiers: volatile\n"
-		   "  * Type Specifiers: unsigned long\n"
-		   "  * Declarators: io_flags\n"
-		   "  * Initializers: -\n\n");
+	printf(COLOR_MAGENTA "(b) volatile unsigned long io_flags;\n"
+		   COLOR_CYAN "  * Storage Class: " COLOR_RESET "-\n"
+		   COLOR_CYAN "  * Type Qualifiers: " COLOR_RESET "volatile\n"
+		   COLOR_CYAN "  * Type Specifiers: " COLOR_RESET "unsigned long\n"
+		   COLOR_CYAN "  * Declarators: " COLOR_RESET "io_flags\n"
+		   COLOR_CYAN "  * Initializers: " COLOR_RESET "-\n\n");
 
-	printf("(c) extern char *file_name[MAX_FILES], path[];\n"
-		   "  * Storage Class: extern\n"
-		   "  * Type Qualifiers: -\n"
-		   "  * Type Specifiers: char\n"
-		   "  * Declarators: *file_name[MAX_FILES], path[]\n"
-		   "  * Initializers:\n\n");
-	
-	printf("(d) static const char token_buf[] = "";\n"
-		   "  * Storage Class: static\n"
-		   "  * Type Qualifiers: const\n"
-		   "  * Type Specifiers: char\n"
-		   "  * Declarators: token_buf[]\n"
-		   "  * Initializers: ""\n\n");
+	printf(COLOR_MAGENTA "(c) extern char *file_name[MAX_FILES], path[];\n"
+		   COLOR_CYAN "  * Storage Class: " COLOR_RESET "extern\n"
+		   COLOR_CYAN "  * Type Qualifiers: " COLOR_RESET "-\n"
+		   COLOR_CYAN "  * Type Specifiers: " COLOR_RESET "char\n"
+		   COLOR_CYAN "  * Declarators: " COLOR_RESET "*file_name[MAX_FILES], path[]\n"
+		   COLOR_CYAN "  * Initializers: " COLOR_RESET "-\n\n");
+
+	printf(COLOR_MAGENTA "(d) static const char token_buf[] = "";\n"
+		   COLOR_CYAN "  * Storage Class: " COLOR_RESET "static\n"
+		   COLOR_CYAN "  * Type Qualifiers: " COLOR_RESET "const\n"
+		   COLOR_CYAN "  * Type Specifiers: " COLOR_RESET "char\n"
+		   COLOR_CYAN "  * Declarators: " COLOR_RESET "token_buf[]\n"
+		   COLOR_CYAN "  * Initializers: " COLOR_RESET "\"\"\n\n");
 
 	return 0;
 }
