@@ -1,6 +1,6 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 18-2.c
+   ❤︎︎࣪ Name: 18-6.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
    ❤︎︎࣪ Date: Sat Jun 20 06:14:55 PM CDT 2026
@@ -22,26 +22,30 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void print_error(const char *message);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	printf("-------------------EXERCISE 18-2-------------------\n\n");
-	printf(COLOR_MAGENTA "Answer each of the following questions with auto, extern, register, and/or static.\n\n");
+	const char *err1 = "test1";
+	const char *err2 = "test2";
+	const char *err3 = "test3";
 
-	printf(COLOR_CYAN "(a) Which storage class is used primarily to indicate that a variable or function can\n"
-		   "    be shared by several files?\n");
-	printf(COLOR_RESET "    A. extern\n\n");
+	print_error(err1);
+	print_error(err2);
+	print_error(err3);
 
-	printf(COLOR_CYAN "(b)  Q. Suppose that a variable x is to be shared by several functions in one file, but\n"
-		   "        hidden from functions in other files.\n"
-		   "        Which storage class should x be declared to have?\n");
-	printf(COLOR_RESET "    A. static (but know that it is *truly* shared, and the functions can each manipulate the value)\n\n");
-
-	printf(COLOR_CYAN "(c)  Q. Which storage classes can affect the storage duration of a variable?\n");
-	printf(COLOR_RESET "    A. auto, static, register\n\n");
+	printf("-------------------EXERCISE 18-6-------------------\n\n");
+	printf(COLOR_MAGENTA "This function should print an error message preceded by an integer informing you of the number\n"
+		   				 "of times the function has been called. It currently always displays '1'. Locate the error and\n"
+						 "function always displays 1 as the number of the error message. Locate the error and show\n"
+						 "fix it without making any changes outside the function.\n\n");
+	printf(COLOR_RESET "void print_error(const char *message) {\n"
+					   "    int n = 1;\n"
+					   "    printf(\"Error %%d: %%s\\n\", n++, message);\n"
+					   "}\n\n");
 
 	return 0;
 }
@@ -49,4 +53,8 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void print_error(const char *message) {
+	static int n = 1;
 
+	printf("Error %d: %s\n", n++, message);
+}
