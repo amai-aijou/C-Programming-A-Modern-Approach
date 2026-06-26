@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 18-8.c
+   ❤︎︎࣪ Name: 18-9.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Tues Jun 23 06:14:55 PM CDT 2026
+   ❤︎︎࣪ Date: Thurs Jun 25 06:14:55 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -20,22 +20,6 @@
 #define COLOR_CYAN "\033[1;36m"
 #define COLOR_RESET "\033[1;0m"
 
-
-/*
-(COLOR_CYAN "(c) float *(*x(void))(int);\n");
-
-
-// (d) void (*x(int, void (*y)(int)))(int);
-
-
-
-// then plug in: void (*x(int, Ptr_y))(int);
-typedef void Fcn_ptr_void_x(int);
-typedef Fcn_ptr_void_x *Fcn_ptr_x;
-typedef Fcn_ptr_x Fcn_x(int, Ptr_y);
-Fcn_x x;
-
-*/
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
@@ -75,7 +59,13 @@ int main(void) {
 	"      // build y first\n" COLOR_RESET
 	"      typedef void Fcn_ptr_y(int);\n"
 	"      typedef Fcn_ptr_y *Ptr_y;\n"
-	"      Ptr_y y;\n\n");
+	"      Ptr_y y;\n\n"
+
+	"      // then plug in: void (*x(int, Ptr_y))(int);\n"
+	"      typedef void Fcn_ptr_void_x(int);\n"
+	"      typedef Fcn_ptr_void_x *Fcn_ptr_x;\n"
+	"      typedef Fcn_ptr_x Fcn_x(int, Ptr_y);\n"
+	"      Fcn_x x;\n\n");
 
 	return 0;
 }
