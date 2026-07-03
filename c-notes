@@ -1262,3 +1262,24 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - if the standard call of a function has external linkage (can be called elsewhere), adding inline will break that functionality. It will cause an error
   - adding "static" explicitly claims "internal linkage" so it can't be called. There is another way, but it is DIRTY: make a second prototype for the function in another file
   - adding a second definition of a function is not recommended because you can't guarantee they will remain consistent when the function is modified
+
+
+#####################################
+           "Chapter 19"
+		  "Program Design"
+#####################################
+
+"19.1 Modules"
+  - a module is a collection of services, some of which are made available to other parts of the program ("clients")
+  - "Abstraction" means that a properly-designed program allows the users to not know what some of the functions even do. You only need know the inputs and outputs!
+    *NOTE: I personally feel that, over long periods of time, this has culminated in many programmers not understanding the programs at a fundamental level...which is why I learned C!
+
+"Cohesion and Coupling"
+  - A well-design program will have:
+    * "High Cohesion": elements of each module should be related to one another, with a common goal
+    * "Low Coupling": Modules should be as independent as possible from each other. Makes it easier to reuse modules and modify programs
+
+"Types of Modules"
+  - "Data Pool": a collection of related variables/constants. In C, is often just a header file (for constants, not variables!)
+  - "Library": a collection of related functions. They may be created by C, or they may be created by users. Again, you only need know the inputs and outputs to use most of the time!
+  - "Abstract Object" A collection of functions operating on a hidden data structure
