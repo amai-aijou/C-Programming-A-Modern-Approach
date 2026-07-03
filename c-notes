@@ -1282,4 +1282,9 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 "Types of Modules"
   - "Data Pool": a collection of related variables/constants. In C, is often just a header file (for constants, not variables!)
   - "Library": a collection of related functions. They may be created by C, or they may be created by users. Again, you only need know the inputs and outputs to use most of the time!
-  - "Abstract Object" A collection of functions operating on a hidden data structure
+  - "Abstract Object" A collection of functions operating on a hidden data structure (object = collection of data bundled with operations on said data)
+  - "Abstract Data Type (ADT)": a type whose representation is hidden (see Section 19.5 for more on information hiding)
+
+"19.2 Information Hiding"
+  - modules keep some information secret. As long as the inputs and outputs are clear, the inner workings can be left mysterious. This is done for both "security" and "flexibility"
+  - "static" storage class shines at information hiding. file-level variables with static have internal linkage, anbd cannot be accessed by clients of the module in question
