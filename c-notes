@@ -1288,3 +1288,15 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 "19.2 Information Hiding"
   - modules keep some information secret. As long as the inputs and outputs are clear, the inner workings can be left mysterious. This is done for both "security" and "flexibility"
   - "static" storage class shines at information hiding. file-level variables with static have internal linkage, anbd cannot be accessed by clients of the module in question
+
+"19.3 Abstract Data Types"
+  - "typedef" is used to create abstract data types; for instance, to have multiple Structs (I feel you could just accomplish this by making two structs but, ok)
+  - The idea is that clients do not know (or need to know) what underlies the type. for instance, "stack" could be a struct, or it could be an array, but it doesn't matter to the client
+  - C is not well-equipped for "encapsulation", aka the process of truly hiding what data types are being used underneath a type, and they can still be called as such
+
+  "Incomplete Type"
+  - The only tool for "encapulation" provided by C is the incomplete type, a type that describes objects but lacks the information needed to determine the size of said object
+
+      struct t; //example of incomplete type (which we presume has been elucidated upon elsewhere, to describe the members of the struct)
+
+  - You cannot create a variable of that struct type; however, you can create pointers to that variable, which will (eventually) be joined to an actual struct of that type
