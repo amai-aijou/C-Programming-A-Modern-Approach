@@ -1300,3 +1300,12 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
       struct t; //example of incomplete type (which we presume has been elucidated upon elsewhere, to describe the members of the struct)
 
   - You cannot create a variable of that struct type; however, you can create pointers to that variable, which will (eventually) be joined to an actual struct of that type
+
+"19.5 Design Issues for Abtract Data Types (ADTs)"
+
+  "Error Handling"
+  - The C standard library containers a parameterized macro named "assert" that can terminate a program if specific conditions are not met. This could replace "if" statements
+
+"Q&A"
+  - The void type is technically an incomplete data type, and can *never* be completed. It's actually impossible to declare a void variable of this type for that reason
+  - sizeof() cannot be applied to an incomplete type!
