@@ -21,7 +21,6 @@ struct queue_type {
 	Item contents[QUEUE_SIZE];
 	int top;
 	int tail;
-	int size;
 };
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -41,7 +40,6 @@ Queue create_queue(void) {
 	}
 	q->top = 0;
 	q->tail = 0;
-	q->size = 0;
 
 	return q;
 }
@@ -60,12 +58,11 @@ void make_empty(Queue q) {
 	}
 	q->top = 0;
 	q->tail = 0;
-	q->size = 0;
 }
 
 bool is_empty(Queue q) {
 
-	return q->size == 0;
+	return q->tail == q->top;
 }
 
 void insert_queue(Queue q, Item x) {
@@ -73,7 +70,6 @@ void insert_queue(Queue q, Item x) {
 	q->contents[q->tail] = x;
 
 	q->tail = (q->tail + 1) % QUEUE_SIZE;
-	q->size++;
 }
 
 Item remove_queue(Queue q) {
@@ -81,7 +77,6 @@ Item remove_queue(Queue q) {
 	Item num = q->contents[q->top];
 
 	q->top = (q->top + 1) % QUEUE_SIZE;
-	q->size--;
 
 	return num;
 }
