@@ -1309,3 +1309,79 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 "Q&A"
   - The void type is technically an incomplete data type, and can *never* be completed. It's actually impossible to declare a void variable of this type for that reason
   - sizeof() cannot be applied to an incomplete type!
+
+
+#####################################
+           "Chapter 20"
+	  "Low-Level Programming"
+#####################################
+
+"20.1 Bitwise Operators"
+  - There are 6 bitwise operators in C that operate on integer data at the bit level: two shift operators, complement, and, exclusive or, and inclusive or
+
+  "Bitwise Shift Operators"
+  - Transforms the binary representation of an integer by shifting its bits to the left ("<< left shift") or right ("<< right shift")
+  - May be any integer or char type, integer promotions are performed on both operands, and the result has the type of the left operand after promotion
+  - The value of i <<j is the result of the bits in i being shifted left by j places. For each shift off the left of i, a zero bit enters the right
+  - in >>, as long as i is nonnegative, zeros are added to the left for each shift as needed
+  - Some implementations handle negative numbers by adding zeros, others will add 1s, so it's very important to be careful to keep this portable by avoiding signed integers
+  - Assuming 16-bit integers, this is how the following operations will look:
+
+    i = 13;			// 0000000000001101
+    j = i << 2;    	// 0000000000110100
+    j = i >> 2;    	// 0000000000000011
+
+  - "Bitwise operators are essentially working on binary representations of integers"
+  - adding an equals sign can cause assignment to occur: >>= (bear in mind these operators have low precedence, so >>= 2 + 1 is like saying >>= (2+1)
+
+  "Bitwise Complement, And, Exclusive Or, and Inclusive Or"
+  - The remaining four bitwise operators:
+
+    ~	bitwise not (complement)		0 replaced with 1, 1 replaced with 0
+	&	bitwise and						Produces a 1 when both operands have a 1 (Boolean And)
+	^	bitwise exclusive or			Produces a 1 when one operand has a 1, a 0 when they both have a 1, and a 0 when they both have 0 (Boolean or)
+	|	bitwise inclusive or			Produces a 1 when one operand has a 1, a 1 when they both have a 1, and a 0 when they both have 0 (Boolean or)
+
+  - the ~ is unary, meaning promotions occur on its own operand. the rest are binary
+  - They perform boolean operations on all bits in their operands
+  - ^ / | are basically produce a 1 when only one of the operands has a 1
+    * "inclusive" means it still produces a 1 when they both do
+    * "exclusive" means ONLY one of the two can be 1
+  - The ~ operator helps with portability. It create an integer with all 1 bits, which works the same on all sizes (regardless of whether it's a 16- or a 64-bit!)
+
+ "Using the Bitwise Operators to Access Bits"
+  - We will often need to store info as single bits, or collections of bits. In Graphics programming, two or more pixels may be squeezed into a single byte
+  - Bitwise operators help to extract or modify data associated with small amounts of space, such as altering that single byte via a few bits
+
+  - "Setting a bit"
+    * Remember "most significant" bit is the left-most, "least significant" is the right
+    * Say you want to set bit 4 of i. You can use a "mask" that has that bit set, such as 0x010:
+
+      i  = 0x0000;	// (0x0000 = 00 = 0000)	 i = 0000000000000000
+      i |= 0x0010;	// (0x0010 = 16 = 1000)	 i = 0000000000001000
+
+  - "Clearing a bit" and "Testing a bit" are same as Setting, but use different operators. I'll move on to actual exampels of their use:
+
+    #define BLUE 	1
+    #define GREEN 	2
+    #define RED		4
+    
+    i |= BLUE;				// sets BLUE bit
+	i &= ~BLUE;	 			// clears BLUE bit
+	if (i & BLUE)			// Tests BLUE bit
+   
+    i |= BLUE | GREEN; 		// sets BLUE and GREEN bits
+    i &= ~(BLUE | GREEN); 	// clears BLUE and GREEN bits
+    if (i & BLUE | GREEN)) 	// tests whether BLUE or GREEN bits are set
+
+  "Using Bitwise Operators to Access Bit-Fields"
+  - Bitwise and clears the bit-field, bitwise or stores new bits in the field
+  - Let's look at an example that stores 101 in bits 4-6, and does not touch the rest:
+    * i = i & ~0x0070 | 0x0050; // 
+      - ~0x0070 = ~0000 0000 0111 0000 = 1111 1111 1000 1111
+    * i & 1111 1111 1000 1111 | 0x0050
+      -  0x0050  =  0000 0000 0101 0000
+    * i = xxxx xxxx x000 xxxx | 0000 0000 101 0000
+    * i = xxxx xxxx x101 xxxx
+    * x's are used for values for which we cannot predict the final value;
+    * the & guarantees that the x bits are unchanged, since we have 1s for all those values, and the | brings over anything that is a 1 from the old value
