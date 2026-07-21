@@ -1317,6 +1317,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 #####################################
 
 "20.1 Bitwise Operators"
+
   - There are 6 bitwise operators in C that operate on integer data at the bit level: two shift operators, complement, and, exclusive or, and inclusive or
 
   "Bitwise Shift Operators"
@@ -1337,6 +1338,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   "Bitwise Complement, And, Exclusive Or, and Inclusive Or"
   - The remaining four bitwise operators:
 
+	(IN PRECEDENCE ORDER!)
     ~	bitwise not (complement)		0 replaced with 1, 1 replaced with 0
 	&	bitwise and						Produces a 1 when both operands have a 1 (Boolean And)
 	^	bitwise exclusive or			Produces a 1 when one operand has a 1, a 0 when they both have a 1, and a 0 when they both have 0 (Boolean or)
@@ -1385,3 +1387,55 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
     * i = xxxx xxxx x101 xxxx
     * x's are used for values for which we cannot predict the final value;
     * the & guarantees that the x bits are unchanged, since we have 1s for all those values, and the | brings over anything that is a 1 from the old value
+
+"20.2 Bit-fields in Structures"
+
+  - Structs can be used to take the cumbersome, tricky concepts of 20.1, and package them into something more usable
+  - MS-DOS would split dates into a single integer, since they only needed four bits for the month (0-16 is plenty), etc
+  - C "structs have a special feature for bit-fields", which "uses a : character":
+
+    struct file_date {
+      unsigned int day: 5;
+      unsigned int month: 4;
+      unsigned int year: 7;
+    };
+
+  - The number after each is the length (in bits) of each member. You could condence these statements, into 'unsigned int day: 5, month: 4, year: 7', but that's tacky
+  - Must be int, unsigned int, or signed int. "bit-fields MUST be integers!"
+
+  "How Bit-Fields Are Stored"
+  - C gives the compiler a lot of latitude in determining how to choose a bit-field
+  - Generally stored as "storage units" in values of 8 bits, 16 bits, or 32 bits
+  - Bit-field names are entirely optional in C, but are useful as padding to ensure other bit fields are properly positioned
+
+"20.3 Other Low-Level Techniques"
+
+  "Defining Machine-Dependent Types"
+  - Since char only occupies one byte, it can be used to create a typedef for byte
+
+    typedef unsigned char BYTE;
+
+  - Other types can be used this way, as well, such as 16-bit words (unsigned short WORD)
+
+  "Using Unions to Provide Multiple Views of Data"
+  - Unions are often used to view a block of members in different ways:
+
+    union int_date {
+      unsigned short i;
+      struct file_date fd;
+    };
+
+  - This allows us to view the same block of memory as either a simple short integer of two bytes, or as a struct of two bytes designed to show the date
+  - Works great with registers, which are divided into smaller units
+    * Modern CPUs may be different in this regard, but older x86 have 16-bit registers AX, BX, CX, DX etc, further divided into AH (high) and AL (low), both 8-bits
+    * Setting up two structs allows the register to either be worked on as BH and BL, or as the entirety of BX
+  - "Big-Endian (natural order)": the left-most byte is stored first; "little-endian": the right-most byte is stored first. "x85 is little-endian!"
+
+  "Using Pointers as Addresses"
+  - Pointer addresses often have the same bits as an integer, so you can cast an int into a pointer, which can serve as the address:
+
+    BYTE *p;				// typedef for unsigned char
+    p = (BYTE *) 0x1000;	// p contains a pointer to the memory address 0x1000 now
+
+  - Most programs are only allowed to run in "protected mode", which means you cannot access any memory not allocated by or for the program (prevents hacks, crashes, and fun)
+  - The main function itself receives a memory address, which can be viewed by a user!
