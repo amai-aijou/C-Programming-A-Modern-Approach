@@ -33,7 +33,7 @@ int main(void) {
 	scanf("%d", &n);
 
 	printf("\n");
-	printf("Address				Bytes				Characters\n");
+	printf("Address			Bytes		Characters\n");
 	printf("-------	 -----------------------------	----------\n");
 
 	ptr = (BYTE *) addr;
