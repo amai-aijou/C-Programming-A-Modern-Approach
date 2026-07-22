@@ -1371,6 +1371,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
     i |= BLUE;				// sets BLUE bit
 	i &= ~BLUE;	 			// clears BLUE bit
 	if (i & BLUE)			// Tests BLUE bit
+    i ^= BLUE; 				// flips BLUE bit
    
     i |= BLUE | GREEN; 		// sets BLUE and GREEN bits
     i &= ~(BLUE | GREEN); 	// clears BLUE and GREEN bits
