@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 20-5.c
+   ❤︎︎࣪ Name: 20-6.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Thu Jul 23 09:22:39 PM CDT 2026
+   ❤︎︎࣪ Date: Sat Jul 25 04:34:42 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -18,47 +18,39 @@
 #define COLOR_CYAN "\033[1;36m"
 #define COLOR_RESET "\033[1;0m"
 
-#define MK_COLOR(x,y,z) ((x) | (y << 8) | (z << 16))
-
-#define GET_RED(x) ((x) & 0xFF)
-#define GET_GREEN(x) ((x >> 8) & 0xFF)
-#define GET_BLUE(x) ((x >> 16) & 0xFF)
-
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+unsigned short swap_bytes(unsigned short i);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	long int color;
-	short red, green, blue;
+	unsigned short i = 65280;
+	unsigned short swap = 0;
+	unsigned short nInput = 0, nSwap;
 
-	printf("-------------------EXERCISE 20-4 & 20-5------------\n\n");
-	printf(COLOR_MAGENTA "Create macro MK_COLOR and have it return a long with three parameters: REd, GREEN, BLUE\n"
-			             "These parameters will take up the last three bytes.\n"
-						 "Note: Remember x64 islittle-endian, so Red will be the last byte!\n\n");
+	swap = swap_bytes(i);
 
-	printf(COLOR_MAGENTA "(20-4)\n");
-	printf(COLOR_CYAN    " Guess: " COLOR_RESET "#define MK_COLOR(x,y,z) ((x) |(y << 8) | (z << 16))\n");
-	printf(COLOR_CYAN    "Output: ");
+	printf("-------------------EXERCISE 20-6-------------------\n\n");
+	printf(COLOR_MAGENTA "Q. Use bitwise operators to build a function that swaps the two bytes in short i\n"
+			             "   0001 0000 1100 0101 would become 1100 0101 0001 0000.\n"
+						 "   Write a program that reads in hex, then writes the number swapped!\n\n");
 
-	color = MK_COLOR(255,120,0);
-	printf("%d\n\n", color);
+	printf(COLOR_CYAN    "unsigned short swap_bytes(unsigned short i);\n");
 
+	printf(COLOR_CYAN    "    Before Convert: " COLOR_RESET "%d (should be 65280)\n", i);
+	printf(COLOR_CYAN    "     After Convert: " COLOR_RESET "%d (should be 255)\n\n", swap);
 
-	printf(COLOR_MAGENTA "(20-5)\n");
-	printf(COLOR_CYAN    " Guess: " COLOR_RESET "#define GET_RED(x) ((x) &= 0xFF)\n");
-	printf(COLOR_CYAN    "Output: ");
-
-	red = GET_RED(color);
-	green = GET_GREEN(color);
-	blue = GET_BLUE(color);
-	printf(COLOR_RESET "GET_RED:   %d\n", red);
-	printf("        GET_GREEN: %d\n", green);
-	printf("        GET_BLUE:  %d\n", blue);
+	printf(COLOR_MAGENTA "Program Example:\n");
+	printf(COLOR_CYAN    "Enter a hexadecimal number (up to four digits): " COLOR_RESET);
+	scanf("%x", &nInput);
+	printf("DEBUG: nInput Decimal: %d\n", nInput);
+	nSwap = swap_bytes(nInput);
+	printf(COLOR_CYAN    "Number with bytes swapped: " COLOR_RESET "%x", nSwap);
+	printf("\n");
 
 	return 0;
 }
@@ -66,3 +58,8 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+//MK_COLOR(x,y,z) ((x) | (y << 8) | (z << 16))
+unsigned short swap_bytes(unsigned short i) {
+
+	return ((i & ~0xFF00) << 8) | (i >> 8); 
+}
