@@ -86,6 +86,20 @@ int count_ones_loopless(unsigned char ch) {
 }
 
 /*
+
+EXPLANATION
+
+sizeof unsigned char: 8 bits
+
+The loopless function depends on turning the eight 1-bit numbers...into four 2-bit...into two 4-bit...and finally...
+into one eight-bit number which is the same size as the 8-bit char 'container' it sits in. As it is a single number, it can be read as a single decimal via %d
+
+You can double the 'size' of a number by making a mask twice its size (for 2-bit, this was 01010101...for 4-bit, 00110011).
+You then apply that mask to the number...then, to that number shifted by the bitrate of the number (1, 2, 4, for 2/4/8-bit).
+Finally, you add those two together through binary addition, and use it as the input for the next
+*/
+
+/*
 1-bit:
 	10 11 01 10
 
