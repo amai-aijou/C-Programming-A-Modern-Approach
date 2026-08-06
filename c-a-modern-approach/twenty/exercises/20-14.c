@@ -20,9 +20,9 @@
 #define COLOR_RESET "\033[1;0m"
 
 struct float_struct {
-	unsigned int sign: 1;
-	unsigned int exp:  8;
 	unsigned int frac:23;
+	unsigned int exp:  8;
+	unsigned int sign: 1;
 };
 
 union float_convert {
@@ -47,9 +47,17 @@ int main(void) {
 						 "   * 23-bit fraction\n\n"
 		   COLOR_MAGENTA "Create an unsigned int struct that emulates this (use the bit-field order for your compiler!)\n\n");
 
+	printf(COLOR_MAGENTA "Note: GCC uses the IEEE 754 standard, which defines a float backwards:\n\n"
+		   COLOR_CYAN	 "   * 23-bit fraction\n"
+						 "   * 8-bit exponent\n"
+		   			     "   * 1-bit sign\n\n");
+
 	union float_convert var1;
 
-	var1.f = 10.5;
+	var1.f = -2.0;
+	
+	printf(COLOR_CYAN    " size of   float: " COLOR_RESET "%d\n", sizeof(float) * 8);
+
 
 	printf(COLOR_MAGENTA "A union can be used to access the data in various ways:\n");
 	printf(COLOR_CYAN    " uint  : " COLOR_RESET "%u\n", var1.i);
@@ -57,9 +65,9 @@ int main(void) {
 	printf(COLOR_CYAN    " Struct: " COLOR_RESET "%u / %u / %u\n\n", var1.bitfield.sign, var1.bitfield.exp, var1.bitfield.frac);
 
 	union float_convert var2;
-	var2.bitfield.sign = 0;
-	var2.bitfield.exp = 0;
-	var2.bitfield.frac = 2135040;
+	var2.bitfield.frac = 0;
+	var2.bitfield.exp = 128;
+	var2.bitfield.sign = 1;
 
 
 	printf(COLOR_MAGENTA "We can take the values from the above, and input it as bits, then receive a full float out after:\n");
