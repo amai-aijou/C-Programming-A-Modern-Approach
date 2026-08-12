@@ -1440,3 +1440,78 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
   - Most programs are only allowed to run in "protected mode", which means you cannot access any memory not allocated by or for the program (prevents hacks, crashes, and fun)
   - The main function itself receives a memory address, which can be viewed by a user!
+
+
+#####################################
+           "Chapter 21"
+	  "The Standard Library"
+#####################################
+
+"21.1 Using the library"
+
+  - There are 15 C89, 24 C99 libraries. Compilers often come with more, but they are non-standard (most C compilers have been around forever, they're prob easy to identify)
+  - Using a header means you can't re-use any of its function names for your own. Names with file scope cannot be redefined at file level (like <stdio.h> and size_t)
+  - Identifiers starting with an underscore followed by an upper-case letter (or second underscore) are reserved. You should never use them
+  - Every identifier with external linkage in the std library is reserved, even if you don't include it in your program!_
+
+ "Functions Hidden by Macros"
+  - Many programmers replace small functions with parameterized macros, even in the standard library. C allows for this, but proteects you by requiring a true function is also available
+  - This results in many library headers declaring both a macro *and* a function with the same name:
+
+      int getchar(void);
+      \#define getchar() getc(stdin) // getchar() defined as getc macro
+
+  - When the real function is needed, "the #undef directive will ensure the true function is run, not the macro"
+
+#That's all I put...WHAT, it was a short chapter!
+
+#####################################
+           "Chapter 21"
+	  "The Standard Library"
+#####################################
+
+"22.1 Streams"
+
+  - A stream is any input or output source/destination. stdout would be a stream, as would a file, or stdin, or even cds/dvds, printers, anything
+
+  "File Pointers"
+  - file pointers have the type "FILE *", and are declared as needed. Say you need two streams:
+
+    FILE *fp1, *fp2;
+
+  -stdio.h has three streams (yes, those ones!):
+   *stdin
+   *stdout
+   *stderr
+  - By default, the keyboard represents stdin, and the screen stdout, but "input redirection" changes this: demo < in.dat
+  - "output redirection" is the same: demo > out.dat
+  - They can even be combined: demo < in.dat > out.dat (reads from in.dat, and sends output to out.dat)
+
+  - When copying a file, and you aren't sure whether it is text or binary, assume it is binary! Otherwise important EOF data may be lost
+
+"22.2 File Operations"
+
+  "Opening a file"
+
+    FILE *fopen (const char * restrict filename, const char * restrict mode);
+
+  - "fopen" will open a stream from a file. The first argument is the file to be opened, and the second is the mode (read, write, etc)
+  - "restrict" is a keyword in c that prevents any other pointer from opening that same memory location for its entire lifetime
+  - always "test the return value of fopen to be sure it's not a null pointer"!
+
+  "Closing a file"
+
+    FILE *fclose(FILE *stream);
+
+  - fclose's argument must be a file pointer from a call of fopen or freopen. fclose returns zero if the file was closed successfully; otherwise, returns EOF (a macro defined in <stdio.h>)
+
+  "Attaching a File to an Open Stream"
+
+    FILE *freopen (const char * restrict filename, const char * restrict mode, FILE * restrict stream);
+
+  - freopen attaches a different file to a stream you've already opened. Commonly used to associate a file with stdin/stdout/stderr
+  - if freopen can open the file, it will return the pointer you provided; otherwise, it returns a null pointer
+  - C99: even if it fails, freopen will still try to change the stream's mode to that provided by the command. no guarantees!
+
+  "Obtaining File Names from the Command Line"
+  -  
