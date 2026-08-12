@@ -1514,4 +1514,59 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - C99: even if it fails, freopen will still try to change the stream's mode to that provided by the command. no guarantees!
 
   "Obtaining File Names from the Command Line"
-  -  
+  
+    int main(int argc, char *argv[])
+
+  - argc = argument count, argv = argument vector
+  - argv[0] is the program name (aka the first argument) argv[argc - 1] is the last argumentargv[argc] is a NULL pointer
+
+  "Temporary Files"
+  - Programmers often create temp files that exist only while the program runs. Think of it like a way of using disk space instead of memory
+  - "tmpfile" creates a temporary file (in "wb+" mode, and returns a file pointer to access the file during the program:
+
+    FILE *tempptr;
+    tempptr = tmpfile();
+
+  - unfortunately, we don't know the name of the file, and it cannot later be made permanent. To do that, we need fopen, but we need to be absolutely *sure* the filename we choose is not in use
+  - "tmpnam" is for naming temporary files. It provides a unique name so you are not accidentally overwriting files that exist
+  - if a null pointer is provided, it stores the filename in a static variable and returns a pointer. otehrwise, it copies the filename into a character array you provide:
+
+    char *filename;
+    filename = tmpnam(NULL);
+    ---------
+    char filename[L_tmpnam]; 	// L_tmpnam is an <stdio.h> macro specifying how long to make the char array that holds the temporary filename
+    tmpnam(filename); 			// returns a pointer to the first char in the array when successful
+
+  - Use sparingly, as TMP_MAX macro is the limit of the number of open files you can have. Always look for a null pointer!
+
+  "File Buffering"
+
+    int fflush(FILE *stream);
+    void setbuf(FILE * restrict stream, char * restrict buf);
+	int setvbuf(FILE * restrict stream, char * restrict buf, int mode, size_t size);
+
+  - Transfers to and from disks are pretty slow (well, not so bad these days, but you get the idea). "buffering" solves this by storing data written to a stream in a buffer area in memory
+  - When full or a stream is closed, it is flushed via fflush (aka, written to the output device and cleared from memory)
+  - C does a lot of this for you, automatically...but sometimes, you need to take matters in your own hands, and as usual, C will let you do it!
+  - Calling fflush(NULL) will flush all streams
+  - "setvbuf" changes the size and location of the buffer, and how buffering happens (via the int mode parameter)"
+
+    _IOFBF	full buffering		data is read when stream is empty or buffer is full (this works with both input and output!)
+	_IOLBF	line buffering 		data is read one line at a time
+	_IONBF	no buffering		data is read immediately to the stream, with no buffer file
+  - buf is the address of the buffer. auto storage duration will be reclaimed at block exit; dynamic allows us to choose when to reclaim
+  - size is the number of bites in the buffer (space vs performance)
+
+    char buffer[N];
+	setvbuf(stream, buffer, _IOFBF, N); // sets stream to buffer to buffer[] array, in Full Buffer mode, size N
+
+  - setvbuf must be called after stream is open, but before any operations are performed on it
+  - "setbuf" is like vbuf, but not variable, and it presumes the size and mode. basically, don't use it
+
+  "Miscellaneous File Operations"
+  
+    int remove(const char *filename);
+    int rename(const char *old, const char *new);
+
+  - These two work on the filename itself, not a pointer to the memory location. They return zero if they succeed, and non-zero if they fail
+  - Make sure you close a file before you remove it. This applies to files opened with fopen. Removing a currently-open file is implementation-defined and thus unpredictable sometimes
