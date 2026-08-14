@@ -1570,3 +1570,8 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
   - These two work on the filename itself, not a pointer to the memory location. They return zero if they succeed, and non-zero if they fail
   - Make sure you close a file before you remove it. This applies to files opened with fopen. Removing a currently-open file is implementation-defined and thus unpredictable sometimes
+
+"22.3 Formatted I/O"
+
+  - "fprintf" is like printf, but it writes to the stream indicated in the first argument
+  - often used to print to stderr
