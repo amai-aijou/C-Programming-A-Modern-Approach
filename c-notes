@@ -1587,6 +1587,14 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
 "22.4 Character I/O"
 
+    int fputc(int c, FILE *stream);
+    int putc(int c, FILE *stream);
+    int putchar(int c);
+
+    int fgetc(FILE *stream);
+    int getc(FILE *stream);
+    int getchar(int c, FILE *stream););
+
   - Output Functions: fputc, putc, putchar
   - "putchar" writes one character to stdout
   - "fputc" and "putc" are like getchar, but let you choose a stream. putc is generally impleemnted as a macro as well as a function
@@ -1597,3 +1605,65 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - Always use Int to store the return variable for getc, fgetc, or getchar when using EOF, as char can give the wrong result
   - "ungetc" pushes back a character from a stream and clears the stream's EOF indicator
   - 
+
+
+"22.5 Line I/O"
+
+    int fputs(const char * restrict s, FILE * restrict stream);
+    int puts(const char *s);
+
+  - As a rule of thumb, do not use any function that does not provide the size or count to traverse. aka, use fgets instead of gets, and fput instead of put
+  - for scanf, you can use scanf("%N" which I believe will tell how many characters to read in
+  - I took no further notes here as these are very basic puts/gets commands, and will likely be read in-depth more during string.h
+
+"22.6 Block I/O"
+
+    size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+    size_t fwrite( constvoid * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
+
+  - used for large blocks of data, and *generally* limited to binary streams, though you can use it with text if you are really careful
+  - "fwrite" copies an array from memory to a stream. Function takes: array address, size of each array element, number of elements, and a file pointer
+
+    fwrite(a, sizeof(a[0]), sizeof(a) / sizeof(a[0]), fp);
+
+  - "fwrite returns the number of elements written
+  - "fread" reads elements of an array from a stream. Function takes: array address, size of each array element, number of elements, and a file pointer
+
+    n = fread(a, sizeof(a[0]), sizeof(a) / sizeof(a[0]), fp);
+
+  - The return value should equal the third argument, unless end of the file or some error occurred. feof and ferror can be used to determine this
+  - fwrite is mostly used to store data to a file before a program terminates; later, when the program restarts, fread can pull the data base into memory
+  - doesn't HAVE to be an array, it can work with all types of variables. Structs, for example:
+
+    fwrite(&s, sizeof(s), 1, fp);
+
+  - Remember that pointers from, for example, array members read into fwrite/fread are not guaranteed to be valid when they come back in
+
+
+"22.6 File Positioning"
+
+    int fgetpos(FILE * restrict stream, fpos_t * restrict pos);
+    int fseek(FILE *stream, long int offset, int whence);
+    int fsetpos(FILE *stream, const fpos_t * pos);
+    long int ftell(FILE *stream);
+    void rewind(FILE *stream);
+
+  - Streams have "file positions". By default, they are set at the beginning of a file, unless in append mode
+  - If you don't want to start at the beginning (or first free space, for append), you need file positioning functions
+  - "fseek" changes the file position associated with the first arg. Second arg is a (possibly negative) byte count. Third argument specifies what it's calculated in comparison to:
+    * SEEK_SET	Beginning of file
+    * SEEK_CIR	Current file position
+	* SEEK_END	End of file
+  - To move backwards ten bytes from current position:
+
+    fseek(fp, -10L, SEEK_CUR);
+
+  - fseek returns a nonzero value when it fails
+  - TEXT STREAMS ONLY: either offset must be zero, or whence must be SEEK_SET and offset a value obtained by a call of ftell
+    * AKA, you can only move to the beginning or end of a text stream, or visit a previously-visited place
+  - "ftell" returns the current file position as a long int
+  - If an error occurs, it returns -1L and stores an error code in errno
+  - the second argument in fseek is generally a file position saved from an ftell() call
+  - If working with a text stream, ftell isn't necessarily a byte count, so you want to be careful not to perform arithmetic on ftell return values
+  - "rewind" sets a file position back at the beginning. It's only different from fseek 0/SEEK_SET in that it returns nothing and clears the error indicator
+  - "fgetpos" and "fsetpos" are for very large files, since they use type fpos_t instead of long int
