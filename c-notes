@@ -1667,3 +1667,35 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - If working with a text stream, ftell isn't necessarily a byte count, so you want to be careful not to perform arithmetic on ftell return values
   - "rewind" sets a file position back at the beginning. It's only different from fseek 0/SEEK_SET in that it returns nothing and clears the error indicator
   - "fgetpos" and "fsetpos" are for very large files, since they use type fpos_t instead of long int
+
+"22.8 String I/O"
+
+    int sprintf(char * restrict s, const char * restrict format, ...);
+    int snprintf(char * restrict s, size_t n, const char * restrict format, ...);
+
+  - "sprintf" writes output into a char array[], pointed to by its first argument, instead of a stream. the second arg is a format string like printf uses
+  
+    sprintf(date, "%d/%d/%d", 9, 20, 2010);
+
+  - if there are encoding errors, sprintf returns a negative value
+  - "snprintf" same as printf, but ensures no more than n-1 chars are written (-1 because of the \0 at the end, which is always written unless n is zero)
+
+    int sscanf(char * restrict s, const char * restrict format, ...);
+
+  - "sscanf" is like scanf, but reads from a string. Allows us to examine an input time as many times as we need, since we don't have to write it
+  - sscanf returns the number of data items successfully read and stored. returns EOF if it reached the end of a string (\0) before finding the first item
+
+"Q & A"
+  - Binary is usually preferable to text if storing both characters and numbers. Numbers are in binary form in memory, so copying is easy. In text form they're mcuh slower
+  - Binary files are both hard for humans read, and also not generally portable between Operating Systems (variable sizes, in particular, can be different on different OSes)
+  - if abort() is used to terminate a program, files are not always closed, and it's best practice to use fclose to ensure they are closed!
+  - Format strings for scanf can be variables. K&R C has the following awesome idiom:
+
+    while (--argc > 0) {
+	    printf((argc > 1) ? "%s " : "%s", *++argv); // evaluates to "%s " for all arguments but the last, which ensures it receives no space after!
+    }
+  - Another cool idiom is to make scanf skip all characters up to a newline using the *[] feature:
+
+    scanf("%*[^\n]"); // it's not being stored anywhere, so it just deletes the input stream!
+
+  - fflush() is designed for *output* streams...using it with input streams is undefined and should never be done!
