@@ -1575,3 +1575,25 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
   - "fprintf" is like printf, but it writes to the stream indicated in the first argument
   - often used to print to stderr
+
+  - in printf, you can actually use * as a variable to enter the value as a function parameter, ie "%*.4d", 6, i);
+  - this allows for use of a macro, as well
+  - %n allows you to store the number of characters read by printf into a &variable
+  - "scanf" returns the number of objects it successfully read:
+
+    while (scanf("%d", &i) == 1) {} //Ensures you have read a real value each time
+
+
+
+"22.4 Character I/O"
+
+  - Output Functions: fputc, putc, putchar
+  - "putchar" writes one character to stdout
+  - "fputc" and "putc" are like getchar, but let you choose a stream. putc is generally impleemnted as a macro as well as a function
+  - Input Functions: fgetc, getc, getchar, ungetc
+
+      while ((ch = getc(fp)) != EOF) {} // Idiom for pulling in text from a stream
+
+  - Always use Int to store the return variable for getc, fgetc, or getchar when using EOF, as char can give the wrong result
+  - "ungetc" pushes back a character from a stream and clears the stream's EOF indicator
+  - 
