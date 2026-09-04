@@ -29,27 +29,35 @@ int main(int argc, char *argv[]) {
 
 	char line[MAX_SIZE];
 	char ch;
+	int i = 0;
 
-	if ((fp = fopen(argv[1], "r+")) == NULL) {
+	if ((fp = fopen(argv[1], "r")) == NULL) {
 		printf("%s can't be opened\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
-//	while ((line = fgets(s, MAX_SIZE, fp)) != EOF) {
+	// Stores the entire file into a buffer array, changing to upper as needed during insertion
 	while ((ch = getc(fp)) != EOF) {
 
 		if (isalpha(ch)) {
-			buffer[i] = toupper(ch);
+			line[i] = toupper(ch);
+		} else {
+			line[i] = ch;
 		}
 
-		if (putc(ch,fp) == EOF) {
+
+		i++;
+	}
+
+	// Once end of file is reached, dump buffer into stdout...I know, not very elegant. May come back to this =P
+	if (ch == EOF) {
+
+		if (fputs(line,stdout) == EOF) {
 			fprintf(stderr, "Can't change character!\n");
 			exit(EXIT_FAILURE);
 		}
-
-		printf("DEBUG - Changing character: %c\n", ch);
 	}
-
+		
 	fclose(fp);
 
 	return 0;
@@ -58,4 +66,3 @@ int main(int argc, char *argv[]) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-
