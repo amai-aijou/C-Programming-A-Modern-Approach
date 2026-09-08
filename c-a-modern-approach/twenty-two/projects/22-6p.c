@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MAX_BUFFER 50
+#define MAX_BUFFER 40
 
 typedef unsigned char BYTE;
 
