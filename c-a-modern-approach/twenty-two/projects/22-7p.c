@@ -19,8 +19,8 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void compress_file(FILE *fp);
-void uncompress_file(FILE *fp);
+void compress_file(FILE *fp, char *filename);
+void uncompress_file(FILE *fp, char *filename);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -42,9 +42,9 @@ int main(int argc, char *argv[]) {
 	sscanf(argv[1], "-%c", &flag);
 
 	switch (flag) {
-		case 'c': compress_file(fp);
+		case 'c': compress_file(fp, argv[2]);
 				  break;
-		case 'u': uncompress_file(fp);
+		case 'u': uncompress_file(fp, argv[2]);
 				  break;
 	}
 
@@ -53,18 +53,27 @@ int main(int argc, char *argv[]) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void compress_file(FILE *fp) {
+void compress_file(FILE *fp, char *filename) {
 
 	int ch;
+
+
+	FILE *fp_rle;
+
+	if ((fp_rle = fopen((filename ".rle"), "w+b")) == NULL) {
+		printf("Error: Could not open file %s; terminating.\n", filename);
+		exit(EXIT_FAILURE);
+	}
 
 	for (; ; ) {
 
 		while ((ch = fgetc(fp)) != EOF) {
 
+			//test
 		}
 	}
 }
 
-void uncompress_file(FILE *fp) {
+void uncompress_file(FILE *fp, char *filename) {
 
 }
