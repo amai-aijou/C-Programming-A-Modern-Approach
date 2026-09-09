@@ -21,7 +21,7 @@ typedef unsigned char BYTE;
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void clear_array(char *lineBytes);
+void clear_array(char *buffer);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
 
 	FILE *fp;
 
-	char lineBytes[MAX_BUFFER];
-	int ch, i, offset = 0;
+	char buffer[MAX_BUFFER];
+	int ch, i, n, count = 0, offset = 0;
 
 	// Error Checking: Too few/many arguments
 	if (argc != 2) {
@@ -51,55 +51,51 @@ int main(int argc, char *argv[]) {
 	printf("------  -----------------------------  ----------\n");
 
 	// Main loop for reading file. Ends when EOF is read in
-	for (; ; ) {
+	for (offset = 0; ; offset+= 10) {
 
-		// Print offset column
-		printf("%6d  ", offset);
 
 		// Pull up to ten hex pairs and print them in Bytes column
-		for (i = 0; i < 10; i++) {
+		for (count = 0; count < 10; count++) {
 
 			ch = fgetc(fp);
-			lineBytes[i] = ch;
+			buffer[count] = ch;
 
 			if (ch == EOF) {
 				break;
-			} else {
-				ch = (BYTE) ch;
+			} else if (count == 0) {
+				// Print offset column
+				printf("%6d  ", offset);
 			}
 
 			printf("%.2X ", ch);
 		}
 		
 		// Adds empty space for any missing pairs
-		for (; i < 10; i++) {
+		for (i = count; i < 10; i++) {
 			printf("   ");
 		}
 		printf("  ");
 
 		// Prints characters column
-		for (i = 0; i < 10; i++) {
+		for (i = 0; i < (0 + count) ; i++) {
 
-			if (isprint(lineBytes[i])) {
-
-				printf("%c", lineBytes[i]);
+			if (isprint(buffer[i])) {
+				printf("%c", buffer[i]);
 			} else {
 				printf(".");
 			}
 		}
 		printf("\n");
 
-		offset += 10;
-
 		// Checks for end of file and terminates loop
 		if (ch == EOF) {
 			break;
 		}
 
-		clear_array(lineBytes);
+		clear_array(buffer);
 
 		// Reprints table layout every one hundred lines
-		if (offset % 1000 == 0) {
+		if (offset != 0 && offset % 1000 == 0) {
 
 			printf("Offset\t\t   Bytes\t       Characters\n");
 			printf("------  -----------------------------  ----------\n");
@@ -114,11 +110,11 @@ int main(int argc, char *argv[]) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void clear_array(char *lineBytes) {
+void clear_array(char *buffer) {
 
 	int i;
 
 	for (i = 0; i < MAX_BUFFER; i++) {
-		lineBytes[i] = 0;
+		buffer[i] = 0;
 	}	
 }
