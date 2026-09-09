@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 22-2p.c
+   ❤︎︎࣪ Name: 22-7p.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Thu Sep  3 09:56:07 PM CDT 2026
+   ❤︎︎࣪ Date: Tue Sep  8 02:40:34 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -14,11 +14,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MAX_SIZE 500
+#define MAX_CODEC_SIZE (200 * 2)
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void compress_file(FILE *fp);
+void uncompress_file(FILE *fp);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -26,43 +28,43 @@
 int main(int argc, char *argv[]) {
 
 	FILE *fp;
+	char flag;
 
-	char line[MAX_SIZE];
-	char ch;
-	int i = 0;
-
-	if ((fp = fopen(argv[1], "r")) == NULL) {
-		printf("%s can't be opened\n", argv[1]);
+	if ((fp = fopen(argv[2], "rb")) == NULL) {
+		printf("Error: Could not open file %s; terminating.\n", argv[2]);
 		exit(EXIT_FAILURE);
 	}
 
-	// Stores the entire file into a buffer array, changing to upper as needed during insertion
-	while ((ch = getc(fp)) != EOF) {
-
-		if (isalpha(ch)) {
-			line[i] = toupper(ch);
-		} else {
-			line[i] = ch;
-		}
-
-
-		i++;
+	if (argc != 3) {
+		printf("Too many/few arguments!\nUsage: ./program -c filename\nUsage: /program -u filename\n\n");
 	}
 
-	// Once end of file is reached, dump buffer into stdout. Not very elegant, but I wanted a buffer to allow for the original file to be altered with minimal changes
-	if (ch == EOF) {
+	sscanf(argv[1], "-%c", &flag);
 
-		if (fputs(line,stdout) == EOF) {
-			fprintf(stderr, "Can't change character!\n");
-			exit(EXIT_FAILURE);
-		}
+	switch (flag) {
+		case 'c': compress_file(fp);
+				  break;
+		case 'u': uncompress_file(fp);
+				  break;
 	}
-		
-	fclose(fp);
 
-	return 0;
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void compress_file(FILE *fp) {
+
+	int ch;
+
+	for (; ; ) {
+
+		while ((ch = fgetc(fp)) != EOF) {
+
+		}
+	}
+}
+
+void uncompress_file(FILE *fp) {
+
+}
