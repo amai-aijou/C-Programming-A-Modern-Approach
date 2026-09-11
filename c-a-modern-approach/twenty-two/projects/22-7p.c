@@ -11,10 +11,14 @@
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MAX_CODEC_SIZE (200 * 2)
+#define BUFFER_SIZE 1000
+
+typedef unsigned char BYTE;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
@@ -56,22 +60,41 @@ int main(int argc, char *argv[]) {
 void compress_file(FILE *fp, char *filename) {
 
 	int ch;
+	char buffer[BUFFER_SIZE];
+	char encFilename[100];
+	int i = 0;
+	int n = sizeof(buffer);
+	int count;
 
+	// Append .rle to filename for saving encoded version
+	strcpy(encFilename, filename);
+	strcat(encFilename, ".rle");
 
 	FILE *fp_rle;
 
-	if ((fp_rle = fopen((filename ".rle"), "w+b")) == NULL) {
+	if ((fp_rle = fopen(encFilename, "w+b")) == NULL) {
 		printf("Error: Could not open file %s; terminating.\n", filename);
 		exit(EXIT_FAILURE);
 	}
 
-	for (; ; ) {
-
-		while ((ch = fgetc(fp)) != EOF) {
-
-			//test
-		}
+	while ((ch = fgetc(fp)) != EOF) {
+		buffer[i] = ch;
+		i++;
 	}
+	buffer[i] = '\0';
+
+	for (i = 0; i < n && buffer[i] != '\0'; i++) {
+
+		count = 1;
+
+		while (buffer[i] == buffer[i+1]) {
+			i++;
+			count++;
+		}
+
+		fprintf(fp_rle, "%02d %.2X ", count, buffer[i]);
+	}
+
 }
 
 void uncompress_file(FILE *fp, char *filename) {
