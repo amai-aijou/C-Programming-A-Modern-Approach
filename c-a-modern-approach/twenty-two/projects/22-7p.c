@@ -34,14 +34,16 @@ int main(int argc, char *argv[]) {
 	FILE *fp;
 	char flag;
 
+	if (argc != 3) {
+		printf("Too many/few arguments!\nUsage: ./program -c filename\nUsage: /program -u filename\n");
+		exit(EXIT_FAILURE);
+	}
+
 	if ((fp = fopen(argv[2], "rb")) == NULL) {
 		printf("Error: Could not open file %s; terminating.\n", argv[2]);
 		exit(EXIT_FAILURE);
 	}
 
-	if (argc != 3) {
-		printf("Too many/few arguments!\nUsage: ./program -c filename\nUsage: /program -u filename\n\n");
-	}
 
 	sscanf(argv[1], "-%c", &flag);
 
@@ -57,14 +59,11 @@ int main(int argc, char *argv[]) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+// (a)
 void compress_file(FILE *fp, char *filename) {
 
-	int ch;
-	char buffer[BUFFER_SIZE];
-	char encFilename[100];
-	int i = 0;
-	int n = sizeof(buffer);
-	int count;
+	char buffer[BUFFER_SIZE], encFilename[100];
+	int ch, i = 0, n = sizeof(buffer), count;
 
 	// Append .rle to filename for saving encoded version
 	strcpy(encFilename, filename);
@@ -92,11 +91,28 @@ void compress_file(FILE *fp, char *filename) {
 			count++;
 		}
 
-		fprintf(fp_rle, "%02d %.2X ", count, buffer[i]);
+		fprintf(fp_rle, "%02d%.2X", count, buffer[i]);
 	}
 
 }
 
 void uncompress_file(FILE *fp, char *filename) {
+
+	char buffer[BUFFER_SIZE], unEncFilename[100];
+	int ch, i = 0, n = sizeof(buffer), count; 
+	int fileLen = strlen(filename);
+	char *p = strstr(filename, ".rle");
+
+	FILE *fp_rle;
+	
+	if (p[4] == '\0') {
+			strncpy(unEncFilename, filename, (p - filename));
+			unEncFilename[p - filename] = '\0';
+	}
+
+	if ((fp_rle = fopen(unEncFilename, "w+b")) == NULL) {
+		printf("Error: Could not open file %s; terminating.\n", filename);
+		exit(EXIT_FAILURE);
+	}
 
 }
