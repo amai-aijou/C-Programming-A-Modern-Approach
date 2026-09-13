@@ -34,17 +34,24 @@ int main(int argc, char *argv[]) {
 	FILE *fp;
 	char flag;
 
+	/********** Error handling **********/
 	if (argc != 3) {
 		printf("Too many/few arguments!\nUsage: ./program -c filename\nUsage: /program -u filename\n");
 		exit(EXIT_FAILURE);
 	}
 
+	if (strlen(argv[2]) > 100) {
+		printf("Error: filename too long; terminating.\n", argv[2]);
+		exit(EXIT_FAILURE);
+	}	
+
 	if ((fp = fopen(argv[2], "rb")) == NULL) {
 		printf("Error: Could not open file %s; terminating.\n", argv[2]);
 		exit(EXIT_FAILURE);
-	}
+	} 
 
 
+	/********** Choose Function **********/
 	sscanf(argv[1], "-%c", &flag);
 
 	switch (flag) {
@@ -52,8 +59,11 @@ int main(int argc, char *argv[]) {
 				  break;
 		case 'u': uncompress_file(fp, argv[2]);
 				  break;
+		default:  printf("Error: invalid flag selected. Did you mean -c or -u?\n");
+				  exit(EXIT_FAILURE);
 	}
 
+	return 0;
 }
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -76,6 +86,7 @@ void compress_file(FILE *fp, char *filename) {
 		exit(EXIT_FAILURE);
 	}
 
+
 	while ((ch = fgetc(fp)) != EOF) {
 		buffer[i] = ch;
 		i++;
@@ -91,28 +102,75 @@ void compress_file(FILE *fp, char *filename) {
 			count++;
 		}
 
-		fprintf(fp_rle, "%02d%.2X", count, buffer[i]);
+		if (count < 10) {
+			fputc(0,fp_rle);
+		}
+		fputc(count,fp_rle);
+
+		fputc(buffer[i],fp_rle);
+
+		//fprintf(fp_rle, "%02d%.2X", count, buffer[i]);
 	}
 
 }
 
-void uncompress_file(FILE *fp, char *filename) {
+void uncompress_file(FILE *fp_rle, char *filename) {
 
-	char buffer[BUFFER_SIZE], unEncFilename[100];
+	char buffer[BUFFER_SIZE], unEncFilename[100], encHexPair[4];
 	int ch, i = 0, n = sizeof(buffer), count; 
 	int fileLen = strlen(filename);
-	char *p = strstr(filename, ".rle");
+	char *p;
+	int debug, output;
+	
+	FILE *fp;
 
-	FILE *fp_rle;
+	if ((p = strstr(filename, ".rle")) == NULL) {
+		printf("Error: Could not open file %s; terminating.\n", filename);
+		exit(EXIT_FAILURE);
+	}
+
 	
 	if (p[4] == '\0') {
 			strncpy(unEncFilename, filename, (p - filename));
 			unEncFilename[p - filename] = '\0';
 	}
 
-	if ((fp_rle = fopen(unEncFilename, "w+b")) == NULL) {
-		printf("Error: Could not open file %s; terminating.\n", filename);
+	if ((fp = fopen(unEncFilename, "w+b")) == NULL) {
+		printf("Error: Could not open file %s; terminating.\n", unEncFilename);
 		exit(EXIT_FAILURE);
+	}
+
+	for (debug = 0 ;debug < 3 ;debug++ ) {
+
+		count = 0;
+		i = 0;
+
+		while (((ch = fgetc(fp_rle)) != EOF) && (i < 4)) {
+
+			printf("DEBUG - ch:%c\n", ch);
+
+			encHexPair[i] = ch;
+			i++;
+		}
+
+		if (ch != EOF && i < 4) {
+			printf("ERROR: Unable to pull a full quartet. Ensure this is truly an .rle!\n");
+			exit(EXIT_FAILURE);
+		}
+
+		printf("encHexPair[0]: %c | %c | %c | %c |\n", encHexPair[0], encHexPair[1], encHexPair[2], encHexPair[3]);
+
+		count = ((encHexPair[0] - '0') * 10) + (encHexPair[1] - '0');
+
+		printf("DEBUG - count: %d\n", count);
+
+		for (i = 0; i < count; i++) {
+
+			output = (((encHexPair[0] - '0') + 10) + (encHexPair[1] - '0'));
+			printf("DEBUG - output: %d\n", output);
+			fprintf(fp, "%c",output);
+		}
+
 	}
 
 }
