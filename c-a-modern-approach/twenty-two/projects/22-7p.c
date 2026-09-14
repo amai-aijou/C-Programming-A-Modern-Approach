@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define BUFFER_SIZE 1000
+#define BUFFER_SIZE 100000
 
 typedef unsigned char BYTE;
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 void compress_file(FILE *fp, char *filename) {
 
 	char buffer[BUFFER_SIZE], encFilename[100];
-	int ch, i = 0, n = sizeof(buffer), count;
+	int ch, ch2, i = 0, n = sizeof(buffer), count;
 
 	// Append .rle to filename for saving encoded version
 	strcpy(encFilename, filename);
@@ -86,7 +86,7 @@ void compress_file(FILE *fp, char *filename) {
 		exit(EXIT_FAILURE);
 	}
 
-
+/*
 	while ((ch = fgetc(fp)) != EOF) {
 		buffer[i] = ch;
 		i++;
@@ -102,21 +102,51 @@ void compress_file(FILE *fp, char *filename) {
 			count++;
 		}
 
-		if (count < 10) {
-			fputc(0,fp_rle);
-		}
+		// Output compressed count byte and data byte to file
 		fputc(count,fp_rle);
-
 		fputc(buffer[i],fp_rle);
 
-		//fprintf(fp_rle, "%02d%.2X", count, buffer[i]);
 	}
+*/
+	for ( ; ;) {
 
+		count = 0;
+
+		do {
+			ch = fgetc(fp);
+			if (ch == EOF) {
+				printf("Error: File appears empty!\n");
+				return;
+			}
+
+			ch2 = fgetc(fp);
+			count++;
+
+			if (ch2 == EOF) {
+				break;
+			}
+		} while (ch == ch2);
+
+		if (ch2 != EOF) {
+			ungetc(ch2,fp);
+		} 
+
+		for (i = 0; i < count; i++) {
+			fputc(count,fp_rle);
+			fputc(ch,fp_rle);
+		}
+
+		if (ch2 == EOF) {
+			return;
+		}
+	}
+		
 }
 
 void uncompress_file(FILE *fp_rle, char *filename) {
 
-	char buffer[BUFFER_SIZE], unEncFilename[100], encHexPair[4];
+	char buffer[BUFFER_SIZE], unEncFilename[100];
+	int encHexPair[2];
 	int ch, i = 0, n = sizeof(buffer), count; 
 	int fileLen = strlen(filename);
 	char *p;
@@ -124,13 +154,18 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 	
 	FILE *fp;
 
+	printf("DEBUG - filename %s\n", filename);
 	if ((p = strstr(filename, ".rle")) == NULL) {
-		printf("Error: Could not open file %s; terminating.\n", filename);
+		printf("file %s does not appear to be an .rle; terminating.\n", filename);
 		exit(EXIT_FAILURE);
 	}
 
 	
 	if (p[4] == '\0') {
+			strncpy(unEncFilename, filename, (p - filename));
+			unEncFilename[p - filename] = '\0';
+	} else {
+		printf("file %s appears to be an .rle encoded into .rle. Not a good idea, but I guess I won't stop you?\n", filename);
 			strncpy(unEncFilename, filename, (p - filename));
 			unEncFilename[p - filename] = '\0';
 	}
@@ -139,38 +174,59 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 		printf("Error: Could not open file %s; terminating.\n", unEncFilename);
 		exit(EXIT_FAILURE);
 	}
+	printf("DEBUG - unEncFilename %s\n", unEncFilename);
 
-	for (debug = 0 ;debug < 3 ;debug++ ) {
+	for ( ; ; ) {
 
 		count = 0;
 		i = 0;
 
-		while (((ch = fgetc(fp_rle)) != EOF) && (i < 4)) {
+		/*
+		ch = fgetc(fp_rle);
+		printf("DEBUG - ch (0): %c\n", ch);
+		encHexPair[0] = ch;
+		ch = fgetc(fp_rle);
+		printf("DEBUG - ch (1): %c\n", ch);
+		encHexPair[1] = ch;
+		*/
 
-			printf("DEBUG - ch:%c\n", ch);
+		while (((ch = fgetc(fp_rle)) != EOF) && (i < 2)) {
+
+			printf("DEBUG - ch[%d:%c\n", i, ch);
 
 			encHexPair[i] = ch;
 			i++;
 		}
+		
 
-		if (ch != EOF && i < 4) {
+		printf("encHexPair: %c | %c\n", encHexPair[0], encHexPair[1]);
+
+		if (ch != EOF && i < 2) {
 			printf("ERROR: Unable to pull a full quartet. Ensure this is truly an .rle!\n");
 			exit(EXIT_FAILURE);
+		} else if (ch == EOF && i != 1) {
+			printf("ERROR: Leftover data detected. Ensure this is truly an .rle!\n");
+			exit(EXIT_FAILURE);
+		} else if (ch == EOF && i == 0) {
+			break;
+		}
+		
+
+		if (ch == EOF) {
+			break;
 		}
 
-		printf("encHexPair[0]: %c | %c | %c | %c |\n", encHexPair[0], encHexPair[1], encHexPair[2], encHexPair[3]);
 
-		count = ((encHexPair[0] - '0') * 10) + (encHexPair[1] - '0');
+		count = encHexPair[0];
 
-		printf("DEBUG - count: %d\n", count);
+//		printf("DEBUG - count: %d\n", count);
 
 		for (i = 0; i < count; i++) {
 
-			output = (((encHexPair[0] - '0') + 10) + (encHexPair[1] - '0'));
-			printf("DEBUG - output: %d\n", output);
+			output = encHexPair[1];
+//			printf("DEBUG - output: %d\n", output);
 			fprintf(fp, "%c",output);
 		}
-
 	}
 
 }
