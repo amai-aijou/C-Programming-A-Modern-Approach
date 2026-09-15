@@ -86,34 +86,13 @@ void compress_file(FILE *fp, char *filename) {
 		exit(EXIT_FAILURE);
 	}
 
-/*
-	while ((ch = fgetc(fp)) != EOF) {
-		buffer[i] = ch;
-		i++;
-	}
-	buffer[i] = '\0';
-
-	for (i = 0; i < n && buffer[i] != '\0'; i++) {
-
-		count = 1;
-
-		while (buffer[i] == buffer[i+1]) {
-			i++;
-			count++;
-		}
-
-		// Output compressed count byte and data byte to file
-		fputc(count,fp_rle);
-		fputc(buffer[i],fp_rle);
-
-	}
-*/
 	for ( ; ;) {
 
 		count = 0;
 
+		ch = fgetc(fp);
+
 		do {
-			ch = fgetc(fp);
 			if (ch == EOF) {
 				printf("Error: File appears empty!\n");
 				return;
@@ -125,16 +104,17 @@ void compress_file(FILE *fp, char *filename) {
 			if (ch2 == EOF) {
 				break;
 			}
+
+			if (ch == ch2) {
+			}
 		} while (ch == ch2);
 
 		if (ch2 != EOF) {
 			ungetc(ch2,fp);
 		} 
 
-		for (i = 0; i < count; i++) {
-			fputc(count,fp_rle);
-			fputc(ch,fp_rle);
-		}
+		fputc(count,fp_rle);
+		fputc(ch,fp_rle);
 
 		if (ch2 == EOF) {
 			return;
@@ -146,7 +126,7 @@ void compress_file(FILE *fp, char *filename) {
 void uncompress_file(FILE *fp_rle, char *filename) {
 
 	char buffer[BUFFER_SIZE], unEncFilename[100];
-	int encHexPair[2];
+	char encHexPair[2];
 	int ch, i = 0, n = sizeof(buffer), count; 
 	int fileLen = strlen(filename);
 	char *p;
@@ -154,7 +134,6 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 	
 	FILE *fp;
 
-	printf("DEBUG - filename %s\n", filename);
 	if ((p = strstr(filename, ".rle")) == NULL) {
 		printf("file %s does not appear to be an .rle; terminating.\n", filename);
 		exit(EXIT_FAILURE);
@@ -174,7 +153,6 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 		printf("Error: Could not open file %s; terminating.\n", unEncFilename);
 		exit(EXIT_FAILURE);
 	}
-	printf("DEBUG - unEncFilename %s\n", unEncFilename);
 
 	for ( ; ; ) {
 
@@ -190,16 +168,17 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 		encHexPair[1] = ch;
 		*/
 
-		while (((ch = fgetc(fp_rle)) != EOF) && (i < 2)) {
+		while ((ch != EOF) && (i < 2)) {
 
-			printf("DEBUG - ch[%d:%c\n", i, ch);
+			ch = fgetc(fp_rle);
+			printf("DEBUG - ch[%d]:%.2X\n", i, ch);
 
 			encHexPair[i] = ch;
 			i++;
 		}
 		
 
-		printf("encHexPair: %c | %c\n", encHexPair[0], encHexPair[1]);
+		printf("encHexPair: %.2X | %.2X\n", encHexPair[0], encHexPair[1]);
 
 		if (ch != EOF && i < 2) {
 			printf("ERROR: Unable to pull a full quartet. Ensure this is truly an .rle!\n");
@@ -225,7 +204,7 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 
 			output = encHexPair[1];
 //			printf("DEBUG - output: %d\n", output);
-			fprintf(fp, "%c",output);
+			fputc(output,fp);
 		}
 	}
 
