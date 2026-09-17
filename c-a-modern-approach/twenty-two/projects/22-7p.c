@@ -121,6 +121,7 @@ void compress_file(FILE *fp, char *filename) {
 		}
 	}
 		
+	return 1;
 }
 
 void uncompress_file(FILE *fp_rle, char *filename) {
@@ -191,4 +192,5 @@ void uncompress_file(FILE *fp_rle, char *filename) {
 		}
 	}
 
+	return 1;
 }
