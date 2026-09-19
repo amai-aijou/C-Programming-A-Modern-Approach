@@ -46,20 +46,23 @@ int main(int argc, char *argv[]) {
 	int i;
 
 	for (i = 0; i < 3; i++) {
-		if ((fp[i] = fopen(argv[i+1], (i == 2? "wb":"r+b"))) == NULL) {
+		if ((fp[i] = fopen(argv[i+1], (i == 2? "wb":"rb"))) == NULL) {
 			printf("Error: Could not open %s\n", argv[i+1]);
 			exit(EXIT_FAILURE);
 		}
 	}
 
 	import_data(fp, argv);
+
+	printf("Starting Data:\n");
 	print_array();
+
 	sort_array();
+
+	printf("Ending Data:\n");
 	print_array();
 
-	printf("merged_parts: %d\n", merged_parts);
 	export_data(fp[2], argv[3]);
-
 
 	// Close files and clean up when done!
 	for (i = 0; i < 3; i++) {
@@ -75,7 +78,6 @@ int main(int argc, char *argv[]) {
 bool import_data(FILE *fp[], char *argv[]) {
 
 	int i, j;
-	int offset = 0;
 
 	// Read inventory data into the arrays (with merged_parts as an offset)
 	for (i = 0; i < 2; i++) {
@@ -93,7 +95,7 @@ bool export_data(FILE *fp, char *filename) {
 	int i, j;
 	int readOut = 0;
 
-	if ((readOut = fwrite(inventory, sizeof(inventory[0]),merged_parts,fp)) == 0) {
+	if ((readOut = fwrite(inventory, sizeof(inventory[0]),merged_parts,fp)) != merged_parts) {
 		printf("Error: Data could not be read to file %s\n", filename);
 		return 0;
 	}
@@ -112,17 +114,17 @@ void sort_array(void) {
 
 
 	// Remove duplicates
-	for (i = 0; i < merged_parts; i++) {
+	for (i = 0; i < (merged_parts - 1); i++) {
 
 		if (inventory[i].number == inventory[i+1].number) { 
 			if (strcmp(inventory[i].name, inventory[i+1].name) == 0) {
 
-				printf("Duplicate found. Merging\n");
+				//printf("DEBUG - Duplicate found. Merging\n");
 				inventory[i].on_hand += inventory[i+1].on_hand;
 
 				// Moves all arrays down
 				for (j = i+1; j < (merged_parts - 1); j++) {
-					printf("Deleting inventory[%d], replacing with inventory[%d]\n", j, j+1);
+					//printf("DEBUG - Deleting inventory[%d], replacing with inventory[%d]\n", j, j+1);
 					inventory[j] = inventory[j+1];
 
 				}
@@ -132,7 +134,7 @@ void sort_array(void) {
 				inventory[merged_parts-1].on_hand = 0;
 
 				merged_parts -= 1;
-				printf("decremented merged_parts by 1: %d\n", merged_parts);
+				//printf("DEBUG - decremented merged_parts by 1: %d\n", merged_parts);
 			} else {
 				printf("Error: Part numbers match, but have conflicting names!\n");
 				exit(EXIT_FAILURE);
@@ -159,12 +161,12 @@ void print_array(void) {
 
 int compare_ints(const void *p, const void *q) {
 
-	const int *p1 = p;
-	const int *q1 = q;
+	const struct part *p1 = p;
+	const struct part *q1 = q;
 
-	if (*p1 < *q1) {
+	if (p1->number < q1->number) {
 		return -1;
-	} else if (*p1 == *q1) {
+	} else if (p1->number == q1->number) {
 		return 0;
 	} else {
 		return 1;
