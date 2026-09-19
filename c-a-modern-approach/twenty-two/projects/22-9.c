@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 #define NAME_LEN 25
@@ -21,14 +22,20 @@ struct part {
 	int number;
 	char name[NAME_LEN+1];
 	int on_hand;
-} inventory[2][MAX_PARTS];
+} inventory[MAX_PARTS];
 
-int num_parts = 0;
+int num_parts[2];
+int merged_parts;
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-bool merge_files(FILE *fp[*], char *argv[*]);
+bool import_data(FILE *fp[*], char *argv[*]);
+void sort_array(void);
+void print_array(void);
+bool export_data(FILE *fp, char *filename);
+void merge_duplicates(void);
+int compare_ints(const void *p, const void *q);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -36,14 +43,28 @@ bool merge_files(FILE *fp[*], char *argv[*]);
 int main(int argc, char *argv[]) {
 
 	FILE * fp[3];
+	int i;
 
 	for (i = 0; i < 3; i++) {
-		if ((fp[i] = fopen(argv[i+1], (i == 2? "wb":"rb"))) == NULL) {
+		if ((fp[i] = fopen(argv[i+1], (i == 2? "wb":"r+b"))) == NULL) {
 			printf("Error: Could not open %s\n", argv[i+1]);
+			exit(EXIT_FAILURE);
 		}
 	}
 
-	merge_files(fp, argv);
+	import_data(fp, argv);
+	print_array();
+	sort_array();
+	print_array();
+
+	printf("merged_parts: %d\n", merged_parts);
+	export_data(fp[2], argv[3]);
+
+
+	// Close files and clean up when done!
+	for (i = 0; i < 3; i++) {
+		fclose(fp[i]);
+	}
 
 	return 0;
 }
@@ -51,17 +72,101 @@ int main(int argc, char *argv[]) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-bool merge_files(FILE *fp[], char *argv[*]) {
+bool import_data(FILE *fp[], char *argv[]) {
 
-	int n[2];
+	int i, j;
+	int offset = 0;
 
-	// Read inventory data into the arrays
+	// Read inventory data into the arrays (with merged_parts as an offset)
 	for (i = 0; i < 2; i++) {
-		if ((n[i] = fread(inventory[i], sizeof(inventory1[0]),MAX_PARTS,fp)) == 0) {
-			printf("Error: Data could not be read from file %s\n", argv[i+1];
+		if ((num_parts[i] = fread(inventory + merged_parts, sizeof(inventory[0]),MAX_PARTS,fp[i])) == 0) {
+			printf("Error: Data could not be read from file %s\n", argv[i+1]);
+			return 0;
 		}
+		merged_parts += num_parts[i];
 	}
 
-	for (i = 0; i < 2; i++) {
-		for (j = 0; j < MAX_PARTS; j++) {
+	return 1;
+}
+bool export_data(FILE *fp, char *filename) {
+
+	int i, j;
+	int readOut = 0;
+
+	if ((readOut = fwrite(inventory, sizeof(inventory[0]),merged_parts,fp)) == 0) {
+		printf("Error: Data could not be read to file %s\n", filename);
+		return 0;
+	}
+
+	return 1;
+}
+
+// Uses Selection Sort (may remake as qsort eventually)
+void sort_array(void) {
+
+	int largest = 0, part_element;
+	int i,j;
+
+	// Sorts array in order
+	qsort(inventory,merged_parts,sizeof(inventory[0]),compare_ints);
+
+
+	// Remove duplicates
+	for (i = 0; i < merged_parts; i++) {
+
+		if (inventory[i].number == inventory[i+1].number) { 
+			if (strcmp(inventory[i].name, inventory[i+1].name) == 0) {
+
+				printf("Duplicate found. Merging\n");
+				inventory[i].on_hand += inventory[i+1].on_hand;
+
+				// Moves all arrays down
+				for (j = i+1; j < (merged_parts - 1); j++) {
+					printf("Deleting inventory[%d], replacing with inventory[%d]\n", j, j+1);
+					inventory[j] = inventory[j+1];
+
+				}
+
+				inventory[merged_parts-1].number = 0;
+				inventory[merged_parts-1].name[0] = 0;
+				inventory[merged_parts-1].on_hand = 0;
+
+				merged_parts -= 1;
+				printf("decremented merged_parts by 1: %d\n", merged_parts);
+			} else {
+				printf("Error: Part numbers match, but have conflicting names!\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
+}
+
+void print_array(void) {
+
+	int i;
+
+
+	// Print array (Potentially just for debug)
+	for (i = 0; i < merged_parts; i++) {
+
+		if (inventory[i].number == 0 && inventory[i].name[0] == 0 && inventory[i].on_hand == 0) {
+			continue;
+		}
+
+		printf("[%d] | num: %d | name: %s | on hand: %d\n", i, inventory[i].number, inventory[i].name, inventory[i].on_hand);
+	}
+}
+
+int compare_ints(const void *p, const void *q) {
+
+	const int *p1 = p;
+	const int *q1 = q;
+
+	if (*p1 < *q1) {
+		return -1;
+	} else if (*p1 == *q1) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
