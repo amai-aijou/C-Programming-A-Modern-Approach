@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "readline.h"
 
 #define NAME_LEN 25
@@ -33,6 +34,7 @@ struct part *inventory = NULL;
 struct part *find_part(int number);
 bool dump(void);
 bool restore(void);
+void auto_insert(int pnumber, char pname[], int pon_hand);
 void insert(void);
 void search(void);
 void update(void);
@@ -87,6 +89,16 @@ int main(void) {
 				❤︎︎࣪ dump				❤︎︎࣪ restore
 
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+/*
+struct part {
+	int number;
+	char name[NAME_LEN+1];
+	int on_hand;
+	struct part *next;
+};
+
+struct part *inventory = NULL;
+*/
 
 //22-8: Dumps database to a file
 bool dump(void) {
@@ -102,6 +114,12 @@ bool dump(void) {
 	printf("Enter name of output file: ");
 	scanf("%s", &filename);
 
+	if (strstr(filename,".dat") == NULL) {
+		printf("WARN: To prevent data deletion, creating a file without .dat is not allowed. Please rename file if this is a backup!\n");
+		exit(EXIT_FAILURE);
+	}
+
+
 	while (((fp = fopen(filename,"wb")) == NULL) && (user_tries < 3)) {
 		printf("Error: Database file could not be opened! Please try again.\n");
 		user_tries++;
@@ -109,11 +127,27 @@ bool dump(void) {
 
 	if (user_tries >= 3) {
 		printf("Failed opening database, aborting function.\n");
-		return;
+		return 0;
 	}
 
 	for (p = inventory; p != NULL; p = p->next) {
 
+
+		if ((fwrite(&p->number,sizeof(p->number),1,fp)) == 0) {
+			printf("Write of part number %d failed on number\n", p->number);
+			return 0;
+		}
+
+		if ((fwrite(&p->name,sizeof(p->name),1,fp)) == 0) {
+			printf("Write of part number %d failed on name\n", p->number);
+			return 0;
+		}
+
+		if ((fwrite(&p->on_hand,sizeof(p->on_hand),1,fp)) == 0) {
+			printf("Write of part number %d failed on on_hand\n", p->number);
+			return 0;
+		}
+		/*
 		if ((fwrite(inventory + offset,sizeof(struct part),1,fp)) == 0) {
 			printf("Error: Database backup could not be created. Stalled at offset %d\n", offset);
 			return;
@@ -122,46 +156,109 @@ bool dump(void) {
 		}
 
 		offset++;
+		*/
 
 	}
 
-
-	/*
-	if ((fwrite(inventory,sizeof(inventory[0]),num_parts,fp)) < num_parts) {
-		printf("Error: Database backup could not be created.\n");
-		return;
-	} else {
-		printf("Success! Database has been written to %s\n", filename);
-	}
-	*/
+	printf("Success! Database has been written to %s\n", filename);
 
 	fclose(fp);
+
+	return 1;
 }
 
 //22-8: restores database from a file
 bool restore(void) {
 
 	FILE *fp;
-	char filename[255];
-	int n;
+	char filename[255], pname[NAME_LEN+1];
+	int user_tries = 0, offset = 0, n = 0;
+	int pnumber, pon_hand;
 
 	printf("Enter name of file to be restored: ");
 	scanf("%s", &filename);
 
-	while ((fp = fopen(filename,"rb")) == NULL) {
-		printf("Error: Database file not found! Please try again (0 to cancel)\n");
-		if (filename == "0") {
-			return;
-		}
+	while (((fp = fopen(filename,"rb")) == NULL) && (user_tries < 3)) {
+		printf("Error: Database file could not be opened! Please try again.\n");
+		user_tries++;
 	}
-/*
-	if ((n = (fread(inventory,sizeof(inventory[0]),MAX_PARTS,fp))) == 0) {
-		printf("Error: Database backup could not be restored. Ensure file is not empty!\n");
-	*/
+
+	if (user_tries >= 3) {
+		printf("Failed opening database, aborting function.\n");
+		return 0;
+	}
+
+	for ( ; ; ) {
+
+		fread(&pnumber,sizeof(pnumber),1,fp);
+
+		if ((n = fread(pname,sizeof(pname),1,fp)) == 0) {
+			printf("Write of part number %d failed on name\n", pnumber);
+			return 0;
+		}
+
+		if ((n = fread(&pon_hand,sizeof(pon_hand),1,fp)) == 0) {
+			printf("Write of part number %d failed on on_hand\n", pnumber);
+			return 0;
+		}
+
+		if (feof(fp)) {
+			break;
+		}
+
+		auto_insert(pnumber, pname, pon_hand);
+	}
+
+	printf("Restoration complete!\n");
+
+	return 1;
+}
+
+void auto_insert(int pnumber, char pname[], int pon_hand) {
+
+	struct part *cur, *prev, *new_node;
+	int i = 0;
+
+	new_node = malloc(sizeof(struct part));
+	if (new_node == NULL) {
+		printf("Database is full; can't add more parts.\n");
+		return;
+	}
+
+	// Insert part number
+	new_node->number = pnumber;
+
+	for (cur = inventory, prev = NULL;
+		 cur != NULL && new_node->number > cur->number;
+		 prev = cur, cur = cur->next) {
+		;
+	}
+	if (cur != NULL && new_node->number == cur->number) {
+		printf("Part already exists.\n");
+		free(new_node);
+		return;
+	}
+
+	// Insert part name
+	for (i = 0; i < (NAME_LEN+1); i++) {
+		new_node->name[i] = pname[i];
+	}
+
+	// Insert amount in inventory
+		new_node->on_hand = pon_hand;
+
+	new_node->next = cur;
+	if (prev == NULL) {
+		inventory = new_node;
+	} else {
+		prev->next = new_node;
+	}
 }
 
 /************************************************************
- *  find_part: Looks up a part number in the inventory		*
+ *  find_part: Looks up inventory2.c:200:28: error: assignment to expression with array type
+  200 |                 if ((pname = fread(&p->name,sizeof(p->name),1,fp)) == 0) {
+a part number in the inventory		*
  * 			   array. Returns a pointer to the node			*
  * 			   containing the part number; if the part		*
  * 			   number is not found, returns NULL.			*
