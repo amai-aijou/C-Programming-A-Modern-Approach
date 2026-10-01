@@ -20,19 +20,47 @@ int count = 0;
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void read_file(FILE *fp);
+void print_array(void);
+int compare_ints(const void *p, const void *q);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(int argc, char *argv[]) {
 
-
 	FILE *fp;
+	int median;
 
 	if ((fp = fopen(argv[1],"rb")) == NULL) {
 		printf("Error: File %s could not be opened for reading. terminating.\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
+
+	read_file(fp);
+	qsort(numbers,count,sizeof(numbers[0]),compare_ints);
+
+
+	if (count %2 == 0) {
+		median = (numbers[(count / 2)] + numbers[(count/2-1)]) / 2;
+	} else {
+		median = numbers[(count / 2)];
+	}
+
+	printf("Smallest: %d\n", numbers[0]);
+	printf("Largest: %d\n", numbers[count - 1]);
+	printf("Median: %d\n", median);
+
+	return 0;
+}
+
+/*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+                   ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
+void read_file(FILE *fp) {
+
+	char buffer[30000];
+	int i = 0;
 
 	while (fgets(buffer, 30000, fp) != NULL){
 
@@ -59,20 +87,27 @@ int main(int argc, char *argv[]) {
 		}
 
 	}
+}
+
+void print_array(void) {
+	int i = 0;
 
 	printf("DEBUG - print all numbers:\n");
 	for (i = 0; i < count; i++) {
 		printf("%d\n", numbers[i]);
 	}
-
-
-	return 0;
 }
 
-/*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-                   ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-void read_file(FILE *fp, int 
+int compare_ints(const void *p, const void *q) {
 
-	char buffer[30000];
-	int i = 0;
+	const int *p1 = p;
+	const int *q1 = q;
+
+	if (*p1 < *q1) {
+		return -1;
+	} else if (*p1 == *q1) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
