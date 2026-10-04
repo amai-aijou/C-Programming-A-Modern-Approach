@@ -1466,8 +1466,8 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 #That's all I put...WHAT, it was a short chapter!
 
 #####################################
-           "Chapter 21"
-	  "The Standard Library"
+           "Chapter 22"
+    	  "Input/Output"
 #####################################
 
 "22.1 Streams"
@@ -1699,3 +1699,18 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
     scanf("%*[^\n]"); // it's not being stored anywhere, so it just deletes the input stream!
 
   - fflush() is designed for *output* streams...using it with input streams is undefined and should never be done!
+
+#####################################
+           "Chapter 23"
+  "Library Support for Numbers"
+        "and Character Data"
+#####################################
+
+"23.1 The <float.h> header: Characteristics of Floating Types"
+  - There are *NO* functions or types in float.h; only macros! examples:
+
+    FLT_ROUNDS 	=	current rounding direction for float addition
+	FLT_RADIX 	=	specifies the radix of exponent representation (min value 2)
+
+  - All other macros describe the characteristics of existing types
+  - Honestly, mostly just bs for experts and scientists and stuff. boring!

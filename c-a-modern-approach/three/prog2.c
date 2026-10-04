@@ -21,11 +21,11 @@ int main(void)
 	scanf("%f", &unitPrice);
 
 	printf("Enter Purchase date (mm/dd/yyyy): ");
-	scanf("%d/%d/%d", &day, &month, &year);
+	scanf("%d/%d/%d", &month, &day, &year);
 	
 	printf("Item\t\tUnit\t\tPurchase\n");
 	printf("\t\tPrice\t\tDate\n");	
-	printf("%-d\t\t$ %7.2f\t%-d/%-d/%-d\n", itemNo, unitPrice, day, month, year);
+	printf("%-d\t\t$ %7.2f\t%-d/%-d/%-d\n", itemNo, unitPrice, month, day, year);
 
 	return 0;
 }
