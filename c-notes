@@ -1686,6 +1686,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - sscanf returns the number of data items successfully read and stored. returns EOF if it reached the end of a string (\0) before finding the first item
 
 "Q & A"
+
   - Binary is usually preferable to text if storing both characters and numbers. Numbers are in binary form in memory, so copying is easy. In text form they're mcuh slower
   - Binary files are both hard for humans read, and also not generally portable between Operating Systems (variable sizes, in particular, can be different on different OSes)
   - if abort() is used to terminate a program, files are not always closed, and it's best practice to use fclose to ensure they are closed!
@@ -1707,6 +1708,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 #####################################
 
 "23.1 The <float.h> header: Characteristics of Floating Types"
+
   - There are *NO* functions or types in float.h; only macros! examples:
 
     FLT_ROUNDS 	=	current rounding direction for float addition
@@ -1714,3 +1716,27 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
   - All other macros describe the characteristics of existing types
   - Honestly, mostly just bs for experts and scientists and stuff. boring!
+
+"23.2 <limits.h>"
+
+  - limits.h declares the range of each integer type (including character types!)
+  - You can call the macros to check the limits of each type:
+
+    if INT_MAX < 100000
+      printf("Error: int type is too small");
+
+"23.3 <math.h>"
+
+  - if a math.h function experiences an error, you can use errorno() to determine what happened (unique to this header, I believe)
+
+"23.4 <math.h> (C99)"
+
+  - Mostly used for engineers and scientists...but does have a few cool things, like positive and negative zero
+  - "Subnormal Numbers" are used to reduce the impact of "underflow", where a number is too small to represent. like dividing too many times and the calculator shows zero
+  - Positive infinity, negative infinity, NaN (Not A Number) are all allowed for floats in C99
+
+"<string.h>"
+
+  - memset stores copies of a specific character in a certain area of memory. You can use this to wipe arrays quickly!
+
+    memset(a, 0, sizeof(a));
