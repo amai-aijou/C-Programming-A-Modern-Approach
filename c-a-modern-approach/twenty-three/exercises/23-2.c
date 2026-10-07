@@ -73,7 +73,7 @@ double evaluate_polynomial(double a[], int n, double x) {
 
 	solution = a[i];
 	for (i = 1; i < n; i++) {
-		solution = solution * x + a[i];
+		solution = fma(solution, x, a[i]);
 	}
 
 	return solution;
