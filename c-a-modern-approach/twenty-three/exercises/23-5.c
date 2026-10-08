@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 23-4.c
+   ❤︎︎࣪ Name: 23-5.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Wed Oct  7 12:55:01 PM CDT 2026
+   ❤︎︎࣪ Date: Wed Oct  7 07:34:00 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -24,32 +24,30 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-bool legality_checker_c(char *identifier);
+long int is_hex_number(char *digit);
+char digit_to_hex_char(int digit);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	char *legal_name = "legal_name", *illegal_name = "1llegal_name";
+	char *valid_hex = "A", *invalid_hex = "L23456789ABCDEFG";
 
-	printf("-------------------EXERCISE 23-4-------------------\n\n");
-	printf(COLOR_MAGENTA "Q. Write a function checking if a string has the syntax of a C identifier\n\n");
+	printf("-------------------EXERCISE 23-5-------------------\n\n");
+	printf(COLOR_MAGENTA "Q. write a function to check if a string represents a valid hex number\n\n");
 
-	printf(COLOR_CYAN    "    C identifier: string consisting of letters, digits, and underscoresn;\n"
-			             "                  must being with as letter or underscore\n\n");
+	printf(COLOR_CYAN    "  If valid, return the value as a long int\n"
+			             "  If invalid, return -1\n\n");
 
-	if (legality_checker_c(legal_name)) {
-		printf("C identifier %s is legal\n", legal_name);
-	} else {
-		printf("C identifier %s is illegal\n", legal_name);
-	}
+	printf(COLOR_CYAN    "(1)   Valid Hex: %s\n", valid_hex);
+	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(valid_hex)); 
 
-	if (legality_checker_c(illegal_name)) {
-		printf("C identifier %s is legal\n", legal_name);
-	} else {
-		printf("C identifier %s is illegal\n", legal_name);
-	}
+	printf(COLOR_CYAN    "(2) Invalid Hex: %s\n", invalid_hex);
+	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(invalid_hex)); 
+
+	printf(COLOR_CYAN    "(3) Control Group (Known Valid Hex Function): %s\n", valid_hex);
+	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(valid_hex)); 
 
 	return 0;
 }
@@ -57,23 +55,35 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-bool legality_checker_c(char *identifier) {
+long int is_hex_number(char *digit) {
 
-	bool legal = true;
-	char *p;
 	int i = 0;
+	long int nHex;
+	char *p;
 
-	for (p = identifier; p < (p + i); p++) {
+	for (p = digit; p != NULL && *p != '\0'; p++) {
 
-		if ((!isalnum(identifier[i])) && (identifier[1] != '_')) {
-			legal = false;
+		if (!isxdigit(digit[i])) {
+
+			return -1;
+		}
+
+		if ((digit[i] >= '0') && (digit[i] <= '9')) {
+
+			nHex += (i * 16) + (digit[i] - '0');
+
+		} else if ((digit[i] >= 'A') && (digit[i] <= 'F')) {
+
+			nHex += (i * 16) + ((digit[i] - 'A') + 10);
 		}
 		i++;
 	}
 
-	if ((!isalpha(identifier[0])) && (identifier[0] != '_')) {
-		legal = false;
-	}
+	return nHex;
+}
 
-	return legal;
+// Feed this any digit and it will return the corresponding char in the string
+// This works because the digit positions map to the number used (ie ""[2] is the third position, or 2)
+char digit_to_hex_char(int digit) {
+	return "0123456789ABCDEF" [digit];
 }
