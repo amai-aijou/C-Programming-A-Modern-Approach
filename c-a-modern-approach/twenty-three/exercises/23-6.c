@@ -1,9 +1,9 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                  ❤︎︎࣪    I N F O R M A T I O N    ❤︎︎࣪    				 
-   ❤︎︎࣪ Name: 23-5.c
+   ❤︎︎࣪ Name: 23-6.c
    ❤︎︎࣪ Purpose: 
    ❤︎︎࣪ Author: amai-aijou
-   ❤︎︎࣪ Date: Wed Oct  7 07:34:00 PM CDT 2026
+   ❤︎︎࣪ Date: Thu Oct  8 07:31:43 PM CDT 2026
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
                                                                 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -24,33 +24,34 @@
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-long int is_hex_number(char *digit);
-char digit_to_hex_char(int digit);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
-	char *valid_hex = "A", *invalid_hex = "L23456789ABCDEFG";
+	printf("-------------------EXERCISE 23-6-------------------\n\n");
+	printf(COLOR_MAGENTA "Q. Choose the best function to use in each scenario\n\n");
 
-	printf("-------------------EXERCISE 23-5-------------------\n\n");
-	printf(COLOR_MAGENTA "Q. write a function to check if a string represents a valid hex number\n\n");
+	printf(COLOR_RESET   "    memcpy\t\tmemmove\n"
+			             "    strcpy\t\tstrncpy\n\n");
 
-	printf(COLOR_CYAN    "  If valid, return the value as a long int\n"
-			             "  If invalid, return -1\n\n");
+	printf(COLOR_CYAN    "  (a) Moving all array elements backwards one position to make space for a new element at the beginning (array[0])\n");
+	printf(COLOR_CYAN    "     Ans.: " COLOR_RESET "memmove\n\n");
+	printf(COLOR_CYAN    "     Why?: " COLOR_RESET "str only works up til it hits an \\0; memcpy has undefined behavior with overlapping source/dest\n\n");
 
-	printf(COLOR_CYAN    "(1)   Valid Hex: %s\n", valid_hex);
-	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(valid_hex)); 
+	printf(COLOR_CYAN    "  (b) Deleting the first char in a null-terminated string by moving all chars back one position\n");
+	printf(COLOR_CYAN    "     Ans.: " COLOR_RESET "memmove\n\n");
+	printf(COLOR_CYAN    "     Why?: " COLOR_RESET "str only works up til it hits an \\0; memcpy has undefined behavior with overlapping source/dest\n\n");
 
-	printf(COLOR_CYAN    "(2) Invalid Hex: %s\n", invalid_hex);
-	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(invalid_hex)); 
+	printf(COLOR_CYAN    "  (c) Copying a string to a char array that may not be large enough to hold it\n);"
+			             "      NOTE: if too small, truncate and add to array (without NULL terminator!)\n");
+	printf(COLOR_CYAN    "     Ans.: " COLOR_RESET "strncpy\n\n");
+	printf(COLOR_CYAN    "     Why?: " COLOR_RESET "memcpy would also work here, but this was my only chance to use strncpy so, may as well!\n\n");
 
-	printf(COLOR_CYAN    "(3) Control Group (Known Valid Hex Function): %s\n", valid_hex);
-	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(valid_hex)); 
-
-	printf(COLOR_CYAN    "(4) Control Group (Known Valid Hex Function): %s\n", valid_hex);
-	printf(COLOR_RESET   "  Value is %ld\n\n", is_hex_number(valid_hex)); 
+	printf(COLOR_CYAN    "  (d) Copying one array variable into another (all contents)\n");
+	printf(COLOR_CYAN    "     Ans.: " COLOR_RESET "memcpy\n\n");
+	printf(COLOR_CYAN    "     Why?: " COLOR_RESET "straight up copy is easily done with memcpy. Can also use strcpy/strncpy, *if* there's only a terminator at the end\n\n");
 
 	return 0;
 }
@@ -58,38 +59,3 @@ int main(void) {
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                    ❤︎︎࣪    F U N C T I O N S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
-long int is_hex_number(char *digit) {
-
-	int i = 0;
-	long int nHex = 0;
-	char *p;
-
-
-	printf(   "DEBUG -  Digit: %ld\n\n", digit); 
-	for (p = digit; p != NULL && *p != '\0'; p++) {
-
-		if (!isxdigit(digit[i])) {
-
-			return -1;
-		}
-
-		if ((digit[i] >= '0') && (digit[i] <= '9')) {
-
-			nHex += (i * 16) + (digit[i] - '0');
-
-		} else if ((digit[i] >= 'A') && (digit[i] <= 'F')) {
-
-			nHex += (i * 16) + ((digit[i] - 'A') + 10);
-		}
-		i++;
-	}
-
-	printf(   "DEBUG -  Digit: %ld\n\n", digit); 
-	return nHex;
-}
-
-// Feed this any digit and it will return the corresponding char in the string
-// This works because the digit positions map to the number used (ie ""[2] is the third position, or 2)
-char digit_to_hex_char(int digit) {
-	return "0123456789ABCDEF" [digit];
-}
