@@ -41,7 +41,6 @@ int main(void) {
 	memset(str + (strlen(str) - n), '!',n );
 	printf(              "         %s\n\n", str); 
 
-	// str[16]
 	return 0;
 }
 
