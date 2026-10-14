@@ -33,35 +33,35 @@ int main(void) {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 void input_output(void) {
 
-		bool newline = true;
-		bool new_word = true;
-		int ch;
+	bool newline = true;
+	bool new_word = true;
+	int ch;
 
-		while ((ch = fgetc(stdin)) != EOF) {
+	while ((ch = fgetc(stdin)) != EOF) {
 
 
-			while ((ch == ' ') && (newline == true)) {
-				ch = fgetc(stdin);
-			}
+		while ((ch == ' ') && (newline == true)) {
+			ch = fgetc(stdin);
+		}
 
-			if (ch == ' ' && newline == false) {
-				new_word = true;
-			}
+		if (ch == ' ' && newline == false) {
+			new_word = true;
+		}
 
-			if (ch == '\n' && newline == false) {
-				newline = true;
-				fputc(ch,stdout);
-			} else if (ch == '\n' && newline == true) {
-				// Skips any line with no content!
-				continue;
+		if (ch == '\n' && newline == false) {
+			newline = true;
+			fputc(ch,stdout);
+		} else if (ch == '\n' && newline == true) {
+			// Skips any line with no content!
+			continue;
+		} else {
+			if (isalpha(ch) && new_word == true) {
+				fputc(toupper(ch),stdout);
+				new_word = false;
 			} else {
-				if (isalpha(ch) && new_word == true) {
-					fputc(toupper(ch),stdout);
-					new_word = false;
-				} else {
-					fputc(ch,stdout);
-					newline = false;
-				}
+				fputc(ch,stdout);
+				newline = false;
 			}
 		}
+	}
 }

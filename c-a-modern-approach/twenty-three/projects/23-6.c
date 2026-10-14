@@ -33,18 +33,18 @@ int main(void) {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 void input_output(void) {
 
-		bool newline = true;
-		bool new_word = true;
-		int ch;
+	bool newline = true;
+	bool new_word = true;
+	int ch;
 
-		while ((ch = fgetc(stdin)) != EOF) {
+	while ((ch = fgetc(stdin)) != EOF) {
 
-			if (ch == '\n' && newline == false) {
-				fputc(ch,stdout);
-			} else if (iscntrl(ch)) {
-				fputc('?',stdout);
-			} else {
-				fputc(ch,stdout);
-			}
+		if (ch == '\n' && newline == false) {
+			fputc(ch,stdout);
+		} else if (iscntrl(ch)) {
+			fputc('?',stdout);
+		} else {
+			fputc(ch,stdout);
 		}
+	}
 }
