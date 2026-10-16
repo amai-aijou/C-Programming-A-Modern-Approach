@@ -1737,6 +1737,74 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
 
 "<string.h>"
 
-  - memset stores copies of a specific character in a certain area of memory. You can use this to wipe arrays quickly!
+  - memset stores copies of a specific character in a certain area of memory.
 
     memset(a, 0, sizeof(a));
+
+  - You can use this to wipe arrays quickly!
+
+#####################################
+           "Chapter 24"
+         "Error Handling"
+#####################################
+
+"24.1 The <assert.h> Header: Diagnostics"
+
+  - Assert() is actually a macro designed to be used like a function
+  - A single argument is allowed, which must be an "assertion" (as the name suggest!)
+  - Assert tests whether the argument in question has a non-vero value
+  - If a zero value, assert writes to sdterr and calls the abort function
+  - argument to assert must have int type "C99": argument may have any scalar type
+  - assert increases run time of programs because of the check! not usually a big deal, but can be in mission-critical things
+  - you can disable assert by including a define statement for NDEBUG:
+
+    #define NDEBUG
+
+  - if you disable assert, any function calls in the assert statement will also be disabled!
+
+"24.2 The <errno.h> Header: Errors"
+
+  - many stdlib functions store an error code (a positive int) in errno. most functions relying on errno are actually in mth.h btw!
+  - you can set errno like an lvalue! especially useful for resetting it back to zero before running another function and testing again
+  - always set it to zero before use, because you never know if you screwed up somewhere else, which would change the value to 1 (and you wouldn't know where unless you reset!)
+  - library functions never clear errno, either; once it's set, it stays set until you unset it
+
+  "The perror and strerror functions"
+  - "perror" displays the nature of the error code displayed by errno
+  - "strerror" is the same, but for strings!
+
+"23.4 The <signal.h> Header: Signal Handling"
+
+  - There are two categories of signals: run-time errors (like divide-by-zero), and events outside the program.
+  - Linux allows users to kill running programs. This is treated as a "signal" in C (referred to as a "signal being raised")
+
+  "Signal Macros"
+  - All signals begin with SIG followed by an upper-case letter
+
+    SIGABRT	-- Abnormal termination (possibly a call of abort())
+    SIGFPE  -- Error during arithmetic operation
+	SIGILL  -- Invalid instruction
+	SIGINT  -- Interrupt
+	SIGSEGV -- Invalid storage access
+	SIGTERM -- Termination request
+
+  "The signal function"
+
+    void (*signal(int sig, void (*func)(int)))(int);
+
+  - first arg is the code for the signal; second is a pointer to a function that will handle the signal if it's raised later
+  - unless invoked by abort() or raise(), a signal handler shouldn't call a library function or use a variable with static storage (for various reasons)
+  - Once the signal-handler returns, program resumes executing, except if SIGABRT was returned, or returning from a function that has handled SIGFPE (BAD idea)
+
+  "Predefined Signal Handlers"
+  - Instead of your own, you could use the ones provided by <signal.h>:
+
+    SIG_DFL -- "default" handler; implementation-defined (but usually terminates!)  -- signal(SIGINT, SIG_DFL);
+	SIG_IGN -- "ignore" handler; this generally ignores the signal when encountered -- signal(SIGINT, SIG_IGN);
+    SIG_ERR -- "bonus" handler; used to test for an error when installing a handler -- if(signal(SIGINT, handler) == SIG_ERR){}
+
+  "The raise Function"
+  
+    int raise(int sig);
+
+  - You can cause a signal to occur with raise(SIGABRT) or similar. raise has either a zero or one return value for success or failure, respectively
