@@ -41,9 +41,6 @@ int main(void) {
 	strcpy(native_locale,cur_locale);
 	printf( "Native locale:\t\t%s\n\n\n", cur_locale);
 
-
-	//---------------------
-	
 	locale_info = localeconv();
 	printf(" Formatting Values for %s\n", cur_locale);
 	printf("------------------------------------\n");
@@ -51,6 +48,7 @@ int main(void) {
 	printf("  thousands_sep:\t%s\n", locale_info->thousands_sep);
 	printf("  grouping:\t%s\n", locale_info->grouping);
 	printf("  currency symbol:\t%s\n\n", locale_info->currency_symbol);
+
 
 	// Set locale to C
 	cur_locale = setlocale(LC_ALL, "C");
