@@ -1773,7 +1773,7 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
   - "perror" displays the nature of the error code displayed by errno
   - "strerror" is the same, but for strings!
 
-"23.4 The <signal.h> Header: Signal Handling"
+"24.3 The <signal.h> Header: Signal Handling"
 
   - There are two categories of signals: run-time errors (like divide-by-zero), and events outside the program.
   - Linux allows users to kill running programs. This is treated as a "signal" in C (referred to as a "signal being raised")
@@ -1808,3 +1808,66 @@ Note: The textbook claims 17.8/17.9 are only of interest to advanced C programme
     int raise(int sig);
 
   - You can cause a signal to occur with raise(SIGABRT) or similar. raise has either a zero or one return value for success or failure, respectively
+
+"24.4 The <setjmp.h> Header: Nonlocal Jumps"
+
+    int setjmp(jmp_buf env);
+    void longjmp(jmp_buf env, int val);
+
+  - You can't really use goto() these days, as it can only jump to labels in the same function; setjmp header lets you jump from one function directly to another without a return
+  - "setjmp" marks a placeain a program, longjmp lets you return there later. it's generally just for errors though, apparently?
+
+"Q & A"
+
+  - Only four legal ways to call "setjmp()":
+      *setjmp()
+      *!setjmp()
+      *constexpr op setjmp()
+      *setjmp() op constexpr
+
+#####################################
+           "Chapter 25"
+         "International"
+#####################################
+
+#No notes taken at this time; most do not apply to daily usage. See exercises and programming projects for samples
+
+#####################################
+           "Chapter 24"
+         "Error Handling"
+#####################################
+
+"26.2"
+
+  - exit() has EXIT_FAILURE and EXIT_SUCCESS
+  - atexit() allows you to declare cleanup or other tasks to complete when exit() is called, or at normal, successful termination (vias return 0 or similar)
+  - abort() is designed to allow you to exit while bypassing atexit() tasks
+  - C99: _Exit() is similar to exit, but does not clean up temporary files etc that are normally cleared as part of program close (memory will still be freed to prevent leaks)
+
+  - getenv() allows you to pull an environmental variable
+  - setenv(), unsetenv(), and putenv() are not C standard, but are included in most linux distros to allow you to manipulate global and local environment variables
+
+  - system() allows you to run another program
+  
+      system("ls >myfiles");
+
+  - bsearch() searches a sorted array for a key value. The requirements of the function are very similar to qsort; it operates similarly, too, to find the value that is equal to your key
+    *not specified by C standard, but normally uses the binary search algo
+
+"26.3 <time.h>"
+  - You can use clock() to determine how many clock ticks since the processor started handling the program. This can be convereted to something human-readable wiht CLOCKS_PER_SEC
+
+    clock_t start_clock = clock();
+    printf("Processory time used: %g sec.\n", (clock() - start_clock) / (double) CLOCKS_PER_SEC);
+
+  - difftime() lets you determine the difference between time0 and time1
+
+      time_t start_time = time(NULL);
+      printf("Running time: %g sec.\n", difftime(time(NULL), start_time));
+
+  - mktime() converts broken-down time (stored in the struct its arg points to) and returns human-readable calendar time
+    * reduces all values in the struct to proper range (i.e. ensures there are only 59 seconds or less, 59mins or less, 23 hours or less)
+    * sets tm_wday (day of week) and tm_yday (day of year) to correct values as well
+  - asctime() provides an ASCII format calendar time as a null-terminated string
+  - ctime is constructed time, from the broken-down time it points to
+  - strftime is basically asctime() but with control over how it is formatted. Is sensitive to current locale!
