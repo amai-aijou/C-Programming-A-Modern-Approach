@@ -34,17 +34,14 @@ int main(void) {
 	int a, b;
 
 	printf("-------------------EXERCISE 26-1-------------------\n\n");
-	printf(COLOR_MAGENTA "Q. Rewrite max_int() so zero is the last warugmnt\n\n");
-
-	printf(COLOR_CYAN    "    unsigned int n;\n");
-	printf(COLOR_CYAN    "    n &= n - 1;\n\n");
+	printf(COLOR_MAGENTA "Q. Rewrite max_int() so it takes a series of numbers, with a zero as the final terminator\n\n");
 
 	printf(COLOR_MAGENTA "(a) max_int()\n");
 	printf(COLOR_CYAN    "  Output: " COLOR_RESET); 
 	a = max_int(3, 10, 30, 20);
 	printf("The largest int is %d\n\n", a);
 
-	printf(COLOR_MAGENTA "(b)\n");
+	printf(COLOR_MAGENTA "(b) max_int_new()\n");
 	printf(COLOR_CYAN    "  Output: " COLOR_RESET); 
 	b = max_int_new(5, 2, 40, 80, 40, 10, 30, 20, 0);
 	printf("The largest int is %d\n\n", b);
@@ -62,16 +59,11 @@ int max_int_new(int n, ...) {
 	int i, current, largest;
 	int count = 1, args[100];
 
-	va_start(ap, n);
-	args[0] = n;
-	while ((args[count] = va_arg(ap, int)) != 0) {
-		count++;
-	}
-
 	largest = n;
 
-	for (i = 0; i < count; i++) {
-		current = args[i];
+	va_start(ap, n);
+
+	while ((current = va_arg(ap, int)) != 0) {
 		if (current > largest) {
 			largest = current;
 		}
