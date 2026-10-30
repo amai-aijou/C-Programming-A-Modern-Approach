@@ -32,19 +32,28 @@ int simple_printf(char *str, ...);
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 int main(void) {
 
+	int n = 0;
+	char *ing = "ing";
+
 	printf("-------------------EXERCISE 26-2-------------------\n\n");
 	printf(COLOR_MAGENTA "Q. Write printf() from scratch! You only need to do %d (thankfully)\n\n");
 
 	printf(COLOR_CYAN    "    simple_printf(char *str, ...)\n\n");
 
-	printf(COLOR_CYAN    "Output: " COLOR_RESET); 
+	printf(COLOR_CYAN    "Output:\n" COLOR_RESET); 
 
-	simple_printf("%dtest%d\n", 1, 1);
+	n = simple_printf("%dtest%d", 1, 1);
+	simple_printf("\t\t\t#Prints %d characters\n", n);
 
+	n = simple_printf("test%c", '2');
+	simple_printf("\t\t\t#Prints %d characters\n", n);
 
-	simple_printf("test%c\n", '2');
+	n = simple_printf("test%s", "ing");
+	simple_printf("\t\t\t#Prints %d characters\n", n);
 
-	printf("\n\n");
+	n = simple_printf("Did %s %d pass?: %c", "test", 1, 'Y');
+	simple_printf("\t#Prints %d characters\n", n);
+
 	return 0;
 }
 
@@ -55,8 +64,8 @@ int main(void) {
 int simple_printf(char *str, ...) {
 
 	va_list ap;
-	int ch, i = 0, j, count = 0, n, ibuf = 0;
-	char nbuf[10], sbuf[1000];
+	int ch, i = 0, j = 0, count = 0, n, ibuf = 0;
+	char nbuf[10], *sbuf;
 
 	va_start(ap, str);
 
@@ -89,7 +98,11 @@ int simple_printf(char *str, ...) {
 				case 's':
 					sbuf = va_arg(ap, char *);
 					
-					while (sbuf[j] 
+					while (sbuf[j] != '\0') {
+						fputc(sbuf[j++],stdout);
+						count++;
+					}
+					break;
 			}
 		}
 	}
