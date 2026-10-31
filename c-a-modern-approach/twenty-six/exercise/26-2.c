@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
 #define COLOR_RED "\033[1;31m"
 #define COLOR_GREEN "\033[1;32m"
@@ -40,9 +41,9 @@ int main(void) {
 
 	printf(COLOR_CYAN    "    simple_printf(char *str, ...)\n\n");
 
-	printf(COLOR_CYAN    "Output:\n" COLOR_RESET); 
+	printf(COLOR_CYAN    "Joe's Version:\n" COLOR_RESET); 
 
-	n = simple_printf("%dtest%d", 1, 1);
+	n = simple_printf("%dtest%d", -1, 1);
 	simple_printf("\t\t\t#Prints %d characters\n", n);
 
 	n = simple_printf("test%c", '2');
@@ -66,6 +67,7 @@ int simple_printf(char *str, ...) {
 	va_list ap;
 	int ch, i = 0, j = 0, count = 0, n, ibuf = 0;
 	char nbuf[10], *sbuf;
+	bool nNeg;
 
 	va_start(ap, str);
 
@@ -84,6 +86,13 @@ int simple_printf(char *str, ...) {
 					break;
 				case 'd':
 					n = va_arg(ap, int);
+
+					// add a negative sign if number is less than zero!
+					if (n < 0) {
+						fputc('-', stdout);
+						n = abs(n);
+						count++;
+					}
 
 					while (n != 0) {
 						nbuf[ibuf++] = (n % 10);
