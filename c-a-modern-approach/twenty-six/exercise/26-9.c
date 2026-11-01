@@ -25,6 +25,7 @@
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 double rand_percent(void);
+double rand_double(void);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -35,8 +36,10 @@ int main(void) {
 	printf(COLOR_MAGENTA "Q. Write a function to return a doublt value in the range of 0.0-1.0\n\n");
 
 	printf(COLOR_CYAN    "  Output: " COLOR_RESET); 
+	printf("%0.2lf\n", rand_percent());
 
-	printf("%0.2lf\n\n", rand_percent());
+	printf(COLOR_CYAN    "  Author: " COLOR_RESET); 
+	printf("%0.2lf\n", rand_double());
 
 	return 0;
 }
@@ -46,11 +49,14 @@ int main(void) {
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 double rand_percent(void) {
 
-	double d;
-
 	srand((unsigned) time(NULL));
 
-	d = (rand() % 101) * .01;
+	return (rand() % 101) * .01;
+}
 
-	return d;
+// The author's solution - elegant, but only works in implementations like Windows UCRT where RAND_MAX is not equal to INT_MAX
+// In God's Own OS, RAND_MAX = INT_MAX, which is why it doesn't work in Linux GCC!
+double rand_double(void)
+{
+  return (double) rand() / (RAND_MAX + 1);
 }
