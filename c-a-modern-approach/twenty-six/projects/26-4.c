@@ -19,7 +19,7 @@
                   ❤︎︎࣪    P R O T O T Y P E S    ❤︎︎࣪    
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛*/
 struct tm build_time(int mon, int mday, int year);
-void print_time(struct tm time, char *format);
+void print_time(struct tm *time, char *format);
 
 /*┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ❤︎︎    M A I N  F U N C T I O N    ❤︎︎                
@@ -37,7 +37,7 @@ int main(void) {
 
 	time = build_time(mon, (mday + n), year);
 
-	print_time(time, "%A, %b %d, %Y (%D)");
+	print_time(&time, "%A, %b %d, %Y (%D)");
 
 	return 0;
 }
@@ -62,11 +62,11 @@ struct tm build_time(int mon, int mday, int year)  {
 	return t;
 }
 
-void print_time(struct tm time, char *format) {
+void print_time(struct tm *time, char *format) {
 
 	char time_string[100];
 
-	strftime(time_string, sizeof(time_string), format, &time);
+	strftime(time_string, sizeof(time_string), format, time);
 
 	printf("The new time is:\n\n%s\n\n", time_string);
 }
