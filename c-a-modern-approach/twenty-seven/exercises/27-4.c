@@ -122,6 +122,7 @@ int main(void) {
 	printf("     )\n\n");
 
 	// TEST AREA FOR PREPROCESSOR
+	// Note: You can use gcc -E test -o test.c to get an output file after pre-processing. a word of warning, it ain't pretty!
 	tan(i);
 
 	fabs(f);
